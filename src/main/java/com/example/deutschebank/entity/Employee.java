@@ -23,25 +23,25 @@ public class Employee {
     @Column(name = "personal_detail_id", nullable = false)
     private UUID personalDetailId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "personal_detail_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
+        insertable = false, updatable = false)
     private PersonalDetail personalDetail;
 
     @Column(name = "work_detail_id", nullable = false)
     private UUID workDetailId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "work_detail_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
+        insertable = false, updatable = false)
     private WorkDetail workDetail;
 
     @Column(name = "location_id", nullable = false)
     private UUID locationId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
+        insertable = false, updatable = false)
     private Location location;
 
     @Column(name = "branch_id", nullable = false)
@@ -49,7 +49,7 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "branch_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
+        insertable = false, updatable = false)
     private BankBranch bankBranch;
 
     @Column(name = "active", nullable = false)
