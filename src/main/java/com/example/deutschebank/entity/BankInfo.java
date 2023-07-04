@@ -41,7 +41,7 @@ public class BankInfo {
 
     @Lob
     @Column(name = "logo")
-    private byte[] blobData;
+    private byte[] logo;
 
     @CreationTimestamp
     @Column(name = "created", updatable = false)

@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EmployeeService {
-    List<Employee> findAll();
     Employee createEmployee(Employee employee);
+    //Employee generateEmployees();
+    String generateEmployees();
+    List<Employee> findAll();
     Employee findEmployeeById(UUID id);
     Employee findEmployeeByFullName(String firstName, String lastName);
     boolean deleteEmployee(Employee employee);
+    public void testMethod();
+
 }

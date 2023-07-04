@@ -29,7 +29,7 @@ public class BankBranch {
     @Column(name = "location_id", nullable = false)
     private UUID locationId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Location location;
 

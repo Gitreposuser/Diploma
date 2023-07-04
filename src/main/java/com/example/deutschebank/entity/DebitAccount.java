@@ -21,14 +21,6 @@ public class DebitAccount {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "client_id", nullable = false)
-    private UUID clientId;
-
-    @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
-    private Client client;
-
     @Column(name = "iban", length = 64, nullable = false)
     private String iban;
 

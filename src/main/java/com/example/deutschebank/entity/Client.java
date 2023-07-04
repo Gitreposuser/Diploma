@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class Client {
     @Column(name = "manager_id", nullable = false)
     private UUID managerId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id",
             insertable = false, updatable = false)
     private Employee employee;
@@ -31,23 +32,18 @@ public class Client {
     @Column(name = "debit_account_id", nullable = false)
     private UUID debitAccountId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "debit_account_id", referencedColumnName = "id",
             insertable = false, updatable = false)
     private DebitAccount debitAccount;
 
-    @Column(name = "credit_account_id", nullable = false)
-    private UUID creditAccountId;
-
-    @ManyToOne
-    @JoinColumn(name = "credit_account_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
-    private CreditAccount creditAccount;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<CreditAccount> creditAccounts;
 
     @Column(name = "personal_detail_id", nullable = false)
     private UUID personalDetailId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "personal_detail_id", referencedColumnName = "id",
             insertable = false, updatable = false)
     private PersonalDetail personalDetail;
@@ -55,7 +51,7 @@ public class Client {
     @Column(name = "location_id", nullable = false)
     private UUID locationId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id",
             insertable = false, updatable = false)
     private Location location;

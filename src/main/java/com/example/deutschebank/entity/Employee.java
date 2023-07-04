@@ -47,7 +47,7 @@ public class Employee {
     @Column(name = "branch_id", nullable = false)
     private UUID branchId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "branch_id", referencedColumnName = "id",
         insertable = false, updatable = false)
     private BankBranch bankBranch;

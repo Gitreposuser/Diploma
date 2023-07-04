@@ -10,12 +10,16 @@ import java.util.UUID;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
+    @Query("SELECT em " +
+            "FROM Employee em " +
+            "WHERE em.id = :id")
     Optional<Employee> findEmployeeById(UUID id);
 
     @Query("SELECT pd.firstName, pd.lastName " +
             "FROM Employee em " +
             "JOIN PersonalDetail pd " +
-            "ON em.personalDetailId = pd.id ")
+            "ON em.personalDetailId = pd.id " +
+            "WHERE pd.firstName = :firstName AND pd.lastName = :lastName")
     Optional<Employee> findEmployeeByFullName(String firstName,
                                               String lastName);
 }

@@ -20,9 +20,25 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee createEmployee(Employee employee) {
+        employee.setActive(true);
         return employeeRepository.save(employee);
     }
 
+    /*
+    @Override
+    public Employee generateEmployees() {
+        Employee employee = new Employee();
+        employee.setActive(true);
+        return employee;
+    }
+     */
+
+    @Override
+    public String generateEmployees() {
+        //Employee employee = new Employee();
+        //employee.setActive(true);
+        return "Succesfully created";
+    }
     @Override
     public List<Employee> findAll() {
         return employeeRepository.findAll();
@@ -58,5 +74,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean deleteEmployee(Employee employee) {
         return false;
+    }
+
+    @Override
+    public void testMethod() {
+        employeeRepository.toString();
     }
 }
