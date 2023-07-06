@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -36,9 +35,6 @@ public class Client {
     @JoinColumn(name = "debit_account_id", referencedColumnName = "id",
             insertable = false, updatable = false)
     private DebitAccount debitAccount;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<CreditAccount> creditAccounts;
 
     @Column(name = "personal_detail_id", nullable = false)
     private UUID personalDetailId;

@@ -1,5 +1,4 @@
 package com.example.deutschebank.service.interfaces;
-
 import com.example.deutschebank.entity.BankInfo;
 
 public interface BankInfoService {

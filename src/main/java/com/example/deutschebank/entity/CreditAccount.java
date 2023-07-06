@@ -24,13 +24,9 @@ public class CreditAccount {
     @Column(name = "client_id", nullable = false)
     private UUID clientId;
 
-    /*
-    @OneToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "clients", referencedColumnName = "id")
     private Client client;
-
-     */
 
     @Column(name = "credit_status", length = 20, nullable = false)
     private String creditStatus;
@@ -40,7 +36,7 @@ public class CreditAccount {
     private BigDecimal debt;
 
     @Column(name = "loan_interest",
-            columnDefinition = "numeric(2, 2) default '3.00'")
+            columnDefinition = "NUMERIC(4, 2) DEFAULT '3.00'")
     private BigDecimal loanInterest;
 
     @Column(name = "start_from")

@@ -1,5 +1,7 @@
 package com.example.deutschebank.controller;
 
+import com.example.deutschebank.service.interfaces.TransactionService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,8 +17,17 @@ import java.nio.file.Path;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/tools")
 public class ToolsController {
+    private final TransactionService transactionService;
+
+    @GetMapping("/generate-db")
+    public void generateDataBase() {
+        final int transactionQuantity = 3;
+        transactionService.generateTransactions(transactionQuantity);
+    }
+
     @GetMapping("/schema")
     public ResponseEntity<byte[]> getDbSchema() {
         try {
