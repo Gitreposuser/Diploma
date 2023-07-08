@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,44 @@ public class TransactionController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Optional<List<Transaction>>> getAllTransactions() {
         Optional<List<Transaction>> list = transactionService.getAllTransactions();
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @PostMapping(value = "/get/emitter/by/{iban}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Optional<List<Transaction>>>
+    getTransactionsByEmitterIBAN(@PathVariable("iban") String iban) {
+        Optional<List<Transaction>> list =
+                transactionService.getTransactionsByEmitterIBAN(iban);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @PostMapping(value = "/get/receiver/by/{iban}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Optional<List<Transaction>>>
+    getTransactionsByReceiverIBAN(@PathVariable("iban") String iban) {
+        Optional<List<Transaction>> list =
+                transactionService.getTransactionsByReceiverIBAN(iban);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @PostMapping(value = "/get/by/amount-range/{from}/{to}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Optional<List<Transaction>>>
+    getTransactionsByAmountInRange(@PathVariable("from") Integer from,
+                                   @PathVariable("to") Integer to) {
+        Optional<List<Transaction>> list =
+                transactionService.getTransactionsByAmountInRange(from, to);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @PostMapping(value = "/get/by/date-range/{from}/{to}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Optional<List<Transaction>>>
+    getTransactionsByAmountInRange(@PathVariable("from") LocalDateTime from,
+                                   @PathVariable("to") LocalDateTime to) {
+        Optional<List<Transaction>> list =
+                transactionService.getTransactionsByDateInRange(from, to);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 }

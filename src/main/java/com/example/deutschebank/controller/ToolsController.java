@@ -24,7 +24,7 @@ public class ToolsController {
 
     @GetMapping("/generate-db")
     public void generateDataBase() {
-        final int transactionQuantity = 3;
+        final int transactionQuantity = 10;
         transactionService.generateTransactions(transactionQuantity);
     }
 
@@ -62,3 +62,4 @@ public class ToolsController {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
     }
 }
+
