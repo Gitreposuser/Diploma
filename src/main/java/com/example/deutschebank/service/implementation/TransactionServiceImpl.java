@@ -3,6 +3,7 @@ package com.example.deutschebank.service.implementation;
 import com.example.deutschebank.entity.Transaction;
 import com.example.deutschebank.repository.TransactionRepository;
 import com.example.deutschebank.service.interfaces.TransactionService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -20,34 +20,73 @@ public class TransactionServiceImpl implements TransactionService {
 
     public final TransactionRepository transactionRepository;
 
+    /**
+     * Create transaction with emitter, receiver IBAN and amount
+     * of transfer
+     *
+     * @param transaction
+     */
     @Override
     public void createTransaction(Transaction transaction) {
         transactionRepository.save(transaction);
     }
 
+    /**
+     * Get all existing transactions
+     *
+     * @return list of all transactions
+     */
     @Override
-    public Optional<List<Transaction>> getAllTransactions() {
-        return Optional.of(transactionRepository.findAll());
+    public List<Transaction> getAllTransactions() {
+        return transactionRepository.findAll();
     }
 
+    /**
+     * Get all transactions by emitter IBAN
+     *
+     * @param iban emitter IBAN
+     * @return list of transactions which corresponds emitter IBAN
+     */
     @Override
-    public Optional<List<Transaction>> getTransactionsByEmitterIBAN(String iban) {
-        return Optional.of(transactionRepository.getTransactionsByEmitterIBAN(iban));
+    public List<Transaction> getTransactionsByEmitterIBAN(String iban) {
+        return transactionRepository.getTransactionsByEmitterIban(iban);
     }
 
+    /**
+     * Get all transactions by receiver IBAN
+     *
+     * @param iban receiver IBAN
+     * @return list of transactions which corresponds receiver IBAN
+     */
     @Override
-    public Optional<List<Transaction>> getTransactionsByReceiverIBAN(String iban) {
-        return Optional.of(transactionRepository.getTransactionsByReceiverIBAN(iban));
+    public List<Transaction> getTransactionsByReceiverIBAN(String iban) {
+        return transactionRepository.getTransactionsByReceiverIban(iban);
     }
 
+    /**
+     * Get all transaction by amount in range from - to.
+     *
+     * @param from starting range amount
+     * @param to   ending amount
+     * @return
+     */
     @Override
-    public Optional<List<Transaction>> getTransactionsByAmountInRange(int from, int to) {
-        return Optional.of(transactionRepository.getTransactionsByAmountInRange(from, to));
+    public List<Transaction> getTransactionsByAmountBetween(BigDecimal from,
+                                                            BigDecimal to) {
+        return transactionRepository.getTransactionsByAmountBetween(from, to);
     }
 
+    /**
+     * Get all transactions in range from - to. By time creation where
+     *
+     * @param from starting date from when
+     * @param to   ending date to
+     * @return list of all transactions in date time range
+     */
     @Override
-    public Optional<List<Transaction>> getTransactionsByDateInRange(LocalDateTime from, LocalDateTime to) {
-        return Optional.of(transactionRepository.getTransactionsByDateInRange(from, to));
+    public List<Transaction> getTransactionsByCreatedBetween(LocalDateTime from,
+                                                             LocalDateTime to) {
+        return transactionRepository.getTransactionsByCreatedBetween(from, to);
     }
 
     /**
@@ -56,13 +95,13 @@ public class TransactionServiceImpl implements TransactionService {
      * @param quantity set how many transactions will be generated
      */
     @Override
+    @Transactional
     public void generateTransactions(int quantity) {
         for (int i = 0; i < quantity; i++) {
             Transaction transaction = new Transaction();
             transaction.setEmitterIban(generateIban());
             transaction.setReceiverIban(generateIban());
             transaction.setAmount(generateAmount());
-            transaction.setCreated(LocalDateTime.now());
             log.info(transaction.toString());
             transactionRepository.save(transaction);
         }
@@ -87,21 +126,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * Generate random String representation of n - digits
-     *
-     * @param length defines quantity of generated digits
-     * @return number String representation of randomly generated numbers
-     */
-    private String generateNumbersOfLength(int length) {
-        Random rnd = new Random();
-        String number = "";
-        for (int i = 0; i < length; i++) {
-            number += rnd.nextInt(9);
-        }
-        return number;
-    }
-
-    /**
      * Generate country identity
      * two letters XX in upper case
      * for example "US", "DE", "UK"
@@ -111,8 +135,7 @@ public class TransactionServiceImpl implements TransactionService {
     private String generateCountry() {
         String[] country = {"DE", "UA", "GB", "FR", "NL", "PL"};
         Random rnd = new Random();
-        String countryIdentity = country[rnd.nextInt(country.length)];
-        return countryIdentity;
+        return country[rnd.nextInt(country.length)];
     }
 
     /**
@@ -135,7 +158,7 @@ public class TransactionServiceImpl implements TransactionService {
      * financial code of five digits
      */
     private String generateIFC() {
-        final int ifcLength = 5; // International Financial Code
+        final int ifcLength = 5;
         return generateNumbersOfLength(ifcLength);
     }
 
@@ -150,10 +173,25 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
+     * Generate random String representation of n - digits
+     *
+     * @param length defines quantity of generated digits
+     * @return String representation of randomly generated numbers
+     */
+    private String generateNumbersOfLength(int length) {
+        Random rnd = new Random();
+        String number = "";
+        for (int i = 0; i < length; i++) {
+            number += rnd.nextInt(9);
+        }
+        return number;
+    }
+
+    /**
      * Generate transfer amount bigDecimal number
      * where decimal part is from 0 to 99
      *
-     * @return random BigDecimal number which represents
+     * @return random number which represents
      * transfer amount
      */
     private BigDecimal generateAmount() {
