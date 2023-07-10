@@ -37,11 +37,10 @@ public class WorkDetail {
             nullable = false)
     private String workEmail;
 
-    @Column(name = "start_from", updatable = false,
-            nullable = false)
+    @Column(name = "start_from")
     private LocalDateTime startFrom;
 
-    @Column(name = "end_at", updatable = false)
+    @Column(name = "end_at")
     private LocalDateTime endAt;
 
     @CreationTimestamp
