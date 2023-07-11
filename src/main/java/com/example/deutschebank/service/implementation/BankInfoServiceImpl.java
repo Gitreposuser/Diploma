@@ -1,6 +1,7 @@
 package com.example.deutschebank.service.implementation;
 
 import com.example.deutschebank.entity.BankInfo;
+import com.example.deutschebank.exception.BadOperationException;
 import com.example.deutschebank.repository.BankInfoRepository;
 import com.example.deutschebank.service.interfaces.BankInfoService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ public class BankInfoServiceImpl implements BankInfoService {
         if(bankInfoRepository.findAll().isEmpty()) {
             bankInfoRepository.save(bankInfo);
         }
+        throw new BadOperationException("Can't create another instance of " +
+                "Bank Info");
     }
 
     @Override

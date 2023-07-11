@@ -44,7 +44,7 @@ public interface TransactionService {
      * by amount
      *
      * @param from starting amount for search
-     * @param to ending amount for search
+     * @param to   ending amount for search
      * @return all transactions by amount in range
      */
     List<Transaction> getTransactionsByAmountBetween(BigDecimal from,
@@ -53,16 +53,11 @@ public interface TransactionService {
     /**
      * Declares interface for get all transactions in range from - to,
      * by date
+     *
      * @param from starting date and time
-     * @param to ending date and time
+     * @param to   ending date and time
      * @return all transactions by date and time
      */
     List<Transaction> getTransactionsByCreatedBetween(LocalDateTime from,
                                                       LocalDateTime to);
-
-    /**
-     * Declares interface for generating random transactions
-     * @param quantity quantity of generates transactions
-     */
-    void generateTransactions(int quantity);
 }

@@ -1,6 +1,7 @@
 package com.example.deutschebank.controller;
 
 import com.example.deutschebank.service.interfaces.TransactionService;
+import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -8,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,12 +21,12 @@ import java.nio.file.Path;
 @RequiredArgsConstructor
 @RequestMapping("/tools")
 public class ToolsController {
-    private final TransactionService transactionService;
+    private final RandomDataGenerator randomDataGenerator;
 
     @GetMapping("/generate-db")
     public void generateDataBase() {
-        final int transactionQuantity = 10;
-        transactionService.generateTransactions(transactionQuantity);
+        final int transactionQuantity = 1000;
+        randomDataGenerator.generateTransactions(transactionQuantity);
     }
 
     @GetMapping("/schema")
@@ -63,4 +63,3 @@ public class ToolsController {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
     }
 }
-
