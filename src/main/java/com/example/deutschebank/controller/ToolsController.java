@@ -25,21 +25,34 @@ public class ToolsController {
 
     @GetMapping("/generate-db")
     public void generateDataBase() {
-        final int transactionQuantity = 1000;
+        final int transactionQuantity = 1000;   // Create body with post!
         randomDataGenerator.generateTransactions(transactionQuantity);
     }
 
     @GetMapping("/schema")
     public ResponseEntity<byte[]> getDbSchema() {
         try {
-            Path imagePath = Path.of("E:/Programming/Diploma/deutschebank" +
-                    "/src/main/resources/static/images/DeutscheBankDB.png");
+            Path imagePath = Path.of("src/main/resources/static/images" +
+                    "/DeutscheBankDB.png");
 
             byte[] imageBytes = Files.readAllBytes(imagePath);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);
             headers.setContentLength(imageBytes.length);
             return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+    }
+
+    @GetMapping("/raw-schema")
+    public ResponseEntity<byte[]> test() {
+        try {
+            Path imagePath = Path.of("src/main/resources/static/images" +
+                    "/DeutscheBankDB.png");
+            byte[] imageBytes = Files.readAllBytes(imagePath);
+            return ResponseEntity.status(HttpStatus.OK).body(imageBytes);
         } catch (IOException e) {
             e.printStackTrace();
         }

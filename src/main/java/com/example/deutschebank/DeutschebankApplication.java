@@ -5,7 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@PropertySource(value = "classpath:constantparameters.properties")
+@PropertySource({
+        "classpath:constantparameters.properties",
+        "classpath:bankinfo.properties"
+})
 public class DeutschebankApplication {
     public static void main(String[] args) {
         SpringApplication.run(DeutschebankApplication.class, args);

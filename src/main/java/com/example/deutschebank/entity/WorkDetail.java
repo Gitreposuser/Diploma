@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -43,7 +44,8 @@ public class WorkDetail {
     @Column(name = "end_at")
     private LocalDateTime endAt;
 
-    @CreationTimestamp
-    @Column(name = "created", updatable = false)
+    //@CreationTimestamp
+    @UpdateTimestamp
+    @Column(name = "created")
     private LocalDateTime created;
 }

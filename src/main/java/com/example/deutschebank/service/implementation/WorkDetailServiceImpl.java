@@ -21,10 +21,8 @@ public class WorkDetailServiceImpl implements WorkDetailService {
     }
 
     @Override
-    public void updateWorkDetail(UUID uuid, WorkDetail workDetail) {
-        if (workDetailRepository.existsById(uuid)) {
-            workDetailRepository.save(workDetail);
-        }
+    public void updateWorkDetail(WorkDetail workDetail) {
+        workDetailRepository.save(workDetail);
     }
 
     @Override

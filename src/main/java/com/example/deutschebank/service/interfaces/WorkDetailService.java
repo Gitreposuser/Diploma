@@ -7,7 +7,7 @@ import java.util.UUID;
 public interface WorkDetailService {
     WorkDetail createWorkDetail(WorkDetail workDetail);
 
-    void updateWorkDetail(UUID uuid, WorkDetail workDetail);
+    void updateWorkDetail(WorkDetail workDetail);
 
     WorkDetail getWorkDetail(UUID uuid);
 

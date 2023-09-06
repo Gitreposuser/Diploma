@@ -14,6 +14,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+/**
+ * Generate random data for transactions
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -21,6 +24,9 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
     private final TransactionRepository transactionRepository;
     @Value(value = "${randomDataGenerator.startYear}")
     private int startYear;
+
+    @Value(value = "${randomDataGenerator.maxTransactionValue}")
+    private long maxTransactionValue;
 
     /**
      * Generate random transactions
@@ -35,7 +41,7 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
             transaction.setEmitterIban(generateIban());
             transaction.setReceiverIban(generateIban());
             transaction.setAmount(generateAmount());
-            transaction.setCreated(generateDateTime());
+            transaction.setCreated(generateDateTime()); // Search library!
             log.info(transaction.toString());
             transactionRepository.save(transaction);
         }
@@ -107,7 +113,7 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
      * which represents check number
      */
     private String generateCheckNumbers() {
-        final int checkNumber = 2;
+        final int checkNumber = 2;  // Set as class field with static!
         return generateNumbersOfLength(checkNumber);
     }
 
@@ -128,6 +134,7 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
      * @return String of 14 digits which represents account number
      */
     private String generateAccountNumber() {
+        // Account number length
         final int accountNumber = 14;
         return generateNumbersOfLength(accountNumber);
     }
@@ -156,7 +163,6 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
      */
     private BigDecimal generateAmount() {
         Random rnd = new Random();
-        final long maxTransactionValue = 1000000;
         return BigDecimal.valueOf(rnd.nextLong(maxTransactionValue));
     }
 }

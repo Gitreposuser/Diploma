@@ -22,24 +22,22 @@ public class WorkDetailController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<WorkDetail> createWorkDetail(@RequestBody WorkDetail workDetail) {
-        log.info("start creating work detail");
         workDetailService.createWorkDetail(workDetail);
         return ResponseEntity.status(HttpStatus.OK).body(workDetail);
     }
 
-    @PostMapping(value = "/update")
-    public void updateWorkDetail(@RequestBody UUID uuid,
-                                 WorkDetail workDetail) {
-        workDetailService.updateWorkDetail(uuid, workDetail);
+    @PutMapping(value = "/update")
+    public void updateWorkDetail(@RequestBody WorkDetail workDetail) {
+        workDetailService.updateWorkDetail(workDetail);
     }
 
     @PostMapping(value = "/get/by-id/{uuid}")
-    public ResponseEntity<WorkDetail> getWorkDetail(@PathVariable("uuid") UUID uuid) {
+    public ResponseEntity<WorkDetail> getWorkDetail(@PathVariable UUID uuid) {
         WorkDetail workDetail = workDetailService.getWorkDetail(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(workDetail);
     }
 
-    @GetMapping(value = "/delete/by-id/{uuid}")
+    @DeleteMapping(value = "/delete/by-id/{uuid}")
     public void deleteWorkDetail(@PathVariable("uuid") UUID uuid) {
         workDetailService.deleteWorkDetail(uuid);
     }
