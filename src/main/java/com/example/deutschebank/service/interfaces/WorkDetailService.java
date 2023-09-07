@@ -1,15 +1,22 @@
 package com.example.deutschebank.service.interfaces;
 
 import com.example.deutschebank.entity.WorkDetail;
+import com.example.deutschebank.exception.BadEmailException;
+import com.example.deutschebank.model.workdetail.CreateUpdateWorkDetailDTO;
+import com.example.deutschebank.model.workdetail.GetWorkDetailDTO;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface WorkDetailService {
-    WorkDetail createWorkDetail(WorkDetail workDetail);
+    CreateUpdateWorkDetailDTO createWorkDetail(CreateUpdateWorkDetailDTO createUpdateDTO);
 
-    void updateWorkDetail(WorkDetail workDetail);
+    GetWorkDetailDTO getWorkDetail(UUID uuid);
 
-    WorkDetail getWorkDetail(UUID uuid);
+    List<GetWorkDetailDTO> getAllWorkDetails();
+
+    void updateWorkDetail(CreateUpdateWorkDetailDTO createUpdateDTO,
+                          UUID uuid);
 
     void deleteWorkDetail(UUID uuid);
 }

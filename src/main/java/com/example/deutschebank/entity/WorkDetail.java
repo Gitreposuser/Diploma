@@ -28,7 +28,7 @@ public class WorkDetail {
     @Column(name = "status", length = 256, nullable = false)
     private String status;
 
-    @Column(name = "salary", precision = 7, scale = 2)
+    @Column(name = "salary", precision = 7, scale = 2, nullable = false)
     private BigDecimal salary;
 
     @Column(name = "work_phone", length = 20, nullable = false)
@@ -44,7 +44,6 @@ public class WorkDetail {
     @Column(name = "end_at")
     private LocalDateTime endAt;
 
-    //@CreationTimestamp
     @UpdateTimestamp
     @Column(name = "created")
     private LocalDateTime created;

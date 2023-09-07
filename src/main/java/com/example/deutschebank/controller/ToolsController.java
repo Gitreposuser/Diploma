@@ -1,6 +1,7 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.service.interfaces.TransactionService;
+import com.example.deutschebank.service.implementation.additionaltools.FakerDataGeneratorImpl;
+import com.example.deutschebank.service.implementation.additionaltools.RandomDataGeneratorImpl;
 import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +22,17 @@ import java.nio.file.Path;
 @RequiredArgsConstructor
 @RequestMapping("/tools")
 public class ToolsController {
-    private final RandomDataGenerator randomDataGenerator;
+    //
+    // Debug. This is right?
+    // Interface segregation principle
+    //
+    //private final RandomDataGeneratorImpl randomDataGenerator;
+    private final FakerDataGeneratorImpl randomDataGenerator;
+    //private final RandomDataGenerator randomDataGenerator;
 
     @GetMapping("/generate-db")
     public void generateDataBase() {
-        final int transactionQuantity = 1000;   // Create body with post!
+        final int transactionQuantity = 100;   // Create body with post!
         randomDataGenerator.generateTransactions(transactionQuantity);
     }
 
@@ -47,10 +54,10 @@ public class ToolsController {
     }
 
     @GetMapping("/raw-schema")
-    public ResponseEntity<byte[]> test() {
+    public ResponseEntity<byte[]> getDbRawSchema() {
         try {
-            Path imagePath = Path.of("src/main/resources/static/images" +
-                    "/DeutscheBankDB.png");
+            Path imagePath = Path.of("src/main/resources/static" +
+                    "/images/DeutscheBankDB.png");
             byte[] imageBytes = Files.readAllBytes(imagePath);
             return ResponseEntity.status(HttpStatus.OK).body(imageBytes);
         } catch (IOException e) {
@@ -62,14 +69,26 @@ public class ToolsController {
     @GetMapping("/logo")
     public ResponseEntity<byte[]> getLogo() {
         try {
-            Path imagePath = Path.of("E:/Programming/Diploma/deutschebank" +
-                    "/src/main/resources/static/images/banklogo.png");
-
+            Path imagePath = Path.of("src/main/resources/static" +
+                    "/images/banklogo.png");
             byte[] imageBytes = Files.readAllBytes(imagePath);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);
             headers.setContentLength(imageBytes.length);
             return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+    }
+
+    @GetMapping("/raw-logo")
+    public ResponseEntity<byte[]> getRawLogo() {
+        try {
+            Path imagePath = Path.of("src/main/resources/static" +
+                    "/images/banklogo.png");
+            byte[] imageBytes = Files.readAllBytes(imagePath);
+            return ResponseEntity.status(HttpStatus.OK).body(imageBytes);
         } catch (IOException e) {
             e.printStackTrace();
         }

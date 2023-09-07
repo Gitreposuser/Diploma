@@ -1,6 +1,0 @@
-1. Transactions had two controllers with two transactionService
-    objects. How to use two controllers with same service properly?
-    *** Fixed!
-2. UpdateBankInfo method deleting all entities and create new record in db.
-    Does it corresponds to method name?
-3. CreateBankInfo method throwing exception. Does it ok?

@@ -1,8 +1,11 @@
-package com.example.deutschebank.model;
+package com.example.deutschebank.model.bankinfo;
+
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Data
 public class GetBankInfoDTO {
     public String name;
     public String iban;

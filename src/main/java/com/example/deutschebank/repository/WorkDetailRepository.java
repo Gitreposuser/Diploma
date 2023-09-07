@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface WorkDetailRepository extends JpaRepository<WorkDetail, UUID> {
+    boolean existsByWorkEmail(String email);
 }

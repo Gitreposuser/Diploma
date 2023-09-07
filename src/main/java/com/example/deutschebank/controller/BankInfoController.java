@@ -1,8 +1,7 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.model.CreateBankInfoDTO;
-import com.example.deutschebank.model.GetBankInfoDTO;
-import com.example.deutschebank.model.UpdateBankInfoDTO;
+import com.example.deutschebank.model.bankinfo.CreateUpdateBankInfoDTO;
+import com.example.deutschebank.model.bankinfo.GetBankInfoDTO;
 import com.example.deutschebank.service.interfaces.BankInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ public class BankInfoController {
     private final BankInfoService bankInfoService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CreateBankInfoDTO> createBankInfo(@RequestBody CreateBankInfoDTO createDTO) {
+    public ResponseEntity<CreateUpdateBankInfoDTO> createBankInfo(@RequestBody CreateUpdateBankInfoDTO createDTO) {
         bankInfoService.createBankInfo(createDTO);
         return ResponseEntity.status(HttpStatus.OK).body(createDTO);
     }
@@ -29,8 +28,8 @@ public class BankInfoController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<UpdateBankInfoDTO> updateBankInfo(@RequestBody UpdateBankInfoDTO bankInfoDTO) {
-        bankInfoService.updateBankInfo(bankInfoDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(bankInfoDTO);
+    public ResponseEntity<CreateUpdateBankInfoDTO> updateBankInfo(@RequestBody CreateUpdateBankInfoDTO updateDTO) {
+        bankInfoService.updateBankInfo(updateDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(updateDTO);
     }
 }

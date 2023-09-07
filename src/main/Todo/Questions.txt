@@ -1,0 +1,9 @@
+1. CreateUpdateDTO need to split DTOs?
+2. BankInfo IBAN are taken from file, should replace in service implementation
+    or in DTO?
+3. In Tools Controller there is two realization of RandomDataGenerator,
+    Should it be declared as implementation?
+4. WorkDetail converter GetAll, using of .map is correct? Or use inner converter
+    method?
+5. WorkDetail ServiceImplementation Create method, how to check if email already
+    exist?

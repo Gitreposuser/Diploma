@@ -1,8 +1,10 @@
-package com.example.deutschebank.model;
+package com.example.deutschebank.model.bankinfo;
 
+import lombok.Data;
 import java.math.BigDecimal;
 
-public class UpdateBankInfoDTO {
+@Data
+public class CreateUpdateBankInfoDTO {
     public String name;
     public BigDecimal capitalization;
     public String owner;
