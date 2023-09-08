@@ -1,8 +1,9 @@
 package com.example.deutschebank.converter;
 
 import com.example.deutschebank.entity.WorkDetail;
-import com.example.deutschebank.model.workdetail.CreateUpdateWorkDetailDTO;
+import com.example.deutschebank.model.workdetail.CreateWorkDetailDTO;
 import com.example.deutschebank.model.workdetail.GetWorkDetailDTO;
+import com.example.deutschebank.model.workdetail.UpdateWorkDetailDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -15,13 +16,13 @@ import java.util.List;
 public class WorkDetailDTOConverter {
     private final ModelMapper modelMapper;
 
-    public CreateUpdateWorkDetailDTO convertWorkDetailToCreateUpdateDTO(WorkDetail workDetail) {
-        CreateUpdateWorkDetailDTO workDetailDTO = modelMapper.map(workDetail,
-                CreateUpdateWorkDetailDTO.class);
+    public CreateWorkDetailDTO convertWorkDetailToCreateUpdateDTO(WorkDetail workDetail) {
+        CreateWorkDetailDTO workDetailDTO = modelMapper.map(workDetail,
+                CreateWorkDetailDTO.class);
         return workDetailDTO;
     }
 
-    public WorkDetail convertCreateUpdateToWorkDetail(CreateUpdateWorkDetailDTO createUpdateDTO) {
+    public WorkDetail convertCreateUpdateToWorkDetail(CreateWorkDetailDTO createUpdateDTO) {
         WorkDetail workDetail = modelMapper.map(createUpdateDTO,
                 WorkDetail.class);
         return workDetail;
@@ -44,6 +45,18 @@ public class WorkDetailDTOConverter {
 
     public WorkDetail convertGetDTOToWorkDetail(GetWorkDetailDTO getDTO) {
         WorkDetail workDetail = modelMapper.map(getDTO, WorkDetail.class);
+        return workDetail;
+    }
+
+    public UpdateWorkDetailDTO convertWorkDetailToUpdateDTO(WorkDetail workDetail) {
+        UpdateWorkDetailDTO updateDTO = modelMapper.map(workDetail,
+                UpdateWorkDetailDTO.class);
+        return updateDTO;
+    }
+
+    public WorkDetail convertUpdateDTOToWorkDetail(UpdateWorkDetailDTO updateDTO) {
+        WorkDetail workDetail = modelMapper.map(updateDTO,
+                WorkDetail.class);
         return workDetail;
     }
 }

@@ -4,11 +4,9 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
-public class GetWorkDetailDTO {
-    public UUID id;
+public class CreateWorkDetailDTO {
     public String position;
     public String status;
     public BigDecimal salary;
@@ -16,6 +14,4 @@ public class GetWorkDetailDTO {
     public String workEmail;
     public LocalDateTime startFrom;
     public LocalDateTime endAt;
-    public LocalDateTime created;
-    public LocalDateTime updated;
 }

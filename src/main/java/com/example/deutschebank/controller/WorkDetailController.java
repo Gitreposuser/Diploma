@@ -1,9 +1,8 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.entity.WorkDetail;
-import com.example.deutschebank.exception.BadEmailException;
-import com.example.deutschebank.model.workdetail.CreateUpdateWorkDetailDTO;
+import com.example.deutschebank.model.workdetail.CreateWorkDetailDTO;
 import com.example.deutschebank.model.workdetail.GetWorkDetailDTO;
+import com.example.deutschebank.model.workdetail.UpdateWorkDetailDTO;
 import com.example.deutschebank.service.interfaces.WorkDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +24,8 @@ public class WorkDetailController {
     private final WorkDetailService workDetailService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CreateUpdateWorkDetailDTO>
-            createWorkDetail(@RequestBody CreateUpdateWorkDetailDTO createUpdateDTO) {
+    public ResponseEntity<CreateWorkDetailDTO>
+            createWorkDetail(@RequestBody CreateWorkDetailDTO createUpdateDTO) {
         workDetailService.createWorkDetail(createUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK).body(createUpdateDTO);
     }
@@ -44,10 +43,9 @@ public class WorkDetailController {
         return ResponseEntity.status(HttpStatus.OK).body(getAllDTO);
     }
 
-    @PutMapping(value = "/update/by-id/{uuid}")
-    public void updateWorkDetail(@RequestBody CreateUpdateWorkDetailDTO createUpdateDTO,
-                                 @PathVariable UUID uuid) {
-        workDetailService.updateWorkDetail(createUpdateDTO, uuid);
+    @PutMapping(value = "/update/by-id")
+    public void updateWorkDetail(@RequestBody UpdateWorkDetailDTO updateDTO) {
+        workDetailService.updateWorkDetail(updateDTO);
     }
 
     @DeleteMapping(value = "/delete/by-id/{uuid}")

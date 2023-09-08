@@ -44,7 +44,11 @@ public class WorkDetail {
     @Column(name = "end_at")
     private LocalDateTime endAt;
 
-    @UpdateTimestamp
-    @Column(name = "created")
+    @CreationTimestamp
+    @Column(name = "created", updatable = false)
     private LocalDateTime created;
+
+    @UpdateTimestamp
+    @Column(name = "updated")
+    private  LocalDateTime updated;
 }

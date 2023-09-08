@@ -5,5 +5,3 @@
     Should it be declared as implementation?
 4. WorkDetail converter GetAll, using of .map is correct? Or use inner converter
     method?
-5. WorkDetail ServiceImplementation Create method, how to check if email already
-    exist?

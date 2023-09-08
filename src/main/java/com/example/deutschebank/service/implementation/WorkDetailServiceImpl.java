@@ -4,10 +4,12 @@ import com.example.deutschebank.converter.WorkDetailDTOConverter;
 import com.example.deutschebank.entity.WorkDetail;
 import com.example.deutschebank.exception.BadEmailException;
 import com.example.deutschebank.exception.BadOperationException;
-import com.example.deutschebank.model.workdetail.CreateUpdateWorkDetailDTO;
+import com.example.deutschebank.model.workdetail.CreateWorkDetailDTO;
 import com.example.deutschebank.model.workdetail.GetWorkDetailDTO;
+import com.example.deutschebank.model.workdetail.UpdateWorkDetailDTO;
 import com.example.deutschebank.repository.WorkDetailRepository;
 import com.example.deutschebank.service.interfaces.WorkDetailService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,16 +26,15 @@ public class WorkDetailServiceImpl implements WorkDetailService {
     private final WorkDetailDTOConverter workDetailDTOConverter;
 
     @Override
-    public CreateUpdateWorkDetailDTO createWorkDetail(CreateUpdateWorkDetailDTO
-                                                                  createUpdateDTO) {
-        if (workDetailRepository.existsByWorkEmail(createUpdateDTO.workEmail)) {
-            throw new BadEmailException("Cannot update entity!");
-        }
+    @Transactional
+    public CreateWorkDetailDTO createWorkDetail(CreateWorkDetailDTO
+                                                                  createDTO) {
+        checkEmail(createDTO.workEmail);
         WorkDetail workDetail = workDetailDTOConverter
-                .convertCreateUpdateToWorkDetail(createUpdateDTO);
+                .convertCreateUpdateToWorkDetail(createDTO);
         workDetailRepository.save(workDetail);
         log.info("Entity successfully created.");
-        return createUpdateDTO;
+        return createDTO;
     }
 
     @Override
@@ -49,16 +50,13 @@ public class WorkDetailServiceImpl implements WorkDetailService {
     }
 
     @Override
-    public void updateWorkDetail(CreateUpdateWorkDetailDTO createUpdateDTO, UUID uuid) {
-        if (workDetailRepository.existsByWorkEmail(createUpdateDTO.workEmail)) {
-            throw new BadEmailException("Cannot update entity with id: " + uuid + "!");
-        }
+    @Transactional
+    public void updateWorkDetail(UpdateWorkDetailDTO updateDTO) {
+        checkEmail(updateDTO.getWorkEmail());
         WorkDetail workDetail = workDetailDTOConverter
-                .convertCreateUpdateToWorkDetail(createUpdateDTO);
-        workDetail.setId(uuid);
-        log.info(workDetail.getId().toString());
+                .convertUpdateDTOToWorkDetail(updateDTO);
         workDetailRepository.save(workDetail);
-        log.info("Entity with id: " + uuid + " is updated.");
+        log.info("Entity with id: " + workDetail.getId() + " is updated.");
     }
 
     @Override
@@ -68,5 +66,11 @@ public class WorkDetailServiceImpl implements WorkDetailService {
         }
         workDetailRepository.deleteById(uuid);
         log.info("Entity with id: " + uuid + " where successfully deleted.");
+    }
+
+    private void checkEmail(String email) {
+        if (workDetailRepository.existsByWorkEmail(email)) {
+            throw new BadEmailException("Cannot update entity!");
+        }
     }
 }
