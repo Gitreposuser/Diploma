@@ -6,6 +6,7 @@ import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGen
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -20,6 +21,7 @@ import java.util.Random;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Primary
 public class RandomDataGeneratorImpl implements RandomDataGenerator {
     private final TransactionRepository transactionRepository;
     @Value(value = "${randomDataGenerator.startYear}")

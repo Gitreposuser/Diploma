@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Controller class for handling work details.
- */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +22,9 @@ public class WorkDetailController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<CreateWorkDetailDTO>
-            createWorkDetail(@RequestBody CreateWorkDetailDTO createUpdateDTO) {
-        workDetailService.createWorkDetail(createUpdateDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(createUpdateDTO);
+            createWorkDetail(@RequestBody CreateWorkDetailDTO createDTO) {
+        workDetailService.createWorkDetail(createDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(createDTO);
     }
 
     @GetMapping(value = "/get/by-id/{uuid}")
@@ -38,9 +35,9 @@ public class WorkDetailController {
 
     @GetMapping(value = "/get/all")
     public ResponseEntity<List<GetWorkDetailDTO>> getAllWorkDetails() {
-        List<GetWorkDetailDTO> getAllDTO =
+        List<GetWorkDetailDTO> getAllDTOs =
                 workDetailService.getAllWorkDetails();
-        return ResponseEntity.status(HttpStatus.OK).body(getAllDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
     @PutMapping(value = "/update/by-id")

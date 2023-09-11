@@ -3,6 +3,7 @@ package com.example.deutschebank.controller;
 import com.example.deutschebank.service.implementation.additionaltools.FakerDataGeneratorImpl;
 import com.example.deutschebank.service.implementation.additionaltools.RandomDataGeneratorImpl;
 import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGenerator;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -22,13 +23,7 @@ import java.nio.file.Path;
 @RequiredArgsConstructor
 @RequestMapping("/tools")
 public class ToolsController {
-    //
-    // Debug. This is right?
-    // Interface segregation principle
-    //
-    //private final RandomDataGeneratorImpl randomDataGenerator;
-    private final FakerDataGeneratorImpl randomDataGenerator;
-    //private final RandomDataGenerator randomDataGenerator;
+    private final RandomDataGenerator randomDataGenerator;
 
     @GetMapping("/generate-db")
     public void generateDataBase() {
@@ -41,7 +36,6 @@ public class ToolsController {
         try {
             Path imagePath = Path.of("src/main/resources/static/images" +
                     "/DeutscheBankDB.png");
-
             byte[] imageBytes = Files.readAllBytes(imagePath);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);

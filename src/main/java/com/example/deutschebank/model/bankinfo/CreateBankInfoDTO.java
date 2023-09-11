@@ -4,7 +4,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class CreateUpdateBankInfoDTO {
+public class CreateBankInfoDTO {
     public String name;
     public BigDecimal capitalization;
     public String owner;

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.example.deutschebank.entity.enums.Sex;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -34,8 +35,7 @@ public class PersonalDetail {
     @Column(name = "phone", length = 20, nullable = false)
     private String phone;
 
-    @Column(name = "email", length = 128, unique = true,
-            nullable = false)
+    @Column(name = "email", length = 128, nullable = false)
     private String email;
 
     @Column(name = "age", nullable = false)
@@ -53,4 +53,8 @@ public class PersonalDetail {
     @CreationTimestamp
     @Column(name = "created", updatable = false)
     private LocalDateTime created;
+
+    @UpdateTimestamp
+    @Column(name = "updated")
+    private  LocalDateTime updated;
 }

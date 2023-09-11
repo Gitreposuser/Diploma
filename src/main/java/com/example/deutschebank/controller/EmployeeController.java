@@ -1,8 +1,9 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.entity.Employee;
+import com.example.deutschebank.model.employee.CreateEmployeeDTO;
+import com.example.deutschebank.model.employee.GetEmployeeDTO;
+import com.example.deutschebank.model.employee.UpdateEmployeeDTO;
 import com.example.deutschebank.service.interfaces.EmployeeService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,51 +21,30 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping(value = "/create")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        employeeService.createEmployee(employee);
-        return ResponseEntity.status(HttpStatus.OK).body(employee);
+    public ResponseEntity<CreateEmployeeDTO> createEmployee(@RequestBody CreateEmployeeDTO createDTO) {
+        employeeService.createEmployee(createDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(createDTO);
     }
 
-    @GetMapping(value = "/generate")
-    @ResponseStatus(HttpStatus.OK)
-    public String generateEmployee() {
-        String result = employeeService.generateEmployees();
-        log.info("Generate random employees");
-        return result;
+    @GetMapping(value = "/get/by-id/{uuid}")
+    public ResponseEntity<GetEmployeeDTO> findEmployeeById(@PathVariable UUID uuid) {
+        GetEmployeeDTO getDTO = employeeService.getEmployee(uuid);
+        return ResponseEntity.status(HttpStatus.OK).body(getDTO);
     }
 
-    @PostMapping(value = "/find/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Employee findEmployeeById(@PathVariable UUID id) {
-        return employeeService.findEmployeeById(id);
+    @GetMapping(value = "/get/all")
+    public ResponseEntity<List<GetEmployeeDTO>> getAllEmployee() {
+        List<GetEmployeeDTO> getAllDTOs = employeeService.getAllEmployees();
+        return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
-    @GetMapping(value = "/find/full-name/")
-    @ResponseStatus(HttpStatus.OK)
-    public Employee findEmployeeByFullName(
-            @RequestParam String firstName, @RequestParam String lastName) {
-        return employeeService.findEmployeeByFullName(firstName, lastName);
+    @PutMapping(value = "/update/by-id")
+    public void updateEmployee(@RequestBody UpdateEmployeeDTO updateDTO) {
+        employeeService.updateEmployee(updateDTO);
     }
 
-    @GetMapping(value = "/find-all")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Employee> findAll() {
-        return employeeService.findAll();
-    }
-
-    @DeleteMapping(value = "/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Employee> deleteEmployee(@RequestBody Employee employee) {
-        employeeService.deleteEmployee(employee);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping(value = "/test")
-    @ResponseStatus(HttpStatus.OK)
-    public String testRequest() {
-        String text = "Test successful";
-        log.info(text);
-        return text;
+    @DeleteMapping(value = "/delete/by-id/{uuid}")
+    public void deleteEmployee(@PathVariable UUID uuid) {
+        employeeService.deleteEmployee(uuid);
     }
 }

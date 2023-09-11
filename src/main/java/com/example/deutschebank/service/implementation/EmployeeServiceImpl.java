@@ -1,9 +1,19 @@
 package com.example.deutschebank.service.implementation;
 
+import com.example.deutschebank.converter.EmployeeDTOConverter;
+import com.example.deutschebank.converter.WorkDetailDTOConverter;
 import com.example.deutschebank.entity.Employee;
+import com.example.deutschebank.entity.WorkDetail;
+import com.example.deutschebank.exception.BadOperationException;
+import com.example.deutschebank.model.employee.CreateEmployeeDTO;
+import com.example.deutschebank.model.employee.GetEmployeeDTO;
+import com.example.deutschebank.model.employee.UpdateEmployeeDTO;
+import com.example.deutschebank.model.workdetail.GetWorkDetailDTO;
+import com.example.deutschebank.model.workdetail.UpdateWorkDetailDTO;
 import com.example.deutschebank.repository.EmployeeRepository;
 import com.example.deutschebank.service.interfaces.EmployeeService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,71 +23,56 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private final EmployeeDTOConverter employeeDTOConverter;
 
     @Override
-    public Employee createEmployee(Employee employee) {
-        employee.setActive(true);
-        return employeeRepository.save(employee);
-    }
-
-    /*
-    @Override
-    public Employee generateEmployees() {
-        Employee employee = new Employee();
-        employee.setActive(true);
-        return employee;
-    }
-     */
-
-    @Override
-    public String generateEmployees() {
-        //Employee employee = new Employee();
-        //employee.setActive(true);
-        return "Succesfully created";
-    }
-    @Override
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
+    @Transactional
+    public CreateEmployeeDTO createEmployee(CreateEmployeeDTO createDTO) {
+        Employee employee = employeeDTOConverter
+                .convertCreateDTOToEmployee(createDTO);
+        employeeRepository.save(employee);
+        log.info("Entity successfully created.");
+        return createDTO;
     }
 
     @Override
-    public Employee findEmployeeById(UUID id) {
-        Optional<Employee> employee = employeeRepository.findEmployeeById(id);
-        if(employee.isPresent()) {
-            return employee.get();
+    public GetEmployeeDTO getEmployee(UUID uuid) {
+        checkIfNotExist(uuid);
+        Employee employee = employeeRepository.getReferenceById(uuid);
+        return employeeDTOConverter.convertEmployeeToGetDTO(employee);
+    }
+
+    @Override
+    public List<GetEmployeeDTO> getAllEmployees() {
+        List<Employee> employees = employeeRepository.findAll();
+        return employeeDTOConverter.convertEmployeeToGetDTOs(employees);
+    }
+
+    @Override
+    @Transactional
+    public void updateEmployee(UpdateEmployeeDTO updateDTO) {
+        checkIfNotExist(updateDTO.id);
+        Employee employee = employeeDTOConverter
+                .convertUpdateDTOToEmployee(updateDTO);
+        employeeRepository.save(employee);
+        log.info("Entity with id: " + employee.getId() + " is updated.");
+    }
+
+    @Override
+    public void deleteEmployee(UUID uuid) {
+        checkIfNotExist(uuid);
+        employeeRepository.deleteById(uuid);
+        log.info("Entity with id: " + uuid + " where successfully deleted.");
+    }
+
+    private void checkIfNotExist(UUID uuid) {
+        if(!employeeRepository.existsById(uuid)) {
+            throw new BadOperationException("Entity with id: " + uuid +
+                    "doesn't exist!");
         }
-        return employee.orElseThrow(() -> {
-            String message = "user with id:" + id + " not found";
-            log.error(message);
-            return new EntityNotFoundException(message);
-        });
-    }
-
-    public Employee findEmployeeByFullName(String firstName, String lastName) {
-        Optional<Employee> employee = employeeRepository
-                .findEmployeeByFullName(firstName, lastName);
-        if(employee.isPresent()) {
-            return employee.get();
-        }
-        return employee.orElseThrow(() -> {
-            String message = "user with first name: " + firstName +
-                    " and last name: " + lastName;
-            log.error(message);
-            return new EntityNotFoundException(message);
-        });
-    }
-
-    @Override
-    public boolean deleteEmployee(Employee employee) {
-        return false;
-    }
-
-    @Override
-    public void testMethod() {
-        employeeRepository.toString();
     }
 }

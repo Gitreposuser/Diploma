@@ -31,7 +31,7 @@ public class FakerDataGeneratorImpl implements RandomDataGenerator {
     @Transactional
     public void generateTransactions(int quantity) {
         Faker faker = new Faker();
-        Date date = faker.date().between(new Date(startYear), new Date(2023));
+        Date date = faker.date().between(new Date(2000), new Date(2023));
         log.info(date.toString());
         Transaction transaction = new Transaction();
         //transaction.setCreated(date);

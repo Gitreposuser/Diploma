@@ -1,11 +1,12 @@
 package com.example.deutschebank.service.interfaces;
-import com.example.deutschebank.model.bankinfo.CreateUpdateBankInfoDTO;
+import com.example.deutschebank.model.bankinfo.CreateBankInfoDTO;
 import com.example.deutschebank.model.bankinfo.GetBankInfoDTO;
+import com.example.deutschebank.model.bankinfo.UpdateBankInfoDTO;
 
 public interface BankInfoService {
-    void createBankInfo(CreateUpdateBankInfoDTO createDTO);
+    void createBankInfo(CreateBankInfoDTO createDTO);
 
     GetBankInfoDTO getBankInfo();
 
-    CreateUpdateBankInfoDTO updateBankInfo(CreateUpdateBankInfoDTO bankInfoDTO);
+    UpdateBankInfoDTO updateBankInfo(UpdateBankInfoDTO bankInfoDTO);
 }

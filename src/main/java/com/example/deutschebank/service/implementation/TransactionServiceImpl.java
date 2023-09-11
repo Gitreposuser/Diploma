@@ -3,6 +3,7 @@ package com.example.deutschebank.service.implementation;
 import com.example.deutschebank.entity.Transaction;
 import com.example.deutschebank.repository.TransactionRepository;
 import com.example.deutschebank.service.interfaces.TransactionService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

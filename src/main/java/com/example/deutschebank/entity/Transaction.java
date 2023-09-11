@@ -31,6 +31,7 @@ public class Transaction {
             nullable = false)
     private BigDecimal amount;
 
+    @CreationTimestamp
     @Column(name = "created", updatable = false)
     private LocalDateTime created;
 }

@@ -1,13 +1,20 @@
 package com.example.deutschebank.service.interfaces;
 
-import com.example.deutschebank.entity.BankBranch;
+import com.example.deutschebank.model.bankbranch.CreateBankBranchDTO;
+import com.example.deutschebank.model.bankbranch.GetBankBranchDTO;
+import com.example.deutschebank.model.bankbranch.UpdateBankBranchDTO;
+
+import java.util.List;
+import java.util.UUID;
 
 public interface BankBranchService {
-    void createBankBranch(BankBranch bankBranch);
+    CreateBankBranchDTO createBankBranch(CreateBankBranchDTO createDTO);
 
-    BankBranch getBankBranch();
+    GetBankBranchDTO getBankBranch(UUID uuid);
 
-    BankBranch updateBankBranch(BankBranch bankBranch);
+    List<GetBankBranchDTO> getAllBankBranches();
 
-    void deleteBankBranch(BankBranch bankBranch);
+    void updateBankBranch(UpdateBankBranchDTO updateDTO);
+
+    void deleteBankBranch(UUID uuid);
 }

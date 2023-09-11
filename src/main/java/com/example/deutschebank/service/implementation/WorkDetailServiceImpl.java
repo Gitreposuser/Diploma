@@ -22,16 +22,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class WorkDetailServiceImpl implements WorkDetailService {
     private final WorkDetailRepository workDetailRepository;
-
     private final WorkDetailDTOConverter workDetailDTOConverter;
 
     @Override
     @Transactional
-    public CreateWorkDetailDTO createWorkDetail(CreateWorkDetailDTO
-                                                                  createDTO) {
+    public CreateWorkDetailDTO createWorkDetail(CreateWorkDetailDTO createDTO) {
         checkEmail(createDTO.workEmail);
         WorkDetail workDetail = workDetailDTOConverter
-                .convertCreateUpdateToWorkDetail(createDTO);
+                .convertCreateDTOToWorkDetail(createDTO);
         workDetailRepository.save(workDetail);
         log.info("Entity successfully created.");
         return createDTO;
@@ -39,6 +37,7 @@ public class WorkDetailServiceImpl implements WorkDetailService {
 
     @Override
     public GetWorkDetailDTO getWorkDetail(UUID uuid) {
+        checkIfNotExist(uuid);
         WorkDetail workDetail = workDetailRepository.getReferenceById(uuid);
         return workDetailDTOConverter.convertWorkDetailToGetDTO(workDetail);
     }
@@ -52,6 +51,7 @@ public class WorkDetailServiceImpl implements WorkDetailService {
     @Override
     @Transactional
     public void updateWorkDetail(UpdateWorkDetailDTO updateDTO) {
+        checkIfNotExist(updateDTO.id);
         checkEmail(updateDTO.getWorkEmail());
         WorkDetail workDetail = workDetailDTOConverter
                 .convertUpdateDTOToWorkDetail(updateDTO);
@@ -61,16 +61,21 @@ public class WorkDetailServiceImpl implements WorkDetailService {
 
     @Override
     public void deleteWorkDetail(UUID uuid) {
-        if (!workDetailRepository.existsById(uuid)) {
-            throw new BadOperationException("Cannot delete entity!");
-        }
+        checkIfNotExist(uuid);
         workDetailRepository.deleteById(uuid);
         log.info("Entity with id: " + uuid + " where successfully deleted.");
     }
 
     private void checkEmail(String email) {
         if (workDetailRepository.existsByWorkEmail(email)) {
-            throw new BadEmailException("Cannot update entity!");
+            throw new BadEmailException("Email not unique!");
+        }
+    }
+
+    private void checkIfNotExist(UUID uuid) {
+        if(!workDetailRepository.existsById(uuid)) {
+            throw new BadOperationException("Entity with id: " + uuid +
+                    "doesn't exist!");
         }
     }
 }

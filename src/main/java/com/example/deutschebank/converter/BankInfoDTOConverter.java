@@ -1,8 +1,9 @@
 package com.example.deutschebank.converter;
 
 import com.example.deutschebank.entity.BankInfo;
-import com.example.deutschebank.model.bankinfo.CreateUpdateBankInfoDTO;
+import com.example.deutschebank.model.bankinfo.CreateBankInfoDTO;
 import com.example.deutschebank.model.bankinfo.GetBankInfoDTO;
+import com.example.deutschebank.model.bankinfo.UpdateBankInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -12,25 +13,15 @@ import org.springframework.stereotype.Component;
 public class BankInfoDTOConverter {
     private final ModelMapper modelMapper;
 
-    public CreateUpdateBankInfoDTO convertCreateUpdateToDTO(BankInfo bankInfo) {
-        CreateUpdateBankInfoDTO bankInfoDTO = modelMapper.map(bankInfo,
-                CreateUpdateBankInfoDTO.class);
-        return bankInfoDTO;
-    }
-
-    public BankInfo convertCreateUpdateDTOToBankInfo(CreateUpdateBankInfoDTO bankInfoDTO) {
-        BankInfo bankInfo = modelMapper.map(bankInfoDTO, BankInfo.class);
-        return bankInfo;
+    public BankInfo convertCreateDTOToBankInfo(CreateBankInfoDTO createDTO) {
+        return modelMapper.map(createDTO, BankInfo.class);
     }
 
     public GetBankInfoDTO convertBankInfoToGetDTO(BankInfo bankInfo) {
-        GetBankInfoDTO bankInfoDTO = modelMapper.map(bankInfo,
-                GetBankInfoDTO.class);
-        return bankInfoDTO;
+        return modelMapper.map(bankInfo, GetBankInfoDTO.class);
     }
 
-    public BankInfo convertGetDTOToBankInfo(GetBankInfoDTO bankInfoDTO) {
-        BankInfo bankInfo = modelMapper.map(bankInfoDTO, BankInfo.class);
-        return bankInfo;
+    public BankInfo convertUpdateDTOToBankInfo(UpdateBankInfoDTO updateDTO) {
+        return modelMapper.map(updateDTO, BankInfo.class);
     }
 }
