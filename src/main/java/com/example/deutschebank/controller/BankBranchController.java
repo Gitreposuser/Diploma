@@ -23,9 +23,8 @@ public class BankBranchController {
     private final BankBranchService bankBranchService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CreateBankBranchDTO> createBankBranch(@RequestBody CreateBankBranchDTO createDTO) {
+    public void createBankBranch(@RequestBody CreateBankBranchDTO createDTO) {
         bankBranchService.createBankBranch(createDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(createDTO);
     }
 
     @GetMapping(value = "/get/by-id/{uuid}")

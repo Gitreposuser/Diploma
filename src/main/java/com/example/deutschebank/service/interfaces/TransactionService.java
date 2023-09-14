@@ -1,6 +1,7 @@
 package com.example.deutschebank.service.interfaces;
 
-import com.example.deutschebank.entity.Transaction;
+import com.example.deutschebank.model.transaction.CreateTransactionDTO;
+import com.example.deutschebank.model.transaction.GetTransactionDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -8,56 +9,17 @@ import java.util.List;
 
 public interface TransactionService {
 
-    /**
-     * Declares interface for creating transaction
-     *
-     * @param transaction provide emitter, receiver IBAN and amount
-     *                    of transaction
-     */
-    void createTransaction(Transaction transaction);
+    void createTransaction(CreateTransactionDTO createDTO);
 
-    /**
-     * Declares interface for get all existent transactions
-     *
-     * @return
-     */
-    List<Transaction> getAllTransactions();
+    List<GetTransactionDTO> getAllTransactions();
 
-    /**
-     * Declares interface for get all transactions by emitter IBAN
-     *
-     * @param iban emitters IBAN for search
-     * @return all transactions correspond emitter IBAN
-     */
-    List<Transaction> getTransactionsByEmitterIBAN(String iban);
+    List<GetTransactionDTO> getTransactionsByEmitterIBAN(String iban);
 
-    /**
-     * Declares interface for get all transactions by receiver IBAN
-     *
-     * @param iban receivers IBAN for search
-     * @return all transactions correspond receiver IBAN
-     */
-    List<Transaction> getTransactionsByReceiverIBAN(String iban);
+    List<GetTransactionDTO> getTransactionsByReceiverIBAN(String iban);
 
-    /**
-     * Declares interface for get all transactions in range from - to,
-     * by amount
-     *
-     * @param from starting amount for search
-     * @param to   ending amount for search
-     * @return all transactions by amount in range
-     */
-    List<Transaction> getTransactionsByAmountBetween(BigDecimal from,
-                                                     BigDecimal to);
+    List<GetTransactionDTO> getTransactionsByAmountBetween(BigDecimal from,
+                                                           BigDecimal to);
 
-    /**
-     * Declares interface for get all transactions in range from - to,
-     * by date
-     *
-     * @param from starting date and time
-     * @param to   ending date and time
-     * @return all transactions by date and time
-     */
-    List<Transaction> getTransactionsByCreatedBetween(LocalDateTime from,
-                                                      LocalDateTime to);
+    List<GetTransactionDTO> getTransactionsByCreatedBetween(LocalDateTime from,
+                                                            LocalDateTime to);
 }

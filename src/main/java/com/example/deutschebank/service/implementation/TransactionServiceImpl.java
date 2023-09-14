@@ -1,6 +1,9 @@
 package com.example.deutschebank.service.implementation;
 
+import com.example.deutschebank.converter.TransactionDTOConverter;
 import com.example.deutschebank.entity.Transaction;
+import com.example.deutschebank.model.transaction.CreateTransactionDTO;
+import com.example.deutschebank.model.transaction.GetTransactionDTO;
 import com.example.deutschebank.repository.TransactionRepository;
 import com.example.deutschebank.service.interfaces.TransactionService;
 import jakarta.transaction.Transactional;
@@ -18,37 +21,50 @@ import java.util.List;
 public class TransactionServiceImpl implements TransactionService {
 
     public final TransactionRepository transactionRepository;
+    private final TransactionDTOConverter transactionDTOConverter;
 
     @Override
-    public void createTransaction(Transaction transaction) {
-        transaction.setCreated(LocalDateTime.now());
+    @Transactional
+    public void createTransaction(CreateTransactionDTO createDTO) {
+        Transaction transaction =
+                transactionDTOConverter.convertCreateDTOToTransaction(createDTO);
         transactionRepository.save(transaction);
+        log.info("Entity successfully created.");
     }
 
     @Override
-    public List<Transaction> getAllTransactions() {
-        return transactionRepository.findAll();
+    public List<GetTransactionDTO> getAllTransactions() {
+        List<Transaction> getAllDTOs = transactionRepository.findAll();
+        return transactionDTOConverter.convertTransactionsToGetDTOs(getAllDTOs);
     }
 
     @Override
-    public List<Transaction> getTransactionsByEmitterIBAN(String iban) {
-        return transactionRepository.getTransactionsByEmitterIban(iban);
+    public List<GetTransactionDTO> getTransactionsByEmitterIBAN(String iban) {
+        List<Transaction> allTransactions =
+                transactionRepository.getTransactionsByEmitterIban(iban);
+        return transactionDTOConverter.convertTransactionsToGetDTOs(allTransactions);
     }
 
     @Override
-    public List<Transaction> getTransactionsByReceiverIBAN(String iban) {
-        return transactionRepository.getTransactionsByReceiverIban(iban);
+    public List<GetTransactionDTO> getTransactionsByReceiverIBAN(String iban) {
+        List<Transaction> allTransactions =
+                transactionRepository.getTransactionsByReceiverIban(iban);
+        return transactionDTOConverter.convertTransactionsToGetDTOs(allTransactions);
     }
 
     @Override
-    public List<Transaction> getTransactionsByAmountBetween(BigDecimal from,
+    public List<GetTransactionDTO> getTransactionsByAmountBetween(BigDecimal from,
                                                             BigDecimal to) {
-        return transactionRepository.getTransactionsByAmountBetween(from, to);
+        List<Transaction> allTransaction =
+                transactionRepository.getTransactionsByAmountBetween(from, to);
+        return transactionDTOConverter.convertTransactionsToGetDTOs(allTransaction);
     }
 
     @Override
-    public List<Transaction> getTransactionsByCreatedBetween(LocalDateTime from,
+    public List<GetTransactionDTO> getTransactionsByCreatedBetween(LocalDateTime from,
                                                              LocalDateTime to) {
-        return transactionRepository.getTransactionsByCreatedBetween(from, to);
+        List<Transaction> allTransaction =
+                transactionRepository.getTransactionsByCreatedBetween(from, to);
+        return transactionDTOConverter.convertTransactionsToGetDTOs(allTransaction);
     }
 }

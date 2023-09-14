@@ -11,5 +11,4 @@ import java.util.UUID;
 @Repository
 @NonNullApi
 public interface ClientRepository extends JpaRepository<Client, UUID> {
-    Optional<Client> getClientById(UUID id);
 }

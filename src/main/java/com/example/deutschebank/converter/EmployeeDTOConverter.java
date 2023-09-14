@@ -17,8 +17,7 @@ public class EmployeeDTOConverter {
     private final ModelMapper modelMapper;
 
     public Employee convertCreateDTOToEmployee(CreateEmployeeDTO createDTO) {
-        return modelMapper.map(createDTO,
-                Employee.class);
+        return modelMapper.map(createDTO, Employee.class);
     }
 
     public GetEmployeeDTO convertEmployeeToGetDTO(Employee employee) {
@@ -29,14 +28,12 @@ public class EmployeeDTOConverter {
     public List<GetEmployeeDTO> convertEmployeeToGetDTOs(List<Employee> employee) {
         List<GetEmployeeDTO> getDTOs = new LinkedList<>();
         for (Employee detail : employee) {
-            getDTOs.add(modelMapper.map(detail,
-                    GetEmployeeDTO.class));
+            getDTOs.add(modelMapper.map(detail, GetEmployeeDTO.class));
         }
         return getDTOs;
     }
 
     public Employee convertUpdateDTOToEmployee(UpdateEmployeeDTO updateDTO) {
-        return modelMapper.map(updateDTO,
-                Employee.class);
+        return modelMapper.map(updateDTO, Employee.class);
     }
 }

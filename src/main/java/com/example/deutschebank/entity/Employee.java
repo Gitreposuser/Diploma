@@ -53,7 +53,7 @@ public class Employee {
         insertable = false, updatable = false)
     private BankBranch bankBranch;
 
-    @Column(name = "active", nullable = false)
+    @Column(name = "active")
     private Boolean active;
 
     @CreationTimestamp

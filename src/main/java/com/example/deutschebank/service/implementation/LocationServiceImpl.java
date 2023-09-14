@@ -25,12 +25,11 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     @Transactional
-    public CreateLocationDTO createLocation(CreateLocationDTO createDTO) {
+    public void createLocation(CreateLocationDTO createDTO) {
         Location location =
                 locationDTOConverter.converterCreateDTOToLocation(createDTO);
         locationRepository.save(location);
         log.info("Entity successfully created.");
-        return createDTO;
     }
 
     @Override

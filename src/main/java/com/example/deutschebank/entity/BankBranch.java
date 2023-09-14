@@ -41,7 +41,7 @@ public class BankBranch {
     @Column(name = "hot_line", length = 20, nullable = false)
     private String hotLine;
 
-    @Column(name = "active", nullable = false)
+    @Column(name = "active")
     private Boolean active;
 
     @CreationTimestamp

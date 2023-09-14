@@ -21,14 +21,13 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CreateEmployeeDTO> createEmployee(@RequestBody CreateEmployeeDTO createDTO) {
+    public void createEmployee(@RequestBody CreateEmployeeDTO createDTO) {
         employeeService.createEmployee(createDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(createDTO);
     }
 
     @GetMapping(value = "/get/by-id/{uuid}")
-    public ResponseEntity<GetEmployeeDTO> findEmployeeById(@PathVariable UUID uuid) {
-        GetEmployeeDTO getDTO = employeeService.getEmployee(uuid);
+    public ResponseEntity<GetEmployeeDTO> GetEmployeeById(@PathVariable UUID uuid) {
+        GetEmployeeDTO getDTO = employeeService.getEmployeeById(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(getDTO);
     }
 
@@ -40,11 +39,11 @@ public class EmployeeController {
 
     @PutMapping(value = "/update/by-id")
     public void updateEmployee(@RequestBody UpdateEmployeeDTO updateDTO) {
-        employeeService.updateEmployee(updateDTO);
+        employeeService.updateEmployeeById(updateDTO);
     }
 
     @DeleteMapping(value = "/delete/by-id/{uuid}")
     public void deleteEmployee(@PathVariable UUID uuid) {
-        employeeService.deleteEmployee(uuid);
+        employeeService.deleteEmployeeById(uuid);
     }
 }

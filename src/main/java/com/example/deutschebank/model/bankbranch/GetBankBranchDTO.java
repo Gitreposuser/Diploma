@@ -11,8 +11,7 @@ public class GetBankBranchDTO {
     public UUID id;
     public Integer branchNumber;
     public String status;
-    public UUID locationId;
-    //public Location locationId;
+    public Location location;
     public String generalPhone;
     public String hotLine;
     public Boolean active;

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BankBranchService {
-    CreateBankBranchDTO createBankBranch(CreateBankBranchDTO createDTO);
+    void createBankBranch(CreateBankBranchDTO createDTO);
 
     GetBankBranchDTO getBankBranch(UUID uuid);
 

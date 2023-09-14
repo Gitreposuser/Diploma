@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface PersonalDetailService {
-    CreatePersonalDetailDTO createPersonalDetail(CreatePersonalDetailDTO createDTO);
+    void createPersonalDetail(CreatePersonalDetailDTO createDTO);
 
     GetPersonalDetailDTO getPersonalDetail(UUID uuid);
 

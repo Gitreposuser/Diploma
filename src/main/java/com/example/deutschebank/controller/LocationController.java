@@ -21,9 +21,8 @@ public class LocationController {
     private final LocationService locationService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CreateLocationDTO> createLocation(@RequestBody CreateLocationDTO createDTO) {
+    public void createLocation(@RequestBody CreateLocationDTO createDTO) {
         locationService.createLocation(createDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(createDTO);
     }
 
     @GetMapping(value = "/get/by-id/{uuid}")

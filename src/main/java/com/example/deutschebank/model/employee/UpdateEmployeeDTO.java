@@ -11,5 +11,4 @@ public class UpdateEmployeeDTO {
     public UUID workDetailId;
     public UUID locationId;
     public UUID branchId;
-    public Boolean active;
 }

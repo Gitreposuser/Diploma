@@ -10,5 +10,6 @@ public class UpdateBankInfoDTO {
     public BigDecimal capitalization;
     public String owner;
     public String group;
+    public String logoUrl;
     public byte[] logo;
 }

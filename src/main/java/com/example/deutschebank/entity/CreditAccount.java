@@ -43,7 +43,7 @@ public class CreditAccount {
     @Column(name = "start_from")
     private LocalDateTime startFrom;
 
-    @Column(name = "active", nullable = false)
+    @Column(name = "active")
     private Boolean active;
 
     @CreationTimestamp

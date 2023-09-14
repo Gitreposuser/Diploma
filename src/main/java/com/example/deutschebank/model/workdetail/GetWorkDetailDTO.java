@@ -16,6 +16,7 @@ public class GetWorkDetailDTO {
     public String workEmail;
     public LocalDateTime startFrom;
     public LocalDateTime endAt;
+    public Boolean active;
     public LocalDateTime created;
     public LocalDateTime updated;
 }

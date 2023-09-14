@@ -11,8 +11,6 @@ public class UpdateBankBranchDTO {
     public Integer branchNumber;
     public String status;
     public UUID locationId;
-    //public Location location;
     public String generalPhone;
     public String hotLine;
-    public Boolean active;
 }

@@ -1,91 +1,60 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.service.implementation.additionaltools.FakerDataGeneratorImpl;
-import com.example.deutschebank.service.implementation.additionaltools.RandomDataGeneratorImpl;
-import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGenerator;
-import jakarta.annotation.PostConstruct;
+import com.example.deutschebank.service.interfaces.additionaltools.ToolsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/tools")
 public class ToolsController {
-    private final RandomDataGenerator randomDataGenerator;
+    private final ToolsService toolsService;
 
     @GetMapping("/generate-db")
     public void generateDataBase() {
-        final int transactionQuantity = 100;   // Create body with post!
-        randomDataGenerator.generateTransactions(transactionQuantity);
+        // Code something already!!!
     }
 
-    @GetMapping("/schema")
-    public ResponseEntity<byte[]> getDbSchema() {
-        try {
-            Path imagePath = Path.of("src/main/resources/static/images" +
-                    "/DeutscheBankDB.png");
-            byte[] imageBytes = Files.readAllBytes(imagePath);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG);
-            headers.setContentLength(imageBytes.length);
-            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+    @GetMapping("/bank-info/generate")
+    public void generateBankInfoToDB() {
+        toolsService.generateBankInfoToDB();
     }
 
-    @GetMapping("/raw-schema")
-    public ResponseEntity<byte[]> getDbRawSchema() {
-        try {
-            Path imagePath = Path.of("src/main/resources/static" +
-                    "/images/DeutscheBankDB.png");
-            byte[] imageBytes = Files.readAllBytes(imagePath);
-            return ResponseEntity.status(HttpStatus.OK).body(imageBytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+    @DeleteMapping("/bank-info/delete")
+    public void deleteBankInfoFromDB() {
+        toolsService.deleteBankInfoFromDB();
     }
 
-    @GetMapping("/logo")
-    public ResponseEntity<byte[]> getLogo() {
-        try {
-            Path imagePath = Path.of("src/main/resources/static" +
-                    "/images/banklogo.png");
-            byte[] imageBytes = Files.readAllBytes(imagePath);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG);
-            headers.setContentLength(imageBytes.length);
-            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+    @GetMapping("/transactions/generate/{quantity}")
+    public void generateTransactionsToDB(@PathVariable Integer quantity) {
+        toolsService.generateTransactionsToDB(quantity);
     }
 
-    @GetMapping("/raw-logo")
-    public ResponseEntity<byte[]> getRawLogo() {
-        try {
-            Path imagePath = Path.of("src/main/resources/static" +
-                    "/images/banklogo.png");
-            byte[] imageBytes = Files.readAllBytes(imagePath);
-            return ResponseEntity.status(HttpStatus.OK).body(imageBytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+    @DeleteMapping("/transactions/delete/all")
+    public void deleteAllTransactionsFromDB() {
+        toolsService.deleteAllTransactionsFromDB();
+    }
+
+    @GetMapping("/db-schema/get")
+    public ResponseEntity<byte[]> getDbSchemaFromDB() {
+        return toolsService.getDBSchema();
+    }
+
+    @GetMapping("/raw-schema/get")
+    public ResponseEntity<byte[]> getDbRawSchemaFromDB() {
+        return toolsService.getDbRawSchema();
+    }
+
+    @GetMapping("/logo/get")
+    public ResponseEntity<byte[]> getLogoFromDB() {
+        return toolsService.getLogo();
+    }
+
+    @GetMapping("/raw-logo/get")
+    public ResponseEntity<byte[]> getRawLogoFromDB() {
+        return toolsService.getRawLogo();
     }
 }

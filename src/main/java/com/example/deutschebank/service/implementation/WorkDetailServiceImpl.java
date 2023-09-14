@@ -26,17 +26,16 @@ public class WorkDetailServiceImpl implements WorkDetailService {
 
     @Override
     @Transactional
-    public CreateWorkDetailDTO createWorkDetail(CreateWorkDetailDTO createDTO) {
+    public void createWorkDetail(CreateWorkDetailDTO createDTO) {
         checkEmail(createDTO.workEmail);
         WorkDetail workDetail = workDetailDTOConverter
                 .convertCreateDTOToWorkDetail(createDTO);
         workDetailRepository.save(workDetail);
         log.info("Entity successfully created.");
-        return createDTO;
     }
 
     @Override
-    public GetWorkDetailDTO getWorkDetail(UUID uuid) {
+    public GetWorkDetailDTO getWorkDetailById(UUID uuid) {
         checkIfNotExist(uuid);
         WorkDetail workDetail = workDetailRepository.getReferenceById(uuid);
         return workDetailDTOConverter.convertWorkDetailToGetDTO(workDetail);
@@ -50,7 +49,7 @@ public class WorkDetailServiceImpl implements WorkDetailService {
 
     @Override
     @Transactional
-    public void updateWorkDetail(UpdateWorkDetailDTO updateDTO) {
+    public void updateWorkDetailById(UpdateWorkDetailDTO updateDTO) {
         checkIfNotExist(updateDTO.id);
         checkEmail(updateDTO.getWorkEmail());
         WorkDetail workDetail = workDetailDTOConverter
@@ -60,7 +59,7 @@ public class WorkDetailServiceImpl implements WorkDetailService {
     }
 
     @Override
-    public void deleteWorkDetail(UUID uuid) {
+    public void deleteWorkDetailById(UUID uuid) {
         checkIfNotExist(uuid);
         workDetailRepository.deleteById(uuid);
         log.info("Entity with id: " + uuid + " where successfully deleted.");
@@ -73,7 +72,7 @@ public class WorkDetailServiceImpl implements WorkDetailService {
     }
 
     private void checkIfNotExist(UUID uuid) {
-        if(!workDetailRepository.existsById(uuid)) {
+        if (!workDetailRepository.existsById(uuid)) {
             throw new BadOperationException("Entity with id: " + uuid +
                     "doesn't exist!");
         }

@@ -26,13 +26,12 @@ public class BankBranchServiceImpl implements BankBranchService {
 
     @Override
     @Transactional
-    public CreateBankBranchDTO createBankBranch(CreateBankBranchDTO createDTO) {
+    public void createBankBranch(CreateBankBranchDTO createDTO) {
         checkIfBranchNotUnique(createDTO.branchNumber);
         BankBranch bankBranch =
                 bankBranchDTOConverter.convertCreateDTOToBankBranch(createDTO);
         bankBranchRepository.save(bankBranch);
         log.info("Entity successfully created.");
-        return createDTO;
     }
 
     @Override

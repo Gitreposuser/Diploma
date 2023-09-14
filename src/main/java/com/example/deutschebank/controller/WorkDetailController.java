@@ -21,15 +21,13 @@ public class WorkDetailController {
     private final WorkDetailService workDetailService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CreateWorkDetailDTO>
-            createWorkDetail(@RequestBody CreateWorkDetailDTO createDTO) {
+    public void createWorkDetail(@RequestBody CreateWorkDetailDTO createDTO) {
         workDetailService.createWorkDetail(createDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(createDTO);
     }
 
     @GetMapping(value = "/get/by-id/{uuid}")
-    public ResponseEntity<GetWorkDetailDTO> getWorkDetail(@PathVariable UUID uuid) {
-        GetWorkDetailDTO getDTO = workDetailService.getWorkDetail(uuid);
+    public ResponseEntity<GetWorkDetailDTO> getWorkDetailById(@PathVariable UUID uuid) {
+        GetWorkDetailDTO getDTO = workDetailService.getWorkDetailById(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(getDTO);
     }
 
@@ -41,12 +39,12 @@ public class WorkDetailController {
     }
 
     @PutMapping(value = "/update/by-id")
-    public void updateWorkDetail(@RequestBody UpdateWorkDetailDTO updateDTO) {
-        workDetailService.updateWorkDetail(updateDTO);
+    public void updateWorkDetailById(@RequestBody UpdateWorkDetailDTO updateDTO) {
+        workDetailService.updateWorkDetailById(updateDTO);
     }
 
     @DeleteMapping(value = "/delete/by-id/{uuid}")
-    public void deleteWorkDetail(@PathVariable UUID uuid) {
-        workDetailService.deleteWorkDetail(uuid);
+    public void deleteWorkDetailById(@PathVariable UUID uuid) {
+        workDetailService.deleteWorkDetailById(uuid);
     }
 }

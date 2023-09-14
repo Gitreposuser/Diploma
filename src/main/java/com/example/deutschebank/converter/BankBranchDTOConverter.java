@@ -5,12 +5,14 @@ import com.example.deutschebank.model.bankbranch.CreateBankBranchDTO;
 import com.example.deutschebank.model.bankbranch.GetBankBranchDTO;
 import com.example.deutschebank.model.bankbranch.UpdateBankBranchDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class BankBranchDTOConverter {
@@ -25,16 +27,6 @@ public class BankBranchDTOConverter {
         return modelMapper.map(bankBranch, GetBankBranchDTO.class);
     }
 
-/*
-    public GetBankBranchDTO convertBankBranchToGetDTO(BankBranch bankBranch) {
-        ModelMapper mapper = new ModelMapper();
-        mapper.typeMap(BankBranch.class, GetBankBranchDTO.class)
-                .addMapping(BankBranch::getLocationId, GetBankBranchDTO::setLocationId);
-        return mapper.map(bankBranch,
-                GetBankBranchDTO.class);
-    }
-
- */
 
     public List<GetBankBranchDTO> convertBankBranchesToGetDTOs(List<BankBranch> bankBranches) {
         List<GetBankBranchDTO> getDTOs = new LinkedList<>();

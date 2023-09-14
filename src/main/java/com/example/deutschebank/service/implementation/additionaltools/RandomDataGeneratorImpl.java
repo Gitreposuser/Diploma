@@ -3,10 +3,10 @@ package com.example.deutschebank.service.implementation.additionaltools;
 import com.example.deutschebank.entity.Transaction;
 import com.example.deutschebank.repository.TransactionRepository;
 import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGenerator;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -21,31 +21,46 @@ import java.util.Random;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@Primary
+//@Primary
 public class RandomDataGeneratorImpl implements RandomDataGenerator {
     private final TransactionRepository transactionRepository;
+
+    private Random rnd;
     @Value(value = "${randomDataGenerator.startYear}")
     private int startYear;
 
     @Value(value = "${randomDataGenerator.maxTransactionValue}")
     private long maxTransactionValue;
 
+    @PostConstruct
+    public void init() {
+        rnd = new Random();
+    }
+
     /**
-     * Generate random transactions
+     * Generate random transaction to current Database
+     */
+    @Override
+    @Transactional
+    public void generateTransactionToDB() {
+        Transaction transaction = new Transaction();
+        transaction.setEmitterIban(generateIban());
+        transaction.setReceiverIban(generateIban());
+        transaction.setAmount(generateAmount());
+        transaction.setCreated(generateDateTime()); // Search library!
+        transactionRepository.save(transaction);
+        log.info(transaction.toString());
+    }
+
+    /**
+     * Generate random transactions to DB
      *
      * @param quantity set how many transactions will be generated
      */
     @Override
-    @Transactional
-    public void generateTransactions(int quantity) {
+    public void generateTransactionsToDB(int quantity) {
         for (int i = 0; i < quantity; i++) {
-            Transaction transaction = new Transaction();
-            transaction.setEmitterIban(generateIban());
-            transaction.setReceiverIban(generateIban());
-            transaction.setAmount(generateAmount());
-            transaction.setCreated(generateDateTime()); // Search library!
-            log.info(transaction.toString());
-            transactionRepository.save(transaction);
+            generateTransactionToDB();
         }
     }
 
@@ -55,7 +70,6 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
      * @return The LocalDateTime object representing the current date and time.
      */
     private LocalDateTime generateDateTime() {
-        Random rnd = new Random();
         final int startingMonthOrDay = 1;
         final int randomYear = rnd.nextInt(startYear, LocalDateTime.now().getYear());
         final int randomMonth = rnd.nextInt(startingMonthOrDay,
@@ -101,8 +115,7 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
      * @return String witch represents country identity
      */
     private String generateCountry() {
-        String[] country = {"DE", "UA", "GB", "FR", "NL", "PL"};
-        Random rnd = new Random();
+        String[] country = {"DE", "UA", "GB", "FR", "NL", "PL", "ND", "UK"};
         return country[rnd.nextInt(country.length)];
     }
 
@@ -148,7 +161,6 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
      * @return String representation of randomly generated numbers
      */
     private String generateNumbersOfLength(int length) {
-        Random rnd = new Random();
         String number = "";
         for (int i = 0; i < length; i++) {
             number += rnd.nextInt(9);
@@ -164,7 +176,6 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
      * transfer amount
      */
     private BigDecimal generateAmount() {
-        Random rnd = new Random();
-        return BigDecimal.valueOf(rnd.nextLong(maxTransactionValue));
+        return BigDecimal.valueOf(rnd.nextDouble(maxTransactionValue));
     }
 }

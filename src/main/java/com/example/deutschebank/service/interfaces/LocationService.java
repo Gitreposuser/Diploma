@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface LocationService {
-    CreateLocationDTO createLocation(CreateLocationDTO createDTO);
+    void createLocation(CreateLocationDTO createDTO);
 
     GetLocationDTO getLocation(UUID uuid);
 

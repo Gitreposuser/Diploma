@@ -26,12 +26,11 @@ public class PersonalDetailServiceImpl implements PersonalDetailService {
 
     @Override
     @Transactional
-    public CreatePersonalDetailDTO createPersonalDetail(CreatePersonalDetailDTO createDTO) {
+    public void createPersonalDetail(CreatePersonalDetailDTO createDTO) {
         PersonalDetail personalDetail =
                 personalDetailDTOConverter.convertCreateDTOToPersonalDetail(createDTO);
         personalDetailRepository.save(personalDetail);
         log.info("Entity successfully created.");
-        return createDTO;
     }
 
     @Override

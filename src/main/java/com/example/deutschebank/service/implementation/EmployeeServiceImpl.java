@@ -31,16 +31,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public CreateEmployeeDTO createEmployee(CreateEmployeeDTO createDTO) {
+    public void createEmployee(CreateEmployeeDTO createDTO) {
         Employee employee = employeeDTOConverter
                 .convertCreateDTOToEmployee(createDTO);
         employeeRepository.save(employee);
         log.info("Entity successfully created.");
-        return createDTO;
     }
 
     @Override
-    public GetEmployeeDTO getEmployee(UUID uuid) {
+    public GetEmployeeDTO getEmployeeById(UUID uuid) {
         checkIfNotExist(uuid);
         Employee employee = employeeRepository.getReferenceById(uuid);
         return employeeDTOConverter.convertEmployeeToGetDTO(employee);
@@ -54,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public void updateEmployee(UpdateEmployeeDTO updateDTO) {
+    public void updateEmployeeById(UpdateEmployeeDTO updateDTO) {
         checkIfNotExist(updateDTO.id);
         Employee employee = employeeDTOConverter
                 .convertUpdateDTOToEmployee(updateDTO);
@@ -63,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployee(UUID uuid) {
+    public void deleteEmployeeById(UUID uuid) {
         checkIfNotExist(uuid);
         employeeRepository.deleteById(uuid);
         log.info("Entity with id: " + uuid + " where successfully deleted.");

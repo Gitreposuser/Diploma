@@ -21,9 +21,8 @@ public class PersonalDetailController {
     private final PersonalDetailService personalDetailService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CreatePersonalDetailDTO> createPersonalDetail(@RequestBody CreatePersonalDetailDTO createDTO) {
+    public void createPersonalDetail(@RequestBody CreatePersonalDetailDTO createDTO) {
         personalDetailService.createPersonalDetail(createDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(createDTO);
     }
 
     @GetMapping(value = "/get/by-id/{uuid}")

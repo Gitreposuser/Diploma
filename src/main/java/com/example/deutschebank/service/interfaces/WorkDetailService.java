@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.UUID;
 
 public interface WorkDetailService {
-    CreateWorkDetailDTO createWorkDetail(CreateWorkDetailDTO createDTO);
+    void createWorkDetail(CreateWorkDetailDTO createDTO);
 
-    GetWorkDetailDTO getWorkDetail(UUID uuid);
+    GetWorkDetailDTO getWorkDetailById(UUID uuid);
 
     List<GetWorkDetailDTO> getAllWorkDetails();
 
-    void updateWorkDetail(UpdateWorkDetailDTO updateDTO);
+    void updateWorkDetailById(UpdateWorkDetailDTO updateDTO);
 
-    void deleteWorkDetail(UUID uuid);
+    void deleteWorkDetailById(UUID uuid);
 }

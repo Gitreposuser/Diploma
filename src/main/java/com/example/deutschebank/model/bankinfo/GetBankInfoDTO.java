@@ -14,6 +14,7 @@ public class GetBankInfoDTO {
     public BigDecimal capitalization;
     public String owner;
     public String group;
+    public String logoUrl;
     public byte[] logo;
     public LocalDateTime created;
     public LocalDateTime updated;

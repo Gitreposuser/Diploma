@@ -38,8 +38,11 @@ public class BankInfo {
     @Column(name = "`group`", length = 128, nullable = false)
     private String group;
 
+    @Column(name = "logo_url", length = 1024)
+    private String logoUrl;
+
     @Lob
-    @Column(name = "logo")
+    @Column(name = "logo", columnDefinition = "MEDIUMBLOB")
     private byte[] logo;
 
     @CreationTimestamp

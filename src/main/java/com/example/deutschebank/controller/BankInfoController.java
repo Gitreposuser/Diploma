@@ -18,9 +18,8 @@ public class BankInfoController {
     private final BankInfoService bankInfoService;
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CreateBankInfoDTO> createBankInfo(@RequestBody CreateBankInfoDTO createDTO) {
+    public void createBankInfo(@RequestBody CreateBankInfoDTO createDTO) {
         bankInfoService.createBankInfo(createDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(createDTO);
     }
 
     @GetMapping(value = "/get")

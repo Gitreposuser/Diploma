@@ -9,4 +9,5 @@ public class CreateLocationDTO {
     public String city;
     public String state;
     public String country;
+    public Boolean active;
 }

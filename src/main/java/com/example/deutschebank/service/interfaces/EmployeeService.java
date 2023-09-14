@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EmployeeService {
-    CreateEmployeeDTO createEmployee(CreateEmployeeDTO createDTO);
+    void createEmployee(CreateEmployeeDTO createDTO);
 
-    GetEmployeeDTO getEmployee(UUID uuid);
+    GetEmployeeDTO getEmployeeById(UUID uuid);
 
     List<GetEmployeeDTO> getAllEmployees();
 
-    void updateEmployee(UpdateEmployeeDTO updateDTO);
+    void updateEmployeeById(UpdateEmployeeDTO updateDTO);
 
-    void deleteEmployee(UUID uuid);
+    void deleteEmployeeById(UUID uuid);
 }
