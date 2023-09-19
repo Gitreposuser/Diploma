@@ -1,5 +1,6 @@
 package com.example.deutschebank.entity;
 
+import com.example.deutschebank.entity.enums.BranchStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,21 +25,23 @@ public class BankBranch {
     @Column(name = "branch_number", nullable = false, unique = true)
     private Integer branchNumber;
 
-    @Column(name = "status", length = 128, nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "branch_status", length = 128, nullable = false)
+    private BranchStatus branchStatus;
 
     @Column(name = "location_id", nullable = false)
     private UUID locationId;
 
     @OneToOne
+    @MapsId("id")
     @JoinColumn(name = "location_id", referencedColumnName = "id",
             insertable = false, updatable = false)
     private Location location;
 
-    @Column(name = "general_phone", length = 20, nullable = false)
+    @Column(name = "general_phone", length = 32, nullable = false)
     private String generalPhone;
 
-    @Column(name = "hot_line", length = 20, nullable = false)
+    @Column(name = "hot_line", length = 32, nullable = false)
     private String hotLine;
 
     @Column(name = "active")

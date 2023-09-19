@@ -1,5 +1,6 @@
 package com.example.deutschebank.entity;
 
+import com.example.deutschebank.entity.enums.WorkStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,16 +23,17 @@ public class WorkDetail {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "position", length = 64, nullable = false)
+    @Column(name = "position", length = 128, nullable = false)
     private String position;
 
-    @Column(name = "status", length = 256, nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "work_status", length = 256, nullable = false)
+    private WorkStatus workStatus;
 
-    @Column(name = "salary", precision = 7, scale = 2, nullable = false)
+    @Column(name = "salary", precision = 15, scale = 2, nullable = false)
     private BigDecimal salary;
 
-    @Column(name = "work_phone", length = 20, nullable = false)
+    @Column(name = "work_phone", length = 30, nullable = false)
     private String workPhone;
 
     @Column(name = "work_email", length = 128, unique = true,

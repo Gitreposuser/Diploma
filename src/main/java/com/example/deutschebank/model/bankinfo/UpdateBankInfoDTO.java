@@ -11,5 +11,4 @@ public class UpdateBankInfoDTO {
     public String owner;
     public String group;
     public String logoUrl;
-    public byte[] logo;
 }

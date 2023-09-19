@@ -9,7 +9,7 @@ import java.nio.file.Path;
 @Component
 public class ImageServiceImpl implements ImageService {
     @Override
-    public byte[] convertImageToByteArray(String path) {
+    public byte[] convertImageToByteArray(String path) throws Exception {
         try {
             Path imagePath = Path.of(path);
             byte[] imageBytes = Files.readAllBytes(imagePath);
@@ -17,6 +17,6 @@ public class ImageServiceImpl implements ImageService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        throw new Exception();
     }
 }

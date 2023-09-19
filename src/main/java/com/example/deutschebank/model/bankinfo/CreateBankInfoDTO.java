@@ -10,5 +10,4 @@ public class CreateBankInfoDTO {
     public String owner;
     public String group;
     public String logoUrl;
-    public byte[] logo;
 }

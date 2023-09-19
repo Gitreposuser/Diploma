@@ -1,6 +1,7 @@
 package com.example.deutschebank.model.bankbranch;
 
 import com.example.deutschebank.entity.Location;
+import com.example.deutschebank.entity.enums.BranchStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public class GetBankBranchDTO {
     public UUID id;
     public Integer branchNumber;
-    public String status;
+    public BranchStatus branchStatus;
     public Location location;
     public String generalPhone;
     public String hotLine;

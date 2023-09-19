@@ -41,10 +41,6 @@ public class BankInfo {
     @Column(name = "logo_url", length = 1024)
     private String logoUrl;
 
-    @Lob
-    @Column(name = "logo", columnDefinition = "MEDIUMBLOB")
-    private byte[] logo;
-
     @CreationTimestamp
     @Column(name = "created", updatable = false)
     private LocalDateTime created;

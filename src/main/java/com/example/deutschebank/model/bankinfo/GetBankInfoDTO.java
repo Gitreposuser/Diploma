@@ -15,7 +15,6 @@ public class GetBankInfoDTO {
     public String owner;
     public String group;
     public String logoUrl;
-    public byte[] logo;
     public LocalDateTime created;
     public LocalDateTime updated;
 }

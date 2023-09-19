@@ -47,8 +47,8 @@ public class PersonalDetail {
     @Column(name = "is_married", nullable = false)
     private Boolean isMarried;
 
-    @Column(name = "childrens", nullable = false)
-    private Integer childrens;
+    @Column(name = "children", nullable = false)
+    private Integer children;
 
     @Column(name = "active")
     private Boolean active;

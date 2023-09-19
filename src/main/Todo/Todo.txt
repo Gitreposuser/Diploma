@@ -1,0 +1,2 @@
+1. Rework DTO make all fields PRIVATE!
+2. Add Generate for All entities implementation and controllers

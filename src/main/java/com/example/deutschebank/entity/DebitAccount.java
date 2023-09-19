@@ -1,5 +1,6 @@
 package com.example.deutschebank.entity;
 
+import com.example.deutschebank.entity.enums.DebitStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +28,7 @@ public class DebitAccount {
     private String iban;
 
     @Column(name = "debit_status", length = 20, nullable = false)
-    private String debitStatus;
+    private DebitStatus debitStatus;
 
     @Column(name = "balance",
             columnDefinition = "NUMERIC(15, 2) DEFAULT '0.00'")

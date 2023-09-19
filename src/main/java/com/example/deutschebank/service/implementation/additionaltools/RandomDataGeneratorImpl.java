@@ -1,6 +1,7 @@
 package com.example.deutschebank.service.implementation.additionaltools;
 
 import com.example.deutschebank.entity.Transaction;
+import com.example.deutschebank.entity.WorkDetail;
 import com.example.deutschebank.repository.TransactionRepository;
 import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGenerator;
 import jakarta.annotation.PostConstruct;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -22,7 +25,8 @@ import java.util.Random;
 @Component
 @RequiredArgsConstructor
 //@Primary
-public class RandomDataGeneratorImpl implements RandomDataGenerator {
+//public class RandomDataGeneratorImpl implements RandomDataGenerator {
+public class RandomDataGeneratorImpl {
     private final TransactionRepository transactionRepository;
 
     private Random rnd;
@@ -40,16 +44,15 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
     /**
      * Generate random transaction to current Database
      */
-    @Override
-    @Transactional
-    public void generateTransactionToDB() {
+    //@Override
+    public Transaction generateTransaction() {
         Transaction transaction = new Transaction();
         transaction.setEmitterIban(generateIban());
         transaction.setReceiverIban(generateIban());
         transaction.setAmount(generateAmount());
         transaction.setCreated(generateDateTime()); // Search library!
-        transactionRepository.save(transaction);
         log.info(transaction.toString());
+        return transaction;
     }
 
     /**
@@ -57,11 +60,23 @@ public class RandomDataGeneratorImpl implements RandomDataGenerator {
      *
      * @param quantity set how many transactions will be generated
      */
-    @Override
-    public void generateTransactionsToDB(int quantity) {
+    //@Override
+    public List<Transaction> generateTransactions(int quantity) {
+        List<Transaction> transactions = new LinkedList<>();
         for (int i = 0; i < quantity; i++) {
-            generateTransactionToDB();
+            transactions.add(generateTransaction());
         }
+        return transactions;
+    }
+
+    //@Override
+    public WorkDetail generateWorkDetail() {
+        return null;
+    }
+
+    //@Override
+    public List<WorkDetail> generateWorkDetails(int quantity) {
+        return null;
     }
 
     /**

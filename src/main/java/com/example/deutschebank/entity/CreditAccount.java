@@ -1,5 +1,6 @@
 package com.example.deutschebank.entity;
 
+import com.example.deutschebank.entity.enums.CreditStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +31,7 @@ public class CreditAccount {
     private Client client;
 
     @Column(name = "credit_status", length = 20, nullable = false)
-    private String creditStatus;
+    private CreditStatus creditStatus;
 
     @Column(name = "debt", precision = 15, scale = 2,
             nullable = false)

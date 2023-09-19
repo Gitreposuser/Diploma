@@ -35,7 +35,7 @@ public class BankBranchServiceImpl implements BankBranchService {
     }
 
     @Override
-    public GetBankBranchDTO getBankBranch(UUID uuid) {
+    public GetBankBranchDTO getBankBranchById(UUID uuid) {
         checkIfNotExist(uuid);
         BankBranch bankBranch = bankBranchRepository.getReferenceById(uuid);
         return bankBranchDTOConverter.convertBankBranchToGetDTO(bankBranch);
@@ -49,7 +49,7 @@ public class BankBranchServiceImpl implements BankBranchService {
 
     @Override
     @Transactional
-    public void updateBankBranch(UpdateBankBranchDTO updateDTO) {
+    public void updateBankBranchById(UpdateBankBranchDTO updateDTO) {
         checkIfNotExist(updateDTO.id);
         checkIfBranchNotUnique(updateDTO.branchNumber);
         BankBranch bankBranch =
@@ -59,7 +59,7 @@ public class BankBranchServiceImpl implements BankBranchService {
     }
 
     @Override
-    public void deleteBankBranch(UUID uuid) {
+    public void deleteBankBranchById(UUID uuid) {
         checkIfNotExist(uuid);
         bankBranchRepository.deleteById(uuid);
         log.info("Entity with id: " + uuid + " where successfully deleted.");

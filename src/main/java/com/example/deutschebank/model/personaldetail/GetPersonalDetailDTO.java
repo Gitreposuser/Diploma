@@ -17,7 +17,7 @@ public class GetPersonalDetailDTO {
     public Integer age;
     public LocalDateTime birthDate;
     public Boolean isMarried;
-    public Integer childrens;
+    public Integer children;
     public Boolean active;
     public LocalDateTime created;
     public LocalDateTime updated;

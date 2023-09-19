@@ -17,5 +17,5 @@ public class UpdatePersonalDetailDTO {
     public Integer age;
     public LocalDateTime birthDate;
     public Boolean isMarried;
-    public Integer childrens;
+    public Integer children;
 }

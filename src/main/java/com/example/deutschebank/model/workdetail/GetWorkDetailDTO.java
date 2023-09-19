@@ -1,5 +1,6 @@
 package com.example.deutschebank.model.workdetail;
 
+import com.example.deutschebank.entity.enums.WorkStatus;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public class GetWorkDetailDTO {
     public UUID id;
     public String position;
-    public String status;
+    public WorkStatus workStatus;
     public BigDecimal salary;
     public String workPhone;
     public String workEmail;

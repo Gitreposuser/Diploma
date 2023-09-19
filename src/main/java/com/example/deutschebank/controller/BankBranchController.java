@@ -29,7 +29,7 @@ public class BankBranchController {
 
     @GetMapping(value = "/get/by-id/{uuid}")
     public ResponseEntity<GetBankBranchDTO> getBankBranch(@PathVariable UUID uuid) {
-        GetBankBranchDTO getDTO = bankBranchService.getBankBranch(uuid);
+        GetBankBranchDTO getDTO = bankBranchService.getBankBranchById(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(getDTO);
     }
 
@@ -42,11 +42,11 @@ public class BankBranchController {
 
     @PutMapping(value = "/update/by-id")
     public void updateBankBranch(@RequestBody UpdateBankBranchDTO updateDTO) {
-        bankBranchService.updateBankBranch(updateDTO);
+        bankBranchService.updateBankBranchById(updateDTO);
     }
 
     @DeleteMapping(value = "/delete/by-id/{uuid}")
     public void deleteBankBranch(@PathVariable UUID uuid) {
-        bankBranchService.deleteBankBranch(uuid);
+        bankBranchService.deleteBankBranchById(uuid);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.deutschebank.model.bankbranch;
 
 import com.example.deutschebank.entity.Location;
+import com.example.deutschebank.entity.enums.BranchStatus;
 import lombok.Data;
 
 import java.util.UUID;
@@ -9,7 +10,7 @@ import java.util.UUID;
 public class UpdateBankBranchDTO {
     public UUID id;
     public Integer branchNumber;
-    public String status;
+    public BranchStatus branchStatus;
     public UUID locationId;
     public String generalPhone;
     public String hotLine;

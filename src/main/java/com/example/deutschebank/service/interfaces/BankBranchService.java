@@ -10,11 +10,11 @@ import java.util.UUID;
 public interface BankBranchService {
     void createBankBranch(CreateBankBranchDTO createDTO);
 
-    GetBankBranchDTO getBankBranch(UUID uuid);
+    GetBankBranchDTO getBankBranchById(UUID uuid);
 
     List<GetBankBranchDTO> getAllBankBranches();
 
-    void updateBankBranch(UpdateBankBranchDTO updateDTO);
+    void updateBankBranchById(UpdateBankBranchDTO updateDTO);
 
-    void deleteBankBranch(UUID uuid);
+    void deleteBankBranchById(UUID uuid);
 }
