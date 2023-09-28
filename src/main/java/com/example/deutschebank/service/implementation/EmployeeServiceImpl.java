@@ -54,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public void updateEmployeeById(UpdateEmployeeDTO updateDTO) {
-        checkIfNotExist(updateDTO.id);
+        checkIfNotExist(updateDTO.getId());
         Employee employee = employeeDTOConverter
                 .convertUpdateDTOToEmployee(updateDTO);
         employeeRepository.save(employee);

@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class CreateLocationDTO {
-    public Integer houseNumber;
-    public String street;
-    public String city;
-    public String state;
-    public String country;
-    public Boolean active;
+    private Integer houseNumber;
+    private String street;
+    private String city;
+    private String state;
+    private String country;
+    private Boolean active;
 }

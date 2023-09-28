@@ -8,10 +8,10 @@ import java.util.UUID;
 
 @Data
 public class CreateBankBranchDTO {
-    public Integer branchNumber;
-    public BranchStatus branchStatus;
-    public UUID locationId;
-    public String generalPhone;
-    public String hotLine;
-    public Boolean active;
+    private Integer branchNumber;
+    private BranchStatus branchStatus;
+    private UUID locationId;
+    private String generalPhone;
+    private String hotLine;
+    private Boolean active;
 }

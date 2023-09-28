@@ -48,7 +48,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
 
     @Override
     public void updateCreditAccountById(UpdateCreditAccountDTO updateDTO) {
-        checkIfNotExist(updateDTO.id);
+        checkIfNotExist(updateDTO.getId());
         CreditAccount creditAccount =
                 creditAccountDTOConverter.convertUpdateDTOToCreditAccount(updateDTO);
         creditAccountRepository.save(creditAccount);

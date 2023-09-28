@@ -6,10 +6,10 @@ import java.util.UUID;
 
 @Data
 public class UpdateLocationDTO {
-    public UUID id;
-    public Integer houseNumber;
-    public String street;
-    public String city;
-    public String state;
-    public String country;
+    private UUID id;
+    private Integer houseNumber;
+    private String street;
+    private String city;
+    private String state;
+    private String country;
 }

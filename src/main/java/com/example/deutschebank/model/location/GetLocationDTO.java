@@ -7,13 +7,13 @@ import java.util.UUID;
 
 @Data
 public class GetLocationDTO {
-    public UUID id;
-    public Integer houseNumber;
-    public String street;
-    public String city;
-    public String state;
-    public String country;
-    public Boolean active;
-    public LocalDateTime created;
-    public LocalDateTime updated;
+    private UUID id;
+    private Integer houseNumber;
+    private String street;
+    private String city;
+    private String state;
+    private String country;
+    private Boolean active;
+    private LocalDateTime created;
+    private LocalDateTime updated;
 }

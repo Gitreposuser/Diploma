@@ -8,10 +8,10 @@ import java.util.UUID;
 
 @Data
 public class UpdateCreditAccountDTO {
-    public UUID id;
-    public UUID clientId;
-    public String creditStatus;
-    public BigDecimal debt;
-    public BigDecimal loanInterest;
-    public LocalDateTime startFrom;
+    private UUID id;
+    private UUID clientId;
+    private String creditStatus;
+    private BigDecimal debt;
+    private BigDecimal loanInterest;
+    private LocalDateTime startFrom;
 }

@@ -33,7 +33,6 @@ public class BankBranch {
     private UUID locationId;
 
     @OneToOne
-    @MapsId("id")
     @JoinColumn(name = "location_id", referencedColumnName = "id",
             insertable = false, updatable = false)
     private Location location;

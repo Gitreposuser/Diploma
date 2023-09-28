@@ -51,7 +51,7 @@ public class PersonalDetailServiceImpl implements PersonalDetailService {
     @Override
     @Transactional
     public void updatePersonalDetail(UpdatePersonalDetailDTO updateDTO) {
-        checkIfNotExist(updateDTO.id);
+        checkIfNotExist(updateDTO.getId());
         PersonalDetail personalDetail =
                 personalDetailDTOConverter.convertUpdateDTOToPersonalDetail(updateDTO);
         personalDetailRepository.save(personalDetail);

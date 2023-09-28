@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 
 @Data
 public class CreateDebitAccountDTO {
-    public String iban;
-    public String debitStatus;
-    public BigDecimal balance;
-    public BigDecimal depositInterest;
-    public BigDecimal creditLine;
-    public LocalDateTime startFrom;
-    public Boolean active;
+    private String iban;
+    private String debitStatus;
+    private BigDecimal balance;
+    private BigDecimal depositInterest;
+    private BigDecimal creditLine;
+    private LocalDateTime startFrom;
+    private Boolean active;
 }

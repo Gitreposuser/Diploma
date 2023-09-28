@@ -30,6 +30,7 @@ public class CreditAccount {
     @JoinColumn(name = "clients", referencedColumnName = "id")
     private Client client;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "credit_status", length = 20, nullable = false)
     private CreditStatus creditStatus;
 

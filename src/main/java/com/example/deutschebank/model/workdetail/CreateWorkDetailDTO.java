@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
 
 @Data
 public class CreateWorkDetailDTO {
-    public String position;
-    public WorkStatus workStatus;
-    public BigDecimal salary;
-    public String workPhone;
-    public String workEmail;
-    public LocalDateTime startFrom;
-    public LocalDateTime endAt;
-    public Boolean active;
+    private String position;
+    private WorkStatus workStatus;
+    private BigDecimal salary;
+    private String workPhone;
+    private String workEmail;
+    private LocalDateTime startFrom;
+    private LocalDateTime endAt;
+    private Boolean active;
 }

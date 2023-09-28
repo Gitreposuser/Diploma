@@ -8,9 +8,9 @@ import java.util.UUID;
 
 @Data
 public class GetTransactionDTO {
-    public UUID id;
-    public String emitterIban;
-    public String receiverIban;
-    public BigDecimal amount;
-    public LocalDateTime created;
+    private UUID id;
+    private String emitterIban;
+    private String receiverIban;
+    private BigDecimal amount;
+    private LocalDateTime created;
 }

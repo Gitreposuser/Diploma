@@ -11,12 +11,12 @@ import java.util.UUID;
 
 @Data
 public class GetEmployeeDTO {
-    public UUID id;
-    public PersonalDetail personalDetail;
-    public WorkDetail workDetail;
-    public Location location;
-    public BankBranch bankBranch;
-    public Boolean active;
-    public LocalDateTime created;
-    public LocalDateTime updated;
+    private UUID id;
+    private PersonalDetail personalDetail;
+    private WorkDetail workDetail;
+    private Location location;
+    private BankBranch bankBranch;
+    private Boolean active;
+    private LocalDateTime created;
+    private LocalDateTime updated;
 }

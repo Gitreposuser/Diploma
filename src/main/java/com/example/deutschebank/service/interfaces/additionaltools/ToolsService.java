@@ -1,16 +1,20 @@
 package com.example.deutschebank.service.interfaces.additionaltools;
 
-import com.example.deutschebank.entity.Transaction;
+import com.example.deutschebank.model.bankbranch.GetBranchCityDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ToolsService {
-    void generateBankBranchStructureToDB(int branchNumber);
+    //
+    // Debug
+    //
+    GetBranchCityDTO getBranchCity(UUID uuid);
 
-    void generateBankBranchesStructureToDB(int quantity,
-                                           int startBranchNumber);
+    UUID generateBankBranchStructureToDB(int branchNumber);
+
+    List<UUID> generateBankBranchesStructureToDB(int quantity);
 
     void deleteAllBankBranchesFromDB();
 
@@ -18,11 +22,27 @@ public interface ToolsService {
 
     void deleteBankInfoFromDB();
 
+    UUID generateClientStructureToDB(UUID managerId);
+
+    List<UUID> generateClientsStructureToDB(int quantity,
+                                            List<UUID> managersId);
+
     void deleteAllClientsFromDB();
+
+    void generateCreditAccountToDB(UUID clientId);
+
+    void generateCreditAccountsToDB(int quantity, List<UUID> clientsId);
 
     void deleteAllCreditAccountsFromDB();
 
+    UUID generateDebitAccountToDB();
+
     void deleteAllDebitAccountsFromDB();
+
+    UUID generateEmployeeStructureToDB(UUID branchId);
+
+    List<UUID> generateEmployeesStructureToDB(int quantity,
+                                              List<UUID> branchesId);
 
     void deleteAllEmployeesFromDB();
 

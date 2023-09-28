@@ -12,12 +12,12 @@ import java.util.UUID;
 
 @Data
 public class GetClientDTO {
-    public UUID id;
-    public Employee employee;
-    public DebitAccount debitAccount;
-    public PersonalDetail personalDetail;
-    public Location location;
-    public Boolean active;
-    public LocalDateTime created;
-    public LocalDateTime updated;
+    private UUID id;
+    private Employee employee;
+    private DebitAccount debitAccount;
+    private PersonalDetail personalDetail;
+    private Location location;
+    private Boolean active;
+    private LocalDateTime created;
+    private LocalDateTime updated;
 }

@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 
 @Data
 public class CreateBankInfoDTO {
-    public String name;
-    public BigDecimal capitalization;
-    public String owner;
-    public String group;
-    public String logoUrl;
+    private String name;
+    private BigDecimal capitalization;
+    private String owner;
+    private String group;
+    private String logoUrl;
 }

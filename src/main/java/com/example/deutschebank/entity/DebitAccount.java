@@ -27,6 +27,7 @@ public class DebitAccount {
     @Column(name = "iban", length = 64, nullable = false)
     private String iban;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "debit_status", length = 20, nullable = false)
     private DebitStatus debitStatus;
 

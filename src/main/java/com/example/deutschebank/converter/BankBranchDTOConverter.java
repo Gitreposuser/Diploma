@@ -3,6 +3,7 @@ package com.example.deutschebank.converter;
 import com.example.deutschebank.entity.BankBranch;
 import com.example.deutschebank.model.bankbranch.CreateBankBranchDTO;
 import com.example.deutschebank.model.bankbranch.GetBankBranchDTO;
+import com.example.deutschebank.model.bankbranch.GetBranchCityDTO;
 import com.example.deutschebank.model.bankbranch.UpdateBankBranchDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BankBranchDTOConverter {
     private final ModelMapper modelMapper;
+
+    //
+    // Debug
+    //
+    public GetBranchCityDTO convertBankBranchToCityDTO(BankBranch bankBranch) {
+        GetBranchCityDTO getCityDTO = modelMapper
+                .typeMap(BankBranch.class, GetBranchCityDTO.class)
+                .addMapping(src -> src.getLocation().getCity(),
+                        GetBranchCityDTO::setCity)
+                .map(bankBranch);
+        return getCityDTO;
+    }
 
     public BankBranch convertCreateDTOToBankBranch(CreateBankBranchDTO createDTO) {
         return modelMapper.map(createDTO,

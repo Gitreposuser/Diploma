@@ -48,7 +48,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public void updateClientById(UpdateClientDTO updateDTO) {
-        checkIfNotExist(updateDTO.id);
+        checkIfNotExist(updateDTO.getId());
         Client client = clientDTOConverter.convertUpdateDTOToClient(updateDTO);
         clientRepository.save(client);
         log.info("Entity with id: " + client.getId() + " is updated.");

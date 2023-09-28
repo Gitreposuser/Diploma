@@ -27,7 +27,7 @@ public class WorkDetailServiceImpl implements WorkDetailService {
     @Override
     @Transactional
     public void createWorkDetail(CreateWorkDetailDTO createDTO) {
-        checkEmail(createDTO.workEmail);
+        checkEmail(createDTO.getWorkEmail());
         WorkDetail workDetail = workDetailDTOConverter
                 .convertCreateDTOToWorkDetail(createDTO);
         workDetailRepository.save(workDetail);
@@ -50,7 +50,7 @@ public class WorkDetailServiceImpl implements WorkDetailService {
     @Override
     @Transactional
     public void updateWorkDetailById(UpdateWorkDetailDTO updateDTO) {
-        checkIfNotExist(updateDTO.id);
+        checkIfNotExist(updateDTO.getId());
         checkEmail(updateDTO.getWorkEmail());
         WorkDetail workDetail = workDetailDTOConverter
                 .convertUpdateDTOToWorkDetail(updateDTO);

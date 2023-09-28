@@ -8,14 +8,14 @@ import java.util.UUID;
 
 @Data
 public class UpdatePersonalDetailDTO {
-    public UUID id;
-    public String firstName;
-    public String lastName;
-    public Sex sex;
-    public String phone;
-    public String email;
-    public Integer age;
-    public LocalDateTime birthDate;
-    public Boolean isMarried;
-    public Integer children;
+    private UUID id;
+    private String firstName;
+    private String lastName;
+    private Sex sex;
+    private String phone;
+    private String email;
+    private Integer age;
+    private LocalDateTime birthDate;
+    private Boolean isMarried;
+    private Integer children;
 }

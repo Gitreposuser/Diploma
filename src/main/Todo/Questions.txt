@@ -1,3 +1,9 @@
 1. BankBranch DTO do I need LocationId and Location object?
 2. Entity should use only Objects? Bank info entity uses "int".
 3. Should I save logo to database or only link to logo file?
+4. Should I use enum or string instead in DTO?
+5. Which types of data should I use in DTO? Or which is better?
+6. Can I use public fields in DTO or better use only private?
+7. Local variable should be always final or not?
+8. In controller better to return Response entity or object?
+9. Should controller return something when creating an object?

@@ -9,15 +9,15 @@ import java.util.UUID;
 
 @Data
 public class GetWorkDetailDTO {
-    public UUID id;
-    public String position;
-    public WorkStatus workStatus;
-    public BigDecimal salary;
-    public String workPhone;
-    public String workEmail;
-    public LocalDateTime startFrom;
-    public LocalDateTime endAt;
-    public Boolean active;
-    public LocalDateTime created;
-    public LocalDateTime updated;
+    private UUID id;
+    private String position;
+    private WorkStatus workStatus;
+    private BigDecimal salary;
+    private String workPhone;
+    private String workEmail;
+    private LocalDateTime startFrom;
+    private LocalDateTime endAt;
+    private Boolean active;
+    private LocalDateTime created;
+    private LocalDateTime updated;
 }

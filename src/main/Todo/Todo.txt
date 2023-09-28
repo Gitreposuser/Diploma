@@ -1,2 +1,3 @@
-1. Rework DTO make all fields PRIVATE!
-2. Add Generate for All entities implementation and controllers
+1. Add Generate for All entities implementation and controllers
+2. CreditAccount doesn't generate clients id's and credit status
+3. DebitAccount add enums for status field

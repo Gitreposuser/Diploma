@@ -7,7 +7,9 @@ import com.github.javafaker.Faker;
 
 import java.math.BigDecimal;
 import java.time.*;
+import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class BankDataFaker extends Faker {
     private final Random rnd;
@@ -32,6 +34,11 @@ public class BankDataFaker extends Faker {
         } else {
             return Sex.W;
         }
+    }
+
+    public UUID chooseFromList(List<UUID> uuidList) {
+        final int chosenIndex = rnd.nextInt(uuidList.size());
+        return uuidList.get(chosenIndex);
     }
 
     public BranchStatus generateBranchStatus() {

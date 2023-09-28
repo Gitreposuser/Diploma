@@ -9,13 +9,13 @@ import java.util.UUID;
 
 @Data
 public class GetCreditAccountDTO {
-    public UUID id;
-    public Client client;
-    public String creditStatus;
-    public BigDecimal debt;
-    public BigDecimal loanInterest;
-    public LocalDateTime startFrom;
-    public Boolean active;
-    public LocalDateTime created;
-    public LocalDateTime updated;
+    private UUID id;
+    private Client client;
+    private String creditStatus;
+    private BigDecimal debt;
+    private BigDecimal loanInterest;
+    private LocalDateTime startFrom;
+    private Boolean active;
+    private LocalDateTime created;
+    private LocalDateTime updated;
 }

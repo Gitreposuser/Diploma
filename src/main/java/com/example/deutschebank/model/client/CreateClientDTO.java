@@ -6,9 +6,9 @@ import java.util.UUID;
 
 @Data
 public class CreateClientDTO {
-    public UUID managerId;
-    public UUID debitAccountId;
-    public UUID personalDetailId;
-    public UUID locationId;
-    public Boolean active;
+    private UUID managerId;
+    private UUID debitAccountId;
+    private UUID personalDetailId;
+    private UUID locationId;
+    private Boolean active;
 }

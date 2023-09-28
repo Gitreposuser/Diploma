@@ -8,11 +8,11 @@ import java.util.UUID;
 
 @Data
 public class UpdateDebitAccountDTO {
-    public UUID id;
-    public String iban;
-    public String debitStatus;
-    public BigDecimal balance;
-    public BigDecimal depositInterest;
-    public BigDecimal creditLine;
-    public LocalDateTime startFrom;
+    private UUID id;
+    private String iban;
+    private String debitStatus;
+    private BigDecimal balance;
+    private BigDecimal depositInterest;
+    private BigDecimal creditLine;
+    private LocalDateTime startFrom;
 }

@@ -8,14 +8,14 @@ import java.util.UUID;
 
 @Data
 public class GetDebitAccountDTO {
-    public UUID id;
-    public String iban;
-    public String debitStatus;
-    public BigDecimal balance;
-    public BigDecimal depositInterest;
-    public BigDecimal creditLine;
-    public LocalDateTime startFrom;
-    public Boolean active;
-    public LocalDateTime created;
-    public LocalDateTime updated;
+    private UUID id;
+    private String iban;
+    private String debitStatus;
+    private BigDecimal balance;
+    private BigDecimal depositInterest;
+    private BigDecimal creditLine;
+    private LocalDateTime startFrom;
+    private Boolean active;
+    private LocalDateTime created;
+    private LocalDateTime updated;
 }

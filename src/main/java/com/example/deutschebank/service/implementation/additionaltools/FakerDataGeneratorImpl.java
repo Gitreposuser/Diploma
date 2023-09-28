@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -27,6 +28,11 @@ public class FakerDataGeneratorImpl implements RandomDataGenerator {
     private long maxTransactionValue;
 
     @Override
+    public UUID chooseFromList(List<UUID> uuidList) {
+        return faker.chooseFromList(uuidList);
+    }
+
+    @Override
     public BankBranch generateBankBranch(int branchNumber, UUID locationId) {
         BankBranch bankBranch = new BankBranch();
         bankBranch.setBranchNumber(branchNumber);
@@ -34,7 +40,7 @@ public class FakerDataGeneratorImpl implements RandomDataGenerator {
         bankBranch.setLocationId(locationId);
         bankBranch.setGeneralPhone(faker.phoneNumber().phoneNumber());
         bankBranch.setHotLine(faker.phoneNumber().cellPhone());
-        Boolean active;
+        boolean active;
         if (bankBranch.getBranchStatus() == BranchStatus.CLOSED) {
             active = false;
         } else {
@@ -89,6 +95,8 @@ public class FakerDataGeneratorImpl implements RandomDataGenerator {
         final int maxCreditValue = 500000;
         creditAccount.setDebt(new BigDecimal(faker.number()
                 .numberBetween(minCreditValue, maxCreditValue)));
+        final BigDecimal loanInterest = new BigDecimal(3.0);
+        creditAccount.setLoanInterest(loanInterest);
         creditAccount.setStartFrom(faker
                 .generateDateTimeFromYearToNow(startYear));
         creditAccount.setActive(faker.bool().bool());
@@ -99,10 +107,13 @@ public class FakerDataGeneratorImpl implements RandomDataGenerator {
     @Override
     public DebitAccount generateDebitAccount() {
         DebitAccount debitAccount = new DebitAccount();
+        debitAccount.setIban(faker.finance().iban());
         debitAccount.setDebitStatus(faker.generateDebitStatus());
         debitAccount.setBalance(faker.generateAmount());
-        debitAccount.setDepositInterest(new BigDecimal(2.5));
-        debitAccount.setCreditLine(new BigDecimal(5000));
+        final BigDecimal debitInterest= new BigDecimal(2.5);
+        debitAccount.setDepositInterest(debitInterest);
+        final BigDecimal creditAmount = new BigDecimal(5000);
+        debitAccount.setCreditLine(creditAmount);
         debitAccount.setStartFrom(faker
                 .generateDateTimeFromYearToNow(startYear));
         debitAccount.setActive(faker.bool().bool());

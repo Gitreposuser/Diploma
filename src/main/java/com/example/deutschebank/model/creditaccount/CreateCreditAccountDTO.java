@@ -8,10 +8,10 @@ import java.util.UUID;
 
 @Data
 public class CreateCreditAccountDTO {
-    public UUID clientId;
-    public String creditStatus;
-    public BigDecimal debt;
-    public BigDecimal loanInterest;
-    public LocalDateTime startFrom;
-    public Boolean active;
+    private UUID clientId;
+    private String creditStatus;
+    private BigDecimal debt;
+    private BigDecimal loanInterest;
+    private LocalDateTime startFrom;
+    private Boolean active;
 }

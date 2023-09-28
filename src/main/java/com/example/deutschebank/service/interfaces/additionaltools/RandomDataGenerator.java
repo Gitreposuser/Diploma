@@ -2,9 +2,12 @@ package com.example.deutschebank.service.interfaces.additionaltools;
 
 import com.example.deutschebank.entity.*;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface RandomDataGenerator {
+
+    UUID chooseFromList(List<UUID> uuidList);
 
     BankBranch generateBankBranch(int branchNumber,
                                   UUID locationId);

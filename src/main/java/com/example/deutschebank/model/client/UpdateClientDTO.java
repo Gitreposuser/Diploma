@@ -5,9 +5,9 @@ import java.util.UUID;
 
 @Data
 public class UpdateClientDTO {
-    public UUID id;
-    public UUID managerId;
-    public UUID debitAccountId;
-    public UUID personalDetailId;
-    public UUID locationId;
+    private UUID id;
+    private UUID managerId;
+    private UUID debitAccountId;
+    private UUID personalDetailId;
+    private UUID locationId;
 }

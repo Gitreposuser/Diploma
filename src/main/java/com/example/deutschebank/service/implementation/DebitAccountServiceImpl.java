@@ -49,7 +49,7 @@ public class DebitAccountServiceImpl implements DebitAccountService {
     @Override
     @Transactional
     public void updateDebitAccountById(UpdateDebitAccountDTO updateDTO) {
-        checkIfNotExist(updateDTO.id);
+        checkIfNotExist(updateDTO.getId());
         DebitAccount debitAccount =
                 debitAccountDTOConverter.convertUpdateDTOToDebitAccount(updateDTO);
         debitAccountRepository.save(debitAccount);

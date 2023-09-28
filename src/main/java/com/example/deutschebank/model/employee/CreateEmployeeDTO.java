@@ -6,9 +6,9 @@ import java.util.UUID;
 
 @Data
 public class CreateEmployeeDTO {
-    public UUID personalDetailId;
-    public UUID workDetailId;
-    public UUID locationId;
-    public UUID branchId;
-    public Boolean active;
+    private UUID personalDetailId;
+    private UUID workDetailId;
+    private UUID locationId;
+    private UUID branchId;
+    private Boolean active;
 }

@@ -48,7 +48,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     @Transactional
     public void updateLocation(UpdateLocationDTO updateDTO) {
-        checkIfNotExist(updateDTO.id);
+        checkIfNotExist(updateDTO.getId());
         Location location =
                 locationDTOConverter.convertUpdateDTOToLocation(updateDTO);
         locationRepository.save(location);

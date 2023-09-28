@@ -7,14 +7,14 @@ import java.time.LocalDateTime;
 
 @Data
 public class GetBankInfoDTO {
-    public int id;
-    public String name;
-    public String iban;
-    public BigDecimal balance;
-    public BigDecimal capitalization;
-    public String owner;
-    public String group;
-    public String logoUrl;
-    public LocalDateTime created;
-    public LocalDateTime updated;
+    private int id;
+    private String name;
+    private String iban;
+    private BigDecimal balance;
+    private BigDecimal capitalization;
+    private String owner;
+    private String group;
+    private String logoUrl;
+    private LocalDateTime created;
+    private LocalDateTime updated;
 }

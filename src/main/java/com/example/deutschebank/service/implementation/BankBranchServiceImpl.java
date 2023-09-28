@@ -27,7 +27,7 @@ public class BankBranchServiceImpl implements BankBranchService {
     @Override
     @Transactional
     public void createBankBranch(CreateBankBranchDTO createDTO) {
-        checkIfBranchNotUnique(createDTO.branchNumber);
+        checkIfBranchNotUnique(createDTO.getBranchNumber());
         BankBranch bankBranch =
                 bankBranchDTOConverter.convertCreateDTOToBankBranch(createDTO);
         bankBranchRepository.save(bankBranch);
@@ -50,8 +50,8 @@ public class BankBranchServiceImpl implements BankBranchService {
     @Override
     @Transactional
     public void updateBankBranchById(UpdateBankBranchDTO updateDTO) {
-        checkIfNotExist(updateDTO.id);
-        checkIfBranchNotUnique(updateDTO.branchNumber);
+        checkIfNotExist(updateDTO.getId());
+        checkIfBranchNotUnique(updateDTO.getBranchNumber());
         BankBranch bankBranch =
                 bankBranchDTOConverter.convertUpdateDTOToBankBranch(updateDTO);
         bankBranchRepository.save(bankBranch);

@@ -1,10 +1,15 @@
 package com.example.deutschebank.controller;
 
+import com.example.deutschebank.model.bankbranch.GetBranchCityDTO;
 import com.example.deutschebank.service.interfaces.additionaltools.ToolsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -13,9 +18,33 @@ import org.springframework.web.bind.annotation.*;
 public class ToolsController {
     private final ToolsService toolsService;
 
-    @GetMapping("/generate-db")
-    public void generateDataBase() {
-        // Code something already!!!
+    @GetMapping("/generate-db/branch-quantity/{branches_quantity}/employee" +
+            "-quantity/{employees_quantity}/client-quantity/{clients_quantity" +
+            "}/credit-quantity/{credits_quantity}")
+    public void generateDataBase(@PathVariable int branches_quantity,
+                                 @PathVariable int employees_quantity,
+                                 @PathVariable int clients_quantity,
+                                 @PathVariable int credits_quantity) {
+        toolsService.generateBankInfoToDB();
+        List<UUID> branchesId =
+                toolsService.generateBankBranchesStructureToDB(branches_quantity);
+        List<UUID> employeesId = toolsService
+                .generateEmployeesStructureToDB(employees_quantity, branchesId);
+        List<UUID> clientsId =
+                toolsService.generateClientsStructureToDB(clients_quantity,
+                        employeesId);
+        toolsService.generateCreditAccountsToDB(credits_quantity, clientsId);
+    }
+
+    //
+    // Debug
+    //
+    @GetMapping("/bank-branch/get/city/by-id/{uuid}")
+    public ResponseEntity<GetBranchCityDTO> getBranchCityFromDB(@PathVariable UUID uuid) {
+        GetBranchCityDTO getBranchCityDTO =
+                toolsService.getBranchCity(uuid);
+        log.info(getBranchCityDTO.toString());
+        return ResponseEntity.status(HttpStatus.OK).body(getBranchCityDTO);
     }
 
     @GetMapping("/bank-branch-structure/generate/by-branch-number/{branchNumber}")
@@ -23,11 +52,9 @@ public class ToolsController {
         toolsService.generateBankBranchStructureToDB(branchNumber);
     }
 
-    @GetMapping("/bank-branch-structure/generate/quantity/{quantity}/by" +
-            "-starting-branch-number/{startingBranchNumber}")
-    public void generateBankBranchesStructureToDB(@PathVariable int quantity,
-                                                  @PathVariable int startingBranchNumber) {
-        toolsService.generateBankBranchesStructureToDB(quantity, startingBranchNumber);
+    @GetMapping("/bank-branch-structure/generate/quantity/{quantity}")
+    public void generateBankBranchesStructureToDB(@PathVariable int quantity) {
+        toolsService.generateBankBranchesStructureToDB(quantity);
     }
 
     @DeleteMapping("/bank-branch/delete/all")
@@ -45,6 +72,11 @@ public class ToolsController {
         toolsService.deleteBankInfoFromDB();
     }
 
+    @GetMapping("/client/generate-structure/with/manager-id/{uuid}")
+    public void generateClientStructureToDB(@PathVariable UUID uuid) {
+        toolsService.generateClientStructureToDB(uuid);
+    }
+
     @DeleteMapping("/client/delete/all")
     public void deleteAllClientsFromDB() {
         toolsService.deleteAllClientsFromDB();
@@ -58,6 +90,11 @@ public class ToolsController {
     @DeleteMapping("/debit-account/delete/all")
     public void deleteAllDebitAccountsFromDB() {
         toolsService.deleteAllDebitAccountsFromDB();
+    }
+
+    @GetMapping("/employee/generate-structure/with/branch-id/{uuid}")
+    public void generateEmployeeStructureToDB(@PathVariable UUID uuid) {
+        toolsService.generateEmployeeStructureToDB(uuid);
     }
 
     @DeleteMapping("/employee/delete/all")

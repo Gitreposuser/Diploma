@@ -9,13 +9,13 @@ import java.util.UUID;
 
 @Data
 public class GetBankBranchDTO {
-    public UUID id;
-    public Integer branchNumber;
-    public BranchStatus branchStatus;
-    public Location location;
-    public String generalPhone;
-    public String hotLine;
-    public Boolean active;
-    public LocalDateTime created;
-    public LocalDateTime updated;
+    private UUID id;
+    private Integer branchNumber;
+    private BranchStatus branchStatus;
+    private Location location;
+    private String generalPhone;
+    private String hotLine;
+    private Boolean active;
+    private LocalDateTime created;
+    private LocalDateTime updated;
 }
