@@ -1,25 +1,19 @@
 package com.example.deutschebank.service.implementation;
 
 import com.example.deutschebank.converter.EmployeeDTOConverter;
-import com.example.deutschebank.converter.WorkDetailDTOConverter;
 import com.example.deutschebank.entity.Employee;
-import com.example.deutschebank.entity.WorkDetail;
 import com.example.deutschebank.exception.BadOperationException;
-import com.example.deutschebank.model.employee.CreateEmployeeDTO;
-import com.example.deutschebank.model.employee.GetEmployeeDTO;
-import com.example.deutschebank.model.employee.UpdateEmployeeDTO;
-import com.example.deutschebank.model.workdetail.GetWorkDetailDTO;
-import com.example.deutschebank.model.workdetail.UpdateWorkDetailDTO;
+import com.example.deutschebank.dto.employee.CreateEmployeeDTO;
+import com.example.deutschebank.dto.employee.GetEmployeeDTO;
+import com.example.deutschebank.dto.employee.UpdateEmployeeDTO;
 import com.example.deutschebank.repository.EmployeeRepository;
 import com.example.deutschebank.service.interfaces.EmployeeService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

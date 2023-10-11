@@ -1,9 +1,8 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.entity.BankBranch;
-import com.example.deutschebank.model.bankbranch.CreateBankBranchDTO;
-import com.example.deutschebank.model.bankbranch.GetBankBranchDTO;
-import com.example.deutschebank.model.bankbranch.UpdateBankBranchDTO;
+import com.example.deutschebank.dto.bankbranch.CreateBankBranchDTO;
+import com.example.deutschebank.dto.bankbranch.GetBankBranchDTO;
+import com.example.deutschebank.dto.bankbranch.UpdateBankBranchDTO;
 import com.example.deutschebank.service.interfaces.BankBranchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,8 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.model.debitaccount.CreateDebitAccountDTO;
-import com.example.deutschebank.model.debitaccount.GetDebitAccountDTO;
-import com.example.deutschebank.model.debitaccount.UpdateDebitAccountDTO;
+import com.example.deutschebank.dto.debitaccount.CreateDebitAccountDTO;
+import com.example.deutschebank.dto.debitaccount.GetDebitAccountDTO;
+import com.example.deutschebank.dto.debitaccount.UpdateDebitAccountDTO;
 import com.example.deutschebank.service.interfaces.DebitAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,9 @@
 package com.example.deutschebank.converter;
 
 import com.example.deutschebank.entity.Location;
-import com.example.deutschebank.model.location.CreateLocationDTO;
-import com.example.deutschebank.model.location.GetLocationDTO;
-import com.example.deutschebank.model.location.UpdateLocationDTO;
+import com.example.deutschebank.dto.location.CreateLocationDTO;
+import com.example.deutschebank.dto.location.GetLocationDTO;
+import com.example.deutschebank.dto.location.UpdateLocationDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

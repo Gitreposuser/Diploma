@@ -2,8 +2,7 @@ package com.example.deutschebank.service.implementation.additionaltools;
 
 import com.example.deutschebank.entity.*;
 import com.example.deutschebank.entity.enums.BranchStatus;
-import com.example.deutschebank.service.interfaces.additionaltools
-        .RandomDataGenerator;
+import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGeneratorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +18,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Primary
-public class FakerDataGeneratorImpl implements RandomDataGenerator {
+public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
     private final BankDataFaker faker;
     @Value(value = "${randomDataGenerator.startYear}")
     private int startYear;

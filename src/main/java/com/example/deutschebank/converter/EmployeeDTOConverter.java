@@ -1,9 +1,9 @@
 package com.example.deutschebank.converter;
 
 import com.example.deutschebank.entity.Employee;
-import com.example.deutschebank.model.employee.CreateEmployeeDTO;
-import com.example.deutschebank.model.employee.GetEmployeeDTO;
-import com.example.deutschebank.model.employee.UpdateEmployeeDTO;
+import com.example.deutschebank.dto.employee.CreateEmployeeDTO;
+import com.example.deutschebank.dto.employee.GetEmployeeDTO;
+import com.example.deutschebank.dto.employee.UpdateEmployeeDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

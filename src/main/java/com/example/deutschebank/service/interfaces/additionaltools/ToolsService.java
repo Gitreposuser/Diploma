@@ -1,6 +1,6 @@
 package com.example.deutschebank.service.interfaces.additionaltools;
 
-import com.example.deutschebank.model.bankbranch.GetBranchCityDTO;
+import com.example.deutschebank.dto.bankbranch.GetBranchCityDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -78,5 +78,5 @@ public interface ToolsService {
 
     ResponseEntity<byte[]> getRawLogo();
 
-    ResponseEntity<String> runTest();
+    void runTest();
 }

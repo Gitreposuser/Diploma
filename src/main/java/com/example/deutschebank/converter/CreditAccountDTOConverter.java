@@ -1,9 +1,9 @@
 package com.example.deutschebank.converter;
 
 import com.example.deutschebank.entity.CreditAccount;
-import com.example.deutschebank.model.creditaccount.CreateCreditAccountDTO;
-import com.example.deutschebank.model.creditaccount.GetCreditAccountDTO;
-import com.example.deutschebank.model.creditaccount.UpdateCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.GetCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.UpdateCreditAccountDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

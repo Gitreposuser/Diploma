@@ -1,9 +1,9 @@
 package com.example.deutschebank.converter;
 
 import com.example.deutschebank.entity.Client;
-import com.example.deutschebank.model.client.CreateClientDTO;
-import com.example.deutschebank.model.client.GetClientDTO;
-import com.example.deutschebank.model.client.UpdateClientDTO;
+import com.example.deutschebank.dto.client.CreateClientDTO;
+import com.example.deutschebank.dto.client.GetClientDTO;
+import com.example.deutschebank.dto.client.UpdateClientDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

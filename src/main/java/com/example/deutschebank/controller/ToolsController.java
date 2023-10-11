@@ -1,6 +1,6 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.model.bankbranch.GetBranchCityDTO;
+import com.example.deutschebank.dto.bankbranch.GetBranchCityDTO;
 import com.example.deutschebank.service.interfaces.additionaltools.ToolsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -183,7 +183,7 @@ public class ToolsController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<String> runTest() {
-        return toolsService.runTest();
+    public void runTest() {
+        toolsService.runTest();
     }
 }

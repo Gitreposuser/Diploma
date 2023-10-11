@@ -1,9 +1,9 @@
 package com.example.deutschebank.service.interfaces;
 
 
-import com.example.deutschebank.model.location.CreateLocationDTO;
-import com.example.deutschebank.model.location.GetLocationDTO;
-import com.example.deutschebank.model.location.UpdateLocationDTO;
+import com.example.deutschebank.dto.location.CreateLocationDTO;
+import com.example.deutschebank.dto.location.GetLocationDTO;
+import com.example.deutschebank.dto.location.UpdateLocationDTO;
 
 import java.util.List;
 import java.util.UUID;

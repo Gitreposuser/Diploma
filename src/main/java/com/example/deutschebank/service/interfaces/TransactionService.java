@@ -1,7 +1,7 @@
 package com.example.deutschebank.service.interfaces;
 
-import com.example.deutschebank.model.transaction.CreateTransactionDTO;
-import com.example.deutschebank.model.transaction.GetTransactionDTO;
+import com.example.deutschebank.dto.transaction.CreateTransactionDTO;
+import com.example.deutschebank.dto.transaction.GetTransactionDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

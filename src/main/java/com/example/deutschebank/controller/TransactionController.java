@@ -1,7 +1,7 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.model.transaction.CreateTransactionDTO;
-import com.example.deutschebank.model.transaction.GetTransactionDTO;
+import com.example.deutschebank.dto.transaction.CreateTransactionDTO;
+import com.example.deutschebank.dto.transaction.GetTransactionDTO;
 import com.example.deutschebank.service.interfaces.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

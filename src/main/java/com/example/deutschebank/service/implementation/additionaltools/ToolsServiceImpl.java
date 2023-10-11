@@ -2,10 +2,11 @@ package com.example.deutschebank.service.implementation.additionaltools;
 
 import com.example.deutschebank.converter.BankBranchDTOConverter;
 import com.example.deutschebank.entity.*;
-import com.example.deutschebank.model.bankbranch.GetBranchCityDTO;
+import com.example.deutschebank.dto.bankbranch.GetBranchCityDTO;
 import com.example.deutschebank.repository.*;
+import com.example.deutschebank.service.interfaces.additionaltools.EmailSenderService;
 import com.example.deutschebank.service.interfaces.additionaltools.ToolsService;
-import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGenerator;
+import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGeneratorService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +35,8 @@ public class ToolsServiceImpl implements ToolsService {
     private final PersonalDetailRepository personalDetailRepository;
     private final WorkDetailRepository workDetailRepository;
     private final TransactionRepository transactionRepository;
-    private final RandomDataGenerator randomDataGenerator;
+    private final RandomDataGeneratorService randomDataGenerator;
+    private final EmailSenderService emailSenderService;
 
     //
     // Debug
@@ -334,12 +335,17 @@ public class ToolsServiceImpl implements ToolsService {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
     }
 
-    public ResponseEntity<String> runTest() {
-        //String result = faker.date().birthday(18, 90).toString();
-
-        // Create a custom clock with a fixed time
-        Instant customInstant = Instant.parse("2003-09-17T12:00:00Z");
-        Clock customClock = Clock.fixed(customInstant, ZoneId.systemDefault());
-        return ResponseEntity.status(HttpStatus.OK).body(customClock.toString());
+    public void runTest() {
+        String toEmail = "vlad77solo@gmail.com";
+        //String toEmail = "alpina1904@gmail.com";
+        String [] cc = {"zepagaci@tutuapp.bid"};
+        String [] bcc = {"yifevi4551@hapincy.com"};
+        String subject = "email sender works!";
+        String body = "Congratulations! You successfully send a letter";
+        emailSenderService.sendEmail(toEmail,
+                cc,
+                bcc,
+                subject,
+                body);
     }
 }

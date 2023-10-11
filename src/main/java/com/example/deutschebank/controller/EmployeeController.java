@@ -1,8 +1,8 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.model.employee.CreateEmployeeDTO;
-import com.example.deutschebank.model.employee.GetEmployeeDTO;
-import com.example.deutschebank.model.employee.UpdateEmployeeDTO;
+import com.example.deutschebank.dto.employee.CreateEmployeeDTO;
+import com.example.deutschebank.dto.employee.GetEmployeeDTO;
+import com.example.deutschebank.dto.employee.UpdateEmployeeDTO;
 import com.example.deutschebank.service.interfaces.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -2,8 +2,8 @@ package com.example.deutschebank.service.implementation;
 
 import com.example.deutschebank.converter.TransactionDTOConverter;
 import com.example.deutschebank.entity.Transaction;
-import com.example.deutschebank.model.transaction.CreateTransactionDTO;
-import com.example.deutschebank.model.transaction.GetTransactionDTO;
+import com.example.deutschebank.dto.transaction.CreateTransactionDTO;
+import com.example.deutschebank.dto.transaction.GetTransactionDTO;
 import com.example.deutschebank.repository.TransactionRepository;
 import com.example.deutschebank.service.interfaces.TransactionService;
 import jakarta.transaction.Transactional;

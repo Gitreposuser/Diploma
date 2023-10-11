@@ -1,8 +1,8 @@
 package com.example.deutschebank.service.interfaces;
 
-import com.example.deutschebank.model.creditaccount.CreateCreditAccountDTO;
-import com.example.deutschebank.model.creditaccount.GetCreditAccountDTO;
-import com.example.deutschebank.model.creditaccount.UpdateCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.GetCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.UpdateCreditAccountDTO;
 
 import java.util.List;
 import java.util.UUID;

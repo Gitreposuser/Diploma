@@ -1,8 +1,8 @@
 package com.example.deutschebank.service.interfaces;
 
-import com.example.deutschebank.model.bankbranch.CreateBankBranchDTO;
-import com.example.deutschebank.model.bankbranch.GetBankBranchDTO;
-import com.example.deutschebank.model.bankbranch.UpdateBankBranchDTO;
+import com.example.deutschebank.dto.bankbranch.CreateBankBranchDTO;
+import com.example.deutschebank.dto.bankbranch.GetBankBranchDTO;
+import com.example.deutschebank.dto.bankbranch.UpdateBankBranchDTO;
 
 import java.util.List;
 import java.util.UUID;

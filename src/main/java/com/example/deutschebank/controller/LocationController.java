@@ -1,8 +1,8 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.model.location.CreateLocationDTO;
-import com.example.deutschebank.model.location.GetLocationDTO;
-import com.example.deutschebank.model.location.UpdateLocationDTO;
+import com.example.deutschebank.dto.location.CreateLocationDTO;
+import com.example.deutschebank.dto.location.GetLocationDTO;
+import com.example.deutschebank.dto.location.UpdateLocationDTO;
 import com.example.deutschebank.service.interfaces.LocationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

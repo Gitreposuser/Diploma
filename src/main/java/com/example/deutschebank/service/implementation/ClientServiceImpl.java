@@ -3,9 +3,9 @@ package com.example.deutschebank.service.implementation;
 import com.example.deutschebank.converter.ClientDTOConverter;
 import com.example.deutschebank.entity.Client;
 import com.example.deutschebank.exception.BadOperationException;
-import com.example.deutschebank.model.client.CreateClientDTO;
-import com.example.deutschebank.model.client.GetClientDTO;
-import com.example.deutschebank.model.client.UpdateClientDTO;
+import com.example.deutschebank.dto.client.CreateClientDTO;
+import com.example.deutschebank.dto.client.GetClientDTO;
+import com.example.deutschebank.dto.client.UpdateClientDTO;
 import com.example.deutschebank.repository.ClientRepository;
 import com.example.deutschebank.service.interfaces.ClientService;
 import jakarta.transaction.Transactional;
@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

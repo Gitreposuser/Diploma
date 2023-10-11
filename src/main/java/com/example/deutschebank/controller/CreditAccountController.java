@@ -1,8 +1,8 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.model.creditaccount.CreateCreditAccountDTO;
-import com.example.deutschebank.model.creditaccount.GetCreditAccountDTO;
-import com.example.deutschebank.model.creditaccount.UpdateCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.GetCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.UpdateCreditAccountDTO;
 import com.example.deutschebank.service.interfaces.CreditAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

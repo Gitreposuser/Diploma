@@ -1,8 +1,8 @@
 package com.example.deutschebank.service.interfaces;
 
-import com.example.deutschebank.model.workdetail.CreateWorkDetailDTO;
-import com.example.deutschebank.model.workdetail.GetWorkDetailDTO;
-import com.example.deutschebank.model.workdetail.UpdateWorkDetailDTO;
+import com.example.deutschebank.dto.workdetail.CreateWorkDetailDTO;
+import com.example.deutschebank.dto.workdetail.GetWorkDetailDTO;
+import com.example.deutschebank.dto.workdetail.UpdateWorkDetailDTO;
 
 import java.util.List;
 import java.util.UUID;

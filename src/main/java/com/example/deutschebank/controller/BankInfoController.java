@@ -1,8 +1,8 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.model.bankinfo.CreateBankInfoDTO;
-import com.example.deutschebank.model.bankinfo.GetBankInfoDTO;
-import com.example.deutschebank.model.bankinfo.UpdateBankInfoDTO;
+import com.example.deutschebank.dto.bankinfo.CreateBankInfoDTO;
+import com.example.deutschebank.dto.bankinfo.GetBankInfoDTO;
+import com.example.deutschebank.dto.bankinfo.UpdateBankInfoDTO;
 import com.example.deutschebank.service.interfaces.BankInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

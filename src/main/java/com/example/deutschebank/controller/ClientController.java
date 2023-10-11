@@ -1,10 +1,8 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.entity.Client;
-import com.example.deutschebank.model.client.CreateClientDTO;
-import com.example.deutschebank.model.client.GetClientDTO;
-import com.example.deutschebank.model.client.UpdateClientDTO;
-import com.example.deutschebank.model.workdetail.UpdateWorkDetailDTO;
+import com.example.deutschebank.dto.client.CreateClientDTO;
+import com.example.deutschebank.dto.client.GetClientDTO;
+import com.example.deutschebank.dto.client.UpdateClientDTO;
 import com.example.deutschebank.service.interfaces.ClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j

@@ -1,10 +1,10 @@
 package com.example.deutschebank.converter;
 
 import com.example.deutschebank.entity.BankBranch;
-import com.example.deutschebank.model.bankbranch.CreateBankBranchDTO;
-import com.example.deutschebank.model.bankbranch.GetBankBranchDTO;
-import com.example.deutschebank.model.bankbranch.GetBranchCityDTO;
-import com.example.deutschebank.model.bankbranch.UpdateBankBranchDTO;
+import com.example.deutschebank.dto.bankbranch.CreateBankBranchDTO;
+import com.example.deutschebank.dto.bankbranch.GetBankBranchDTO;
+import com.example.deutschebank.dto.bankbranch.GetBranchCityDTO;
+import com.example.deutschebank.dto.bankbranch.UpdateBankBranchDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

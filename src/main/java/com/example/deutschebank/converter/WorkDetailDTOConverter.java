@@ -1,9 +1,9 @@
 package com.example.deutschebank.converter;
 
 import com.example.deutschebank.entity.WorkDetail;
-import com.example.deutschebank.model.workdetail.CreateWorkDetailDTO;
-import com.example.deutschebank.model.workdetail.GetWorkDetailDTO;
-import com.example.deutschebank.model.workdetail.UpdateWorkDetailDTO;
+import com.example.deutschebank.dto.workdetail.CreateWorkDetailDTO;
+import com.example.deutschebank.dto.workdetail.GetWorkDetailDTO;
+import com.example.deutschebank.dto.workdetail.UpdateWorkDetailDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
