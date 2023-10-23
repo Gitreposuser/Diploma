@@ -2,6 +2,7 @@ package com.example.deutschebank.service.interfaces;
 
 import com.example.deutschebank.dto.bankbranch.CreateBankBranchDTO;
 import com.example.deutschebank.dto.bankbranch.GetBankBranchDTO;
+import com.example.deutschebank.dto.bankbranch.GetBankBranchInfoDTO;
 import com.example.deutschebank.dto.bankbranch.UpdateBankBranchDTO;
 
 import java.util.List;
@@ -12,9 +13,15 @@ public interface BankBranchService {
 
     GetBankBranchDTO getBankBranchById(UUID uuid);
 
+    GetBankBranchDTO getBankBranchByNumber(Integer branchNumber);
+
+    GetBankBranchInfoDTO getBankBranchInfoByNumber(Integer branchNumber);
+
+    List<GetBankBranchDTO> getAllActiveBankBranches();
+
     List<GetBankBranchDTO> getAllBankBranches();
 
     void updateBankBranchById(UpdateBankBranchDTO updateDTO);
 
-    void deleteBankBranchById(UUID uuid);
+    void markBankBranchAsDeletedById(UUID uuid);
 }

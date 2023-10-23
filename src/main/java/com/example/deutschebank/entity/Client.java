@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.REFRESH;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,37 +24,21 @@ public class Client {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "manager_id", nullable = false)
-    private UUID managerId;
-
-    @OneToOne
-    @JoinColumn(name = "manager_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
-    private Employee employee;
-
-    @Column(name = "debit_account_id", nullable = false)
-    private UUID debitAccountId;
-
-    @OneToOne
-    @JoinColumn(name = "debit_account_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
-    private DebitAccount debitAccount;
-
-    @Column(name = "personal_detail_id", nullable = false)
-    private UUID personalDetailId;
-
-    @OneToOne
-    @JoinColumn(name = "personal_detail_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
+    @OneToOne(cascade = {MERGE, REFRESH}, orphanRemoval = true)
+    @JoinColumn(name = "personal_detail_id", referencedColumnName = "id")
     private PersonalDetail personalDetail;
 
-    @Column(name = "location_id", nullable = false)
-    private UUID locationId;
+    @OneToOne(cascade = {MERGE, REFRESH}, orphanRemoval = true)
+    @JoinColumn(name = "debit_account_id", referencedColumnName = "id")
+    private DebitAccount debitAccount;
 
-    @OneToOne
-    @JoinColumn(name = "location_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
+    @OneToOne(cascade = {MERGE, REFRESH}, orphanRemoval = true)
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
+
+    @OneToOne(cascade = {MERGE, REFRESH})
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    private Employee employee;
 
     @Column(name = "active")
     private Boolean active;

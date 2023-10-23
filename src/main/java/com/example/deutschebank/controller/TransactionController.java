@@ -25,14 +25,14 @@ public class TransactionController {
         transactionService.createTransaction(createDTO);
     }
 
-    @GetMapping(value = "/get-all")
+    @GetMapping(value = "/get/all")
     public ResponseEntity<List<GetTransactionDTO>> getAllTransactions() {
         List<GetTransactionDTO> getAllDTOs =
                 transactionService.getAllTransactions();
         return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
-    @GetMapping(value = "/get/emitter/by-iban/{iban}")
+    @GetMapping(value = "/get/emitter/by/iban/{iban}")
     public ResponseEntity<List<GetTransactionDTO>>
     getTransactionsByEmitterIBAN(@PathVariable String iban) {
         List<GetTransactionDTO> allByEmitter =
@@ -40,7 +40,7 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.OK).body(allByEmitter);
     }
 
-    @GetMapping(value = "/get/receiver/by-iban/{iban}")
+    @GetMapping(value = "/get/receiver/by/iban/{iban}")
     public ResponseEntity<List<GetTransactionDTO>>
     getTransactionsByReceiverIBAN(@PathVariable String iban) {
         List<GetTransactionDTO> allByReceiver =

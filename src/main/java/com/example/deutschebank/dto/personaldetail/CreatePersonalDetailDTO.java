@@ -16,5 +16,4 @@ public class CreatePersonalDetailDTO {
     private LocalDateTime birthDate;
     private Boolean isMarried;
     private Integer children;
-    private Boolean active;
 }

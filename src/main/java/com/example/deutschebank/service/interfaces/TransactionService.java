@@ -22,4 +22,6 @@ public interface TransactionService {
 
     List<GetTransactionDTO> getTransactionsByCreatedBetween(LocalDateTime from,
                                                             LocalDateTime to);
+
+    BigDecimal getMinAmountByEmitterIban(String iban);
 }

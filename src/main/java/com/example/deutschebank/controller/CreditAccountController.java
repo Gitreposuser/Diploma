@@ -25,7 +25,7 @@ public class CreditAccountController {
         creditAccountService.createCreditAccount(createDTO);
     }
 
-    @GetMapping(value = "/get/by-id/{uuid}")
+    @GetMapping(value = "/get/by/id/{uuid}")
     public ResponseEntity<GetCreditAccountDTO> getCreditAccountById(@PathVariable UUID uuid) {
         GetCreditAccountDTO getDTO = creditAccountService.getCreditAccountById(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(getDTO);
@@ -38,7 +38,7 @@ public class CreditAccountController {
         return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
-    @PutMapping(value = "/update/by-id")
+    @PutMapping(value = "/update/by/id")
     public void updateCreditAccountById(@RequestBody UpdateCreditAccountDTO updateDTO) {
         creditAccountService.updateCreditAccountById(updateDTO);
     }

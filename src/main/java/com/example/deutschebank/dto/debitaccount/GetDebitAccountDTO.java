@@ -15,7 +15,6 @@ public class GetDebitAccountDTO {
     private BigDecimal depositInterest;
     private BigDecimal creditLine;
     private LocalDateTime startFrom;
-    private Boolean active;
     private LocalDateTime created;
     private LocalDateTime updated;
 }

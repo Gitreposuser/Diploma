@@ -17,6 +17,10 @@ public class BankInfoDTOConverter {
         return modelMapper.map(createDTO, BankInfo.class);
     }
 
+    public CreateBankInfoDTO convertBankInfoToCreateDTO(BankInfo bankInfo) {
+        return modelMapper.map(bankInfo, CreateBankInfoDTO.class);
+    }
+
     public GetBankInfoDTO convertBankInfoToGetDTO(BankInfo bankInfo) {
         return modelMapper.map(bankInfo, GetBankInfoDTO.class);
     }

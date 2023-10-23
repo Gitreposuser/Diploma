@@ -36,9 +36,9 @@ public class BankDataFaker extends Faker {
         }
     }
 
-    public UUID chooseFromList(List<UUID> uuidList) {
-        final int chosenIndex = rnd.nextInt(uuidList.size());
-        return uuidList.get(chosenIndex);
+    public <T> T chooseFromList(List<T> chooseList) {
+        final int chosenIndex = rnd.nextInt(chooseList.size());
+        return chooseList.get(chosenIndex);
     }
 
     public BranchStatus generateBranchStatus() {

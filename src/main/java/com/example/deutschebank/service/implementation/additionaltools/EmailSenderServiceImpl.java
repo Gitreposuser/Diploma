@@ -1,9 +1,9 @@
 package com.example.deutschebank.service.implementation.additionaltools;
 
-import com.example.deutschebank.dto.additionaldto.email.EmailDTO;
-import com.example.deutschebank.dto.additionaldto.email.EmailWithAttachmentDTO;
+import com.example.deutschebank.dto.additional.email.EmailDTO;
+import com.example.deutschebank.dto.additional.email.EmailWithAttachmentDTO;
+import com.example.deutschebank.exception.BadEmailException;
 import com.example.deutschebank.service.interfaces.additionaltools.EmailSenderService;
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,99 +26,97 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     private final JavaMailSender mailSender;
 
     @Override
-    public void sendEmail(String emailTo,
-                          String[] cc,
-                          String[] bcc,
-                          String subject,
-                          String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(emailTo);
-        if (cc.length > 0) {
-            message.setCc(cc);
-        }
-        if (bcc.length > 0) {
-            message.setBcc(bcc);
-        }
-        message.setSubject(subject);
-        message.setText(body);
-
-        mailSender.send(message);
-
-        log.info(message.toString());
-    }
-
-    @Override
     public void sendEmail(EmailDTO emailDTO) {
-        sendEmail(emailDTO.getEmailTo(),
-                emailDTO.getCc(),
-                emailDTO.getBcc(),
-                emailDTO.getSubject(),
-                emailDTO.getBody());
+        String[] emailTo = emailDTO.getEmailTo();
+        String[] cc = emailDTO.getCc();
+        String[] bcc = emailDTO.getBcc();
+        String subject = emailDTO.getSubject();
+        String text = emailDTO.getText();
+
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            if (isValid(emailTo)) {
+                message.setTo(emailTo);
+            }
+            if (isValid(cc)) {
+                message.setCc(cc);
+            }
+            if (isValid(bcc)) {
+                message.setBcc(bcc);
+            }
+            message.setSubject(subject);
+            message.setText(text);
+
+            mailSender.send(message);
+            log.info(message.toString());
+        } catch (Exception e) {
+            log.error("Something went wrong while sending simple message " +
+                    "email! " + e.getMessage());
+            throw new BadEmailException(e.getMessage());
+        }
     }
 
     @Override
-    public void sendEmailWithAttachment(String emailTo,
-                                        String[] cc,
-                                        String[] bcc,
-                                        String subject,
-                                        String body,
-                                        String pathToAttachment) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+    public void sendEmailWithAttachment(EmailWithAttachmentDTO emailAttachmentDTO) {
+        String[] emailTo = emailAttachmentDTO.getEmailTo();
+        String[] cc = emailAttachmentDTO.getCc();
+        String[] bcc = emailAttachmentDTO.getBcc();
+        String subject = emailAttachmentDTO.getSubject();
+        String text = emailAttachmentDTO.getText();
+        String pathToAttachment = emailAttachmentDTO.getPathToAttachment();
 
-        helper.setTo(emailTo);
-        if (cc.length > 0) {
-            helper.setCc(cc);
-        }
-        if (bcc.length > 0) {
-            helper.setBcc(bcc);
-        }
-        helper.setSubject(subject);
-        helper.setText(body);
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        FileSystemResource file;
-        try{
+            if (isValid(emailTo)) {
+                helper.setTo(emailTo);
+            }
+            if (isValid(cc)) {
+                helper.setCc(cc);
+            }
+            if (isValid(bcc)) {
+                helper.setBcc(bcc);
+            }
+            helper.setSubject(subject);
+            helper.setText(text);
+
+            FileSystemResource file;
             file = new FileSystemResource(new File(pathToAttachment));
             helper.addAttachment("image.png", file);
 
             mailSender.send(message);
         } catch (Exception e) {
-            log.error("Error while create attachment for letter" + e);
+            log.error("Error while create attachment for letter" + e.getMessage());
+            throw new BadEmailException(e.getMessage());
         }
     }
 
     @Override
-    public void sendEmailWithAttachment(EmailWithAttachmentDTO emailAttachmentDTO)
-            throws MessagingException {
-        sendEmailWithAttachment(emailAttachmentDTO.getEmailTo(),
-                emailAttachmentDTO.getCc(),
-                emailAttachmentDTO.getBcc(),
-                emailAttachmentDTO.getSubject(),
-                emailAttachmentDTO.getBody(),
-                emailAttachmentDTO.getPathToAttachment());
-    }
-
-    @Override
-    public void sendEmailWithURLAttachment(String emailTo,
-                                           String[] cc,
-                                           String[] bcc,
-                                           String subject,
-                                           String body,
-                                           String URLToAttachment) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-        helper.setTo(emailTo);
-        if (cc.length > 0) {
-            helper.setCc(cc);
-        }
-        if (bcc.length > 0) {
-            helper.setBcc(bcc);
-        }
-        helper.setSubject(subject);
-        helper.setText(body);
+    public void sendEmailWithURLAttachment(EmailWithAttachmentDTO emailAttachmentDTO) {
+        String[] emailTo = emailAttachmentDTO.getEmailTo();
+        String[] cc = emailAttachmentDTO.getCc();
+        String[] bcc = emailAttachmentDTO.getBcc();
+        String subject = emailAttachmentDTO.getSubject();
+        String text = emailAttachmentDTO.getText();
+        String URLToAttachment = emailAttachmentDTO.getPathToAttachment();
 
         try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            if (isValid(emailTo)) {
+                helper.setTo(emailTo);
+            }
+            if (isValid(cc)) {
+                helper.setCc(cc);
+            }
+            if (isValid(bcc)) {
+                helper.setBcc(bcc);
+            }
+            helper.setSubject(subject);
+            helper.setText(text);
+
             // Download the image from the URL
             URL url = new URL(URLToAttachment);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -134,19 +132,17 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
             mailSender.send(message);
         } catch (Exception e) {
-            log.error("Ooups something went wrong, while creating mime " +
-                    "message from URL!");
+            log.error("Oooups something went wrong, while creating mime " +
+                    "message from URL! " + e.getMessage());
+            throw new BadEmailException(e.getMessage());
         }
+
     }
 
-    @Override
-    public void sendEmailWithURLAttachment(EmailWithAttachmentDTO emailAttachmentDTO)
-            throws MessagingException {
-        sendEmailWithURLAttachment(emailAttachmentDTO.getEmailTo(),
-                emailAttachmentDTO.getCc(),
-                emailAttachmentDTO.getBcc(),
-                emailAttachmentDTO.getSubject(),
-                emailAttachmentDTO.getBody(),
-                emailAttachmentDTO.getPathToAttachment());
+    private boolean isValid(String[] array) {
+        if (array != null && array.length > 0) {
+            return true;
+        }
+        return false;
     }
 }

@@ -3,36 +3,50 @@ package com.example.deutschebank.service.interfaces.additionaltools;
 import com.example.deutschebank.entity.*;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface RandomDataGeneratorService {
+    <T> T chooseFromList(List<T> chooseList);
 
-    UUID chooseFromList(List<UUID> uuidList);
+    BankBranch generateBankBranch(Integer branchNumber, Location location);
 
-    BankBranch generateBankBranch(int branchNumber,
-                                  UUID locationId);
+    List<BankBranch> generateMultipleBankBranches(Integer quantity,
+                                                  List<Location> locations);
 
     BankInfo generateBankInfo();
+/*
 
-    Client generateClient(UUID managerId,
-                          UUID debitAccountId,
-                          UUID personalDetailId,
-                          UUID locationId);
+    CreateClientDTO generateClient(PersonalDetail personalDetailId,
+                                   WorkDetail workDetailId,
+                                   Location locationId,
+                                   BankBranch branchId);
 
-    CreditAccount generateCreditAccount(UUID clientId);
+    CreateCreditAccountDTO generateCreditAccount(Client client);
+     */
 
     DebitAccount generateDebitAccount();
 
-    Employee generateEmployee(UUID personalDetailId,
-                              UUID workDetailId,
-                              UUID locationId,
-                              UUID branchId);
+    List<DebitAccount> generateMultipleDebitAccounts(Integer quantity);
+
+    Employee generateEmployee(PersonalDetail personalDetail,
+                              WorkDetail workDetail,
+                              Location location,
+                              BankBranch bankBranch);
+
+    List<Employee> generateMultipleEmployees(Integer quantity,
+                                             List<PersonalDetail> personalDetails,
+                                             List<WorkDetail> workDetails,
+                                             List<Location> locations,
+                                             List<BankBranch> bankBranches);
 
     Location generateLocation();
 
+    List<Location> generateMultipleLocations(Integer quantity);
+
     PersonalDetail generatePersonalDetail();
 
-    Transaction generateTransaction();
+    List<PersonalDetail> generateMultiplePersonalDetails(Integer quantity);
 
     WorkDetail generateWorkDetail();
+
+    List<WorkDetail> generateMultipleWorkDetails(Integer quantity);
 }

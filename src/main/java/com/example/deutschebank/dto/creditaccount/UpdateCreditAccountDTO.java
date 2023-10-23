@@ -14,4 +14,5 @@ public class UpdateCreditAccountDTO {
     private BigDecimal debt;
     private BigDecimal loanInterest;
     private LocalDateTime startFrom;
+    private Boolean active;
 }

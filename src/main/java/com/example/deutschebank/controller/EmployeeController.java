@@ -25,10 +25,25 @@ public class EmployeeController {
         employeeService.createEmployee(createDTO);
     }
 
-    @GetMapping(value = "/get/by-id/{uuid}")
+    @GetMapping(value = "/get/by/id/{uuid}")
     public ResponseEntity<GetEmployeeDTO> GetEmployeeById(@PathVariable UUID uuid) {
         GetEmployeeDTO getDTO = employeeService.getEmployeeById(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(getDTO);
+    }
+
+    @GetMapping(value = "/get/by/full-name/{full_name}")
+    public ResponseEntity<GetEmployeeDTO> GetEmployeeByFullName
+            (@PathVariable String full_name) {
+        GetEmployeeDTO getDTO =
+                employeeService.getEmployeeByFullName(full_name);
+        return ResponseEntity.status(HttpStatus.OK).body(getDTO);
+    }
+
+    @GetMapping(value = "/get/all/active")
+    public ResponseEntity<List<GetEmployeeDTO>> getAllActiveEmployee() {
+        List<GetEmployeeDTO> getAllDTOs =
+                employeeService.getAllActiveEmployees();
+        return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
     @GetMapping(value = "/get/all")
@@ -37,13 +52,13 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
-    @PutMapping(value = "/update/by-id")
-    public void updateEmployee(@RequestBody UpdateEmployeeDTO updateDTO) {
+    @PutMapping(value = "/update/by/id")
+    public void updateEmployeeById(@RequestBody UpdateEmployeeDTO updateDTO) {
         employeeService.updateEmployeeById(updateDTO);
     }
 
-    @DeleteMapping(value = "/delete/by-id/{uuid}")
-    public void deleteEmployee(@PathVariable UUID uuid) {
-        employeeService.deleteEmployeeById(uuid);
+    @DeleteMapping(value = "/delete/by/id/{uuid}")
+    public void markEmployeeAsDeletedById(@PathVariable UUID uuid) {
+        employeeService.markEmployeeAsDeletedById(uuid);
     }
 }

@@ -29,42 +29,80 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = employeeDTOConverter
                 .convertCreateDTOToEmployee(createDTO);
         employeeRepository.save(employee);
-        log.info("Entity successfully created.");
+        log.info("Create employee.");
     }
 
     @Override
+    @Transactional
     public GetEmployeeDTO getEmployeeById(UUID uuid) {
-        checkIfNotExist(uuid);
+        isNotExist(uuid);
         Employee employee = employeeRepository.getReferenceById(uuid);
+        log.info("Get employee by id: " + uuid);
         return employeeDTOConverter.convertEmployeeToGetDTO(employee);
     }
 
     @Override
+    @Transactional
+    public GetEmployeeDTO getEmployeeByFullName(String fullName) {
+        Employee employee = employeeRepository.getEmployeeByFullName(fullName);
+        isNull(employee);
+        log.info("Get employee by full name: " + fullName);
+        return employeeDTOConverter.convertEmployeeToGetDTO(employee);
+    }
+
+    @Override
+    @Transactional
+    public List<GetEmployeeDTO> getAllActiveEmployees() {
+        List<Employee> employees = employeeRepository.getAllActiveEmployee();
+        log.info("Get all active employee, quantity: " + employees.size());
+        return employeeDTOConverter.convertEmployeeToGetDTOs(employees);
+    }
+
+    @Override
+    @Transactional
     public List<GetEmployeeDTO> getAllEmployees() {
         List<Employee> employees = employeeRepository.findAll();
+        log.info("Get all employee, quantity: " + employees.size());
         return employeeDTOConverter.convertEmployeeToGetDTOs(employees);
     }
 
     @Override
     @Transactional
     public void updateEmployeeById(UpdateEmployeeDTO updateDTO) {
-        checkIfNotExist(updateDTO.getId());
+        isNotExist(updateDTO.getId());
         Employee employee = employeeDTOConverter
                 .convertUpdateDTOToEmployee(updateDTO);
         employeeRepository.save(employee);
-        log.info("Entity with id: " + employee.getId() + " is updated.");
+        log.info("Update employee by id: " + employee.getId());
     }
 
     @Override
-    public void deleteEmployeeById(UUID uuid) {
-        checkIfNotExist(uuid);
-        employeeRepository.deleteById(uuid);
-        log.info("Entity with id: " + uuid + " where successfully deleted.");
+    @Transactional
+    public void markEmployeeAsDeletedById(UUID uuid) {
+        isNotExist(uuid);
+        Employee employee = employeeRepository.getReferenceById(uuid);
+        employee.setActive(false);
+        employeeRepository.save(employee);
+        log.info("Mark as deleted employee by id: " + uuid);
     }
 
-    private void checkIfNotExist(UUID uuid) {
+    @Override
+    @Transactional
+    public void deleteEmployeeById(UUID uuid) {
+        isNotExist(uuid);
+        employeeRepository.deleteById(uuid);
+        log.info("Delete employee by id: " + uuid);
+    }
+
+    private void isNull(Employee employee) {
+        if(employee == null) {
+            throw new BadOperationException("Employee is null!");
+        }
+    }
+
+    private void isNotExist(UUID uuid) {
         if(!employeeRepository.existsById(uuid)) {
-            throw new BadOperationException("Entity with id: " + uuid +
+            throw new BadOperationException("Employee with id: " + uuid +
                     "doesn't exist!");
         }
     }

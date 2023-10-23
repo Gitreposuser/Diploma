@@ -15,5 +15,4 @@ public class CreateWorkDetailDTO {
     private String workEmail;
     private LocalDateTime startFrom;
     private LocalDateTime endAt;
-    private Boolean active;
 }

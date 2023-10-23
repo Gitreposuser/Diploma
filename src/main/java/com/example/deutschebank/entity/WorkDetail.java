@@ -36,8 +36,7 @@ public class WorkDetail {
     @Column(name = "work_phone", length = 30, nullable = false)
     private String workPhone;
 
-    @Column(name = "work_email", length = 128, unique = true,
-            nullable = false)
+    @Column(name = "work_email", length = 128, nullable = false)
     private String workEmail;
 
     @Column(name = "start_from")
@@ -45,9 +44,6 @@ public class WorkDetail {
 
     @Column(name = "end_at")
     private LocalDateTime endAt;
-
-    @Column(name = "active")
-    private Boolean active;
 
     @CreationTimestamp
     @Column(name = "created", updatable = false)

@@ -12,9 +12,15 @@ public interface EmployeeService {
 
     GetEmployeeDTO getEmployeeById(UUID uuid);
 
+    GetEmployeeDTO getEmployeeByFullName(String fullName);
+
+    List<GetEmployeeDTO> getAllActiveEmployees();
+
     List<GetEmployeeDTO> getAllEmployees();
 
     void updateEmployeeById(UpdateEmployeeDTO updateDTO);
+
+    void markEmployeeAsDeletedById(UUID uuid);
 
     void deleteEmployeeById(UUID uuid);
 }

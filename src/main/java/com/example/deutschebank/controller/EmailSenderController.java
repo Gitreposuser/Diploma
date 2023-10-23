@@ -1,9 +1,8 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.dto.additionaldto.email.EmailDTO;
-import com.example.deutschebank.dto.additionaldto.email.EmailWithAttachmentDTO;
+import com.example.deutschebank.dto.additional.email.EmailDTO;
+import com.example.deutschebank.dto.additional.email.EmailWithAttachmentDTO;
 import com.example.deutschebank.service.interfaces.additionaltools.EmailSenderService;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,15 +24,13 @@ public class EmailSenderController {
 
     @PostMapping(value = "/send/with-attachment")
     public void sendEmailWithAttachment(@RequestBody EmailWithAttachmentDTO
-                                                emailWithAttachmentDTO)
-            throws MessagingException {
+                                                emailWithAttachmentDTO) {
         emailSenderService.sendEmailWithAttachment(emailWithAttachmentDTO);
     }
 
     @PostMapping(value = "/send/with-URL-attachment")
     public void sendEmailWithURLAttachment(@RequestBody EmailWithAttachmentDTO
-                                                emailWithAttachmentDTO)
-            throws MessagingException {
+                                                emailWithAttachmentDTO) {
         emailSenderService.sendEmailWithURLAttachment(emailWithAttachmentDTO);
     }
 }

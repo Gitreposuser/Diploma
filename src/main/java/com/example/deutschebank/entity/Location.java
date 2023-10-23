@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Data
+@Entity
 @Table(name = "locations")
 public class Location {
     @Id
@@ -35,9 +35,6 @@ public class Location {
 
     @Column(name = "country", length = 64, nullable = false)
     private String country;
-
-    @Column(name = "active")
-    private Boolean active;
 
     @CreationTimestamp
     @Column(name = "created", updatable = false)

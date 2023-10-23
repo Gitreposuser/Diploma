@@ -27,53 +27,57 @@ public class WorkDetailServiceImpl implements WorkDetailService {
     @Override
     @Transactional
     public void createWorkDetail(CreateWorkDetailDTO createDTO) {
-        checkEmail(createDTO.getWorkEmail());
+        isEmailExist(createDTO.getWorkEmail());
         WorkDetail workDetail = workDetailDTOConverter
                 .convertCreateDTOToWorkDetail(createDTO);
         workDetailRepository.save(workDetail);
-        log.info("Entity successfully created.");
+        log.info("Work detail created.");
     }
 
     @Override
+    @Transactional
     public GetWorkDetailDTO getWorkDetailById(UUID uuid) {
-        checkIfNotExist(uuid);
+        isWorkDetailNotExist(uuid);
         WorkDetail workDetail = workDetailRepository.getReferenceById(uuid);
+        log.info("Get Work detail by id: " + uuid);
         return workDetailDTOConverter.convertWorkDetailToGetDTO(workDetail);
     }
 
     @Override
+    @Transactional
     public List<GetWorkDetailDTO> getAllWorkDetails() {
         List<WorkDetail> workDetails = workDetailRepository.findAll();
+        log.info("Get all work details, quantity: " + workDetails.size());
         return workDetailDTOConverter.convertWorkDetailsToGetDTOs(workDetails);
     }
 
     @Override
     @Transactional
     public void updateWorkDetailById(UpdateWorkDetailDTO updateDTO) {
-        checkIfNotExist(updateDTO.getId());
-        checkEmail(updateDTO.getWorkEmail());
+        isWorkDetailNotExist(updateDTO.getId());
         WorkDetail workDetail = workDetailDTOConverter
                 .convertUpdateDTOToWorkDetail(updateDTO);
         workDetailRepository.save(workDetail);
-        log.info("Entity with id: " + workDetail.getId() + " is updated.");
+        log.info("Update work detail with id: " + workDetail.getId());
     }
 
     @Override
+    @Transactional
     public void deleteWorkDetailById(UUID uuid) {
-        checkIfNotExist(uuid);
+        isWorkDetailNotExist(uuid);
         workDetailRepository.deleteById(uuid);
-        log.info("Entity with id: " + uuid + " where successfully deleted.");
+        log.info("Delete work detail with id: " + uuid);
     }
 
-    private void checkEmail(String email) {
+    private void isEmailExist(String email) {
         if (workDetailRepository.existsByWorkEmail(email)) {
             throw new BadEmailException("Email not unique!");
         }
     }
 
-    private void checkIfNotExist(UUID uuid) {
+    private void isWorkDetailNotExist(UUID uuid) {
         if (!workDetailRepository.existsById(uuid)) {
-            throw new BadOperationException("Entity with id: " + uuid +
+            throw new BadOperationException("Work detail with id: " + uuid +
                     "doesn't exist!");
         }
     }

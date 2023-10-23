@@ -1,14 +1,26 @@
 package com.example.deutschebank.service.implementation.additionaltools;
 
-import com.example.deutschebank.converter.BankBranchDTOConverter;
+import com.example.deutschebank.converter.*;
+import com.example.deutschebank.dto.additional.tools.CreateDatabaseDTO;
+import com.example.deutschebank.dto.bankbranch.CreateBankBranchDTO;
+import com.example.deutschebank.dto.bankinfo.CreateBankInfoDTO;
+import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
+import com.example.deutschebank.dto.debitaccount.CreateDebitAccountDTO;
+import com.example.deutschebank.dto.employee.CreateEmployeeDTO;
+import com.example.deutschebank.dto.location.CreateLocationDTO;
+import com.example.deutschebank.dto.personaldetail.CreatePersonalDetailDTO;
+import com.example.deutschebank.dto.workdetail.CreateWorkDetailDTO;
 import com.example.deutschebank.entity.*;
-import com.example.deutschebank.dto.bankbranch.GetBranchCityDTO;
 import com.example.deutschebank.repository.*;
-import com.example.deutschebank.service.interfaces.additionaltools.EmailSenderService;
+import com.example.deutschebank.service.interfaces.BankBranchService;
+import com.example.deutschebank.service.interfaces.BankInfoService;
+import com.example.deutschebank.service.interfaces.LocationService;
 import com.example.deutschebank.service.interfaces.additionaltools.ToolsService;
 import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGeneratorService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.jdbc.Work;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,102 +28,148 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ToolsServiceImpl implements ToolsService {
     private final BankBranchRepository bankBranchRepository;
+    private final BankBranchService bankBranchService;
+    private final BankInfoDTOConverter bankInfoDTOConverter;
+    private final BankInfoService bankInfoService;
     private final BankInfoRepository bankInfoRepository;
     private final ClientRepository clientRepository;
     private final CreditAccountRepository creditAccountRepository;
     private final DebitAccountRepository debitAccountRepository;
     private final EmployeeRepository employeeRepository;
     private final LocationRepository locationRepository;
+    private final LocationService locationService;
     private final PersonalDetailRepository personalDetailRepository;
     private final WorkDetailRepository workDetailRepository;
     private final TransactionRepository transactionRepository;
     private final RandomDataGeneratorService randomDataGenerator;
-    private final EmailSenderService emailSenderService;
-
-    //
-    // Debug
-    //
-    private final BankBranchDTOConverter bankBranchDTOConverter;
-
-    public GetBranchCityDTO getBranchCity(UUID uuid) {
-        BankBranch bankBranch = bankBranchRepository.findById(uuid).get();
-        return bankBranchDTOConverter.convertBankBranchToCityDTO(bankBranch);
-    }
 
     @Override
+
+    public void generateDataBase(CreateDatabaseDTO createDatabaseDTO) {
+        // Generate bank info
+        BankInfo bankInfo = randomDataGenerator.generateBankInfo();
+        CreateBankInfoDTO createDTO =
+                bankInfoDTOConverter.convertBankInfoToCreateDTO(bankInfo);
+        bankInfoService.createBankInfo(createDTO);
+
+        // Generate branches
+        int branchesQuantity = createDatabaseDTO.getBranchesQuantity();
+        List<Location> branchesLocations = randomDataGenerator
+                .generateMultipleLocations(branchesQuantity);
+        locationRepository.saveAll(branchesLocations);
+        //locationService.createMultipleLocations(locations);
+
+        List<BankBranch> bankBranches = randomDataGenerator.
+                generateMultipleBankBranches(branchesQuantity, branchesLocations);
+        bankBranchRepository.saveAll(bankBranches);
+
+        // Generate employees
+        int objectsQuantity = createDatabaseDTO.getEmployeesQuantity();
+        List<Employee> employees = new LinkedList<>();
+        List<PersonalDetail> personalDetails =
+                randomDataGenerator.generateMultiplePersonalDetails(objectsQuantity);
+        personalDetailRepository.saveAll(personalDetails);
+
+        List<WorkDetail> workDetails =
+                randomDataGenerator.generateMultipleWorkDetails(objectsQuantity);
+        workDetailRepository.saveAll(workDetails);
+
+        List<Location> employeeLocations =
+                randomDataGenerator.generateMultipleLocations(objectsQuantity);
+        locationRepository.saveAll(employeeLocations);
+
+        employees =
+                randomDataGenerator.generateMultipleEmployees(objectsQuantity,
+                        personalDetails, workDetails,
+                        employeeLocations, bankBranches);
+        employeeRepository.saveAll(employees);
+
+        log.info("Generate database.");
+    }
+
+    /*
+    @Override
     @Transactional
-    public UUID generateBankBranchStructureToDB(int branchNumber) {
-        Location location = randomDataGenerator.generateLocation();
-        UUID locationId = locationRepository.save(location).getId();
+    public void generateBankBranchStructureToDB(Integer branchNumber,
+                                                Location location) {
         BankBranch bankBranch =
-                randomDataGenerator.generateBankBranch(branchNumber, locationId);
-        UUID branchId = bankBranchRepository.save(bankBranch).getId();
-        return branchId;
+                randomDataGenerator.generateBankBranch(branchNumber, location);
+        bankBranchRepository.save(bankBranch);
+        log.info("Generate bank branch structure. " + bankBranch);
     }
 
     @Override
     @Transactional
-    public List<UUID> generateBankBranchesStructureToDB(int quantity) {
-        List<UUID> branchesId = new LinkedList<>();
-        Location location;
-        UUID locationId;
-        BankBranch bankBranch;
+    public void generateBankBranchesStructureToDB(Integer quantity,
+                                                  Location location) {
+        List<BankBranch> branches = new LinkedList<>();
         for (int i = 0; i < quantity; i++) {
-            location = randomDataGenerator.generateLocation();
-            locationId = locationRepository.save(location).getId();
-            bankBranch = randomDataGenerator.generateBankBranch(i + 1,
-                    locationId);
-            branchesId.add(bankBranchRepository.save(bankBranch).getId());
+            BankBranch bankBranch =
+                    randomDataGenerator.generateBankBranch(i + 1, location);
+            branches.add(bankBranch);
         }
-        return branchesId;
+        bankBranchRepository.saveAll(branches);
+        log.info("Generate bank branches structure, quantity: " + quantity);
     }
 
+
+     */
     @Override
+    @Transactional
     public void deleteAllBankBranchesFromDB() {
         bankBranchRepository.deleteAll();
+        log.warn("Delete all bank branches!");
     }
 
+    /*
     @Override
     @Transactional
     public void generateBankInfoToDB() {
         BankInfo bankInfo = randomDataGenerator.generateBankInfo();
         bankInfoRepository.save(bankInfo);
+        log.info("Generate bank info.");
     }
+     */
 
     @Override
+    @Transactional
     public void deleteBankInfoFromDB() {
         bankInfoRepository.deleteAll();
+        log.warn("Delete bank info!");
     }
 
+
+/*
     @Override
-    public UUID generateClientStructureToDB(UUID managerId) {
+    @Transactional
+    public Client generateClientStructureToDB(Employee employee) {
         DebitAccount debitAccount = randomDataGenerator.generateDebitAccount();
-        UUID debitAccountId = debitAccountRepository.save(debitAccount).getId();
         PersonalDetail personalDetail =
                 randomDataGenerator.generatePersonalDetail();
-        UUID personalDetailId =
-                personalDetailRepository.save(personalDetail).getId();
         Location location = randomDataGenerator.generateLocation();
-        UUID locationId = locationRepository.save(location).getId();
-        Client client = randomDataGenerator.generateClient(managerId,
-                debitAccountId,
-                personalDetailId,
-                locationId);
+        UUID location = locationRepository.save(location).getId();
+        Client client = randomDataGenerator.generateClient(employee,
+                debitAccount,
+                personalDetail,
+                location);
         UUID clientId = clientRepository.save(client).getId();
         return clientId;
     }
 
     @Override
+    @Transactional
     public List<UUID> generateClientsStructureToDB(int quantity,
                                                    List<UUID> managersId) {
         List<UUID> clientsId = new LinkedList<>();
@@ -121,20 +179,24 @@ public class ToolsServiceImpl implements ToolsService {
         }
         return clientsId;
     }
-
+*/
     @Override
+    @Transactional
     public void deleteAllClientsFromDB() {
         clientRepository.deleteAll();
+        log.warn("Delete all clients!");
     }
-
+/*
     @Override
-    public void generateCreditAccountToDB(UUID clientId) {
-        CreditAccount creditAccount =
-                randomDataGenerator.generateCreditAccount(clientId);
+    @Transactional
+    public void generateCreditAccountToDB(Client client) {
+        CreateCreditAccountDTO creditAccount =
+                randomDataGenerator.generateCreditAccount(client);
         creditAccountRepository.save(creditAccount);
     }
 
     @Override
+    @Transactional
     public void generateCreditAccountsToDB(int quantity, List<UUID> clientsId) {
         for (int i = 0; i < quantity; i++) {
             UUID clientId = randomDataGenerator.chooseFromList(clientsId);
@@ -142,143 +204,178 @@ public class ToolsServiceImpl implements ToolsService {
         }
     }
 
+ */
     @Override
+    @Transactional
     public void deleteAllCreditAccountsFromDB() {
         creditAccountRepository.deleteAll();
+        log.warn("Delete all credit accounts!");
     }
 
+    /*
     @Override
-    public UUID generateDebitAccountToDB() {
+    @Transactional
+    public void generateDebitAccountToDB() {
         DebitAccount debitAccount = randomDataGenerator.generateDebitAccount();
-        UUID debitAccountId = debitAccountRepository.save(debitAccount).getId();
-        return debitAccountId;
+        debitAccountRepository.save(debitAccount);
+        log.info("Generate bank branch structure.");
     }
 
+     */
+
     @Override
+    @Transactional
     public void deleteAllDebitAccountsFromDB() {
         debitAccountRepository.deleteAll();
+        log.warn("Delete all debit accounts!");
     }
 
+        /*
     @Override
-    public UUID generateEmployeeStructureToDB(UUID branchId) {
-        Location location = randomDataGenerator.generateLocation();
-        UUID locationId = locationRepository.save(location).getId();
+    @Transactional
+    public void generateEmployeeStructureToDB() {
         PersonalDetail personalDetail =
                 randomDataGenerator.generatePersonalDetail();
-        UUID personalDetailId =
-                personalDetailRepository.save(personalDetail).getId();
         WorkDetail workDetail = randomDataGenerator.generateWorkDetail();
-        UUID workDetailId = workDetailRepository.save(workDetail).getId();
+        Location location = randomDataGenerator.generateLocation();
+        int branchNumber = 1;
+        BankBranch bankBranch =
+                randomDataGenerator.generateBankBranch(branchNumber);
         Employee employee =
-                randomDataGenerator.generateEmployee(personalDetailId,
-                        workDetailId,
-                        locationId,
-                        branchId);
-        UUID employeeId = employeeRepository.save(employee).getId();
-        return employeeId;
+                randomDataGenerator.generateEmployee(personalDetail,
+                        workDetail, location, bankBranch);
+        employeeRepository.save(employee);
+        log.info("Generate employee structure.");
+    }
+         */
+
+    /*
+    @Override
+    @Transactional
+    public void generateEmployeesStructureToDB(Integer quantity) {
+        List<CreateEmployeeDTO> employees = new LinkedList<>();
     }
 
-    public List<UUID> generateEmployeesStructureToDB(int quantity,
-                                                     List<UUID> branchesId) {
-        List<UUID> employeesId = new LinkedList();
-        for (int i = 0; i < quantity; i++) {
-            UUID branchId = randomDataGenerator.chooseFromList(branchesId);
-            employeesId.add(generateEmployeeStructureToDB(branchId));
-        }
-        return employeesId;
-    }
+     */
 
     @Override
+    @Transactional
     public void deleteAllEmployeesFromDB() {
         employeeRepository.deleteAll();
+        log.warn("Delete all employee!");
     }
-
+/*
     @Override
+    @Transactional
     public void generateLocationToDB() {
         Location location = randomDataGenerator.generateLocation();
         locationRepository.save(location);
+        log.info("Generate location.");
     }
 
+
     @Override
-    public void generateLocationsToDB(int quantity) {
+    @Transactional
+    public void generateLocationsToDB(Integer quantity) {
         List<Location> locations = new LinkedList<>();
         for (int i = 0; i < quantity; i++) {
-            locations.add(randomDataGenerator.generateLocation());
+            Location location = randomDataGenerator.generateLocation();
+            locations.add(location);
         }
         locationRepository.saveAll(locations);
     }
+ */
 
     @Override
+    @Transactional
     public void deleteAllLocationsFromDB() {
         locationRepository.deleteAll();
+        log.warn("Delete all locations!");
     }
-
+/*
     @Override
+    @Transactional
     public void generatePersonalDetailToDB() {
-        PersonalDetail personalDetail = randomDataGenerator.generatePersonalDetail();
+        PersonalDetail personalDetail = randomDataGenerator
+                .generatePersonalDetail();
         personalDetailRepository.save(personalDetail);
+        log.info("Generate personal detail.");
     }
 
     @Override
-    public void generatePersonalDetailsToDB(int quantity) {
-        List<PersonalDetail> personalDetails = new LinkedList<>();
+    @Transactional
+    public void generatePersonalDetailsToDB(Integer quantity) {
+        List<PersonalDetail> personalDetails = new LinkedList();
         for (int i = 0; i < quantity; i++) {
-            personalDetails.add(randomDataGenerator.generatePersonalDetail());
+            PersonalDetail personalDetail = randomDataGenerator
+                    .generatePersonalDetail();
+            personalDetails.add(personalDetail);
         }
         personalDetailRepository.saveAll(personalDetails);
     }
 
+ */
+
     @Override
+    @Transactional
     public void deleteAllPersonalDetailsFromDB() {
         personalDetailRepository.deleteAll();
+        log.warn("Delete all personal details!");
     }
-
+/*
     @Override
     @Transactional
-    public void generateTransactionToDB() {
-        Transaction transaction = randomDataGenerator.generateTransaction();
-        transactionRepository.save(transaction);
-    }
-
-    @Override
-    @Transactional
-    public void generateTransactionsToDB(int quantity) {
-        List<Transaction> transactions = new LinkedList();
+    public void generateTransactionsToDB(int quantity,
+                                         List<UUID> clientsId) {
         for (int i = 0; i < quantity; i++) {
-            transactions.add(randomDataGenerator.generateTransaction());
+            UUID randomId = randomDataGenerator.chooseFromList(clientsId);
+            BigDecimal balance = clientRepository.getReferenceById(randomId)
+                    .getDebitAccount()
+                    .getBalance();
         }
-        transactionRepository.saveAll(transactions);
     }
+ */
 
     @Override
+    @Transactional
     public void deleteAllTransactionsFromDB() {
         transactionRepository.deleteAll();
+        log.warn("Delete all transactions!");
     }
 
+/*
     @Override
     @Transactional
     public void generateWorkDetailToDB() {
         WorkDetail workDetail = randomDataGenerator.generateWorkDetail();
         workDetailRepository.save(workDetail);
+        log.info("Generate work detail to database.");
     }
 
     @Override
     @Transactional
-    public void generateWorkDetailsToDB(int quantity) {
+    public void generateWorkDetailsToDB(Integer quantity) {
         List<WorkDetail> workDetails = new LinkedList();
         for (int i = 0; i < quantity; i++) {
-            workDetails.add(randomDataGenerator.generateWorkDetail());
+            WorkDetail workDetail = randomDataGenerator.generateWorkDetail();
+            workDetails.add(workDetail);
         }
         workDetailRepository.saveAll(workDetails);
     }
 
+ */
+
     @Override
+    @Transactional
     public void deleteAllWorkDetailsFromDB() {
         workDetailRepository.deleteAll();
+        log.warn("Delete all work details!");
     }
 
     @Override
+    @Transactional
     public ResponseEntity<byte[]> getDBSchema() {
+        log.info("Get database schema.");
         try {
             Path imagePath = Path.of("src/main/resources/static/images" +
                     "/DeutscheBankDB.png");
@@ -294,7 +391,9 @@ public class ToolsServiceImpl implements ToolsService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<byte[]> getDbRawSchema() {
+        log.info("Get database raw schema.");
         try {
             Path imagePath = Path.of("src/main/resources/static" +
                     "/images/DeutscheBankDB.png");
@@ -307,7 +406,9 @@ public class ToolsServiceImpl implements ToolsService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<byte[]> getLogo() {
+        log.info("Get logo.");
         try {
             Path imagePath = Path.of("src/main/resources/static" +
                     "/images/banklogo.png");
@@ -323,7 +424,9 @@ public class ToolsServiceImpl implements ToolsService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<byte[]> getRawLogo() {
+        log.info("Get raw logo.");
         try {
             Path imagePath = Path.of("src/main/resources/static" +
                     "/images/banklogo.png");
@@ -336,16 +439,6 @@ public class ToolsServiceImpl implements ToolsService {
     }
 
     public void runTest() {
-        String toEmail = "vlad77solo@gmail.com";
-        //String toEmail = "alpina1904@gmail.com";
-        String [] cc = {"zepagaci@tutuapp.bid"};
-        String [] bcc = {"yifevi4551@hapincy.com"};
-        String subject = "email sender works!";
-        String body = "Congratulations! You successfully send a letter";
-        emailSenderService.sendEmail(toEmail,
-                cc,
-                bcc,
-                subject,
-                body);
+
     }
 }

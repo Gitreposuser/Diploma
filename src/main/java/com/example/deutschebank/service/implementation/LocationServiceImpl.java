@@ -29,19 +29,30 @@ public class LocationServiceImpl implements LocationService {
         Location location =
                 locationDTOConverter.converterCreateDTOToLocation(createDTO);
         locationRepository.save(location);
-        log.info("Entity successfully created.");
+        log.info("Create location.");
     }
 
     @Override
+    @Transactional
+    public void createMultipleLocations(List<Location> locations) {
+        locationRepository.saveAll(locations);
+        log.info("Create multiple locations, quantity: " + locations.size());
+    }
+
+    @Override
+    @Transactional
     public GetLocationDTO getLocation(UUID uuid) {
         checkIfNotExist(uuid);
         Location location = locationRepository.getReferenceById(uuid);
+        log.info("Get location by id: " + uuid);
         return locationDTOConverter.convertLocationToGetDTO(location);
     }
 
     @Override
+    @Transactional
     public List<GetLocationDTO> getAllLocations() {
         List<Location> locations = locationRepository.findAll();
+        log.info("Get all locations, quantity: " + locations.size());
         return locationDTOConverter.convertLocationsToGetDTOs(locations);
     }
 
@@ -52,18 +63,19 @@ public class LocationServiceImpl implements LocationService {
         Location location =
                 locationDTOConverter.convertUpdateDTOToLocation(updateDTO);
         locationRepository.save(location);
-        log.info("Entity with id: " + location.getId() + " is updated." );
+        log.info("Update location with id: " + location.getId());
     }
 
     @Override
+    @Transactional
     public void deleteLocation(UUID uuid) {
         checkIfNotExist(uuid);
         locationRepository.deleteById(uuid);
-        log.info("Entity with id: " + uuid + " where successfully deleted.");
+        log.info("Delete location with id: " + uuid);
     }
 
     private void checkIfNotExist(UUID uuid) {
-        if(!locationRepository.existsById(uuid)) {
+        if(uuid == null || !locationRepository.existsById(uuid)) {
             throw new BadOperationException("Cannot update entity! Entity " +
                     "doesn't exist!");
         }

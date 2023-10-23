@@ -3,6 +3,7 @@ package com.example.deutschebank.entity;
 import com.example.deutschebank.entity.enums.BranchStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -10,9 +11,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.REFRESH;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Data
 @Table(name = "bank_branches")
 public class BankBranch {
     @Id
@@ -20,19 +25,15 @@ public class BankBranch {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "branch_number", nullable = false, unique = true)
+    @Column(name = "branch_number", nullable = false)
     private Integer branchNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "branch_status", length = 128, nullable = false)
     private BranchStatus branchStatus;
 
-    @Column(name = "location_id", nullable = false)
-    private UUID locationId;
-
-    @OneToOne
-    @JoinColumn(name = "location_id", referencedColumnName = "id",
-            insertable = false, updatable = false)
+    @OneToOne(cascade = {MERGE, REFRESH}, orphanRemoval = true)
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
     @Column(name = "general_phone", length = 32, nullable = false)

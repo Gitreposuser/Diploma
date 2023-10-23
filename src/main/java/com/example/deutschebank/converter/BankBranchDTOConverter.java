@@ -1,9 +1,9 @@
 package com.example.deutschebank.converter;
 
+import com.example.deutschebank.dto.bankbranch.GetBankBranchInfoDTO;
 import com.example.deutschebank.entity.BankBranch;
 import com.example.deutschebank.dto.bankbranch.CreateBankBranchDTO;
 import com.example.deutschebank.dto.bankbranch.GetBankBranchDTO;
-import com.example.deutschebank.dto.bankbranch.GetBranchCityDTO;
 import com.example.deutschebank.dto.bankbranch.UpdateBankBranchDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,18 +19,6 @@ import java.util.List;
 public class BankBranchDTOConverter {
     private final ModelMapper modelMapper;
 
-    //
-    // Debug
-    //
-    public GetBranchCityDTO convertBankBranchToCityDTO(BankBranch bankBranch) {
-        GetBranchCityDTO getCityDTO = modelMapper
-                .typeMap(BankBranch.class, GetBranchCityDTO.class)
-                .addMapping(src -> src.getLocation().getCity(),
-                        GetBranchCityDTO::setCity)
-                .map(bankBranch);
-        return getCityDTO;
-    }
-
     public BankBranch convertCreateDTOToBankBranch(CreateBankBranchDTO createDTO) {
         return modelMapper.map(createDTO,
                 BankBranch.class);
@@ -40,18 +28,30 @@ public class BankBranchDTOConverter {
         return modelMapper.map(bankBranch, GetBankBranchDTO.class);
     }
 
+    public GetBankBranchInfoDTO convertBankBranchToGetInfoDTO(BankBranch bankBranch) {
+        GetBankBranchInfoDTO getBranchInfoDTO = modelMapper
+                .typeMap(BankBranch.class, GetBankBranchInfoDTO.class)
+                .addMapping(src -> src.getLocation().getCountry(),
+                        GetBankBranchInfoDTO::setCountry)
+                .addMapping(src -> src.getLocation().getCity(),
+                        GetBankBranchInfoDTO::setCity)
+                .addMapping(src -> src.getLocation().getStreet(),
+                        GetBankBranchInfoDTO::setStreet)
+                .addMapping(src -> src.getLocation().getHouseNumber(),
+                        GetBankBranchInfoDTO::setHouseNumber)
+                .map(bankBranch);
+        return getBranchInfoDTO;
+    }
 
     public List<GetBankBranchDTO> convertBankBranchesToGetDTOs(List<BankBranch> bankBranches) {
         List<GetBankBranchDTO> getDTOs = new LinkedList<>();
         for (BankBranch detail : bankBranches) {
-            getDTOs.add(modelMapper.map(detail,
-                    GetBankBranchDTO.class));
+            getDTOs.add(modelMapper.map(detail, GetBankBranchDTO.class));
         }
         return getDTOs;
     }
 
     public BankBranch convertUpdateDTOToBankBranch(UpdateBankBranchDTO updateDTO) {
-        return modelMapper.map(updateDTO,
-                BankBranch.class);
+        return modelMapper.map(updateDTO, BankBranch.class);
     }
 }

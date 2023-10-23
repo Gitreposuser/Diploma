@@ -10,6 +10,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.REFRESH;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -21,36 +24,20 @@ public class Employee {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "personal_detail_id", nullable = false)
-    private UUID personalDetailId;
-
-    @OneToOne
-    @JoinColumn(name = "personal_detail_id", referencedColumnName = "id",
-        insertable = false, updatable = false)
+    @OneToOne(cascade = {MERGE, REFRESH}, orphanRemoval = true)
+    @JoinColumn(name = "personal_detail_id", referencedColumnName = "id")
     private PersonalDetail personalDetail;
 
-    @Column(name = "work_detail_id", nullable = false)
-    private UUID workDetailId;
-
-    @OneToOne
-    @JoinColumn(name = "work_detail_id", referencedColumnName = "id",
-        insertable = false, updatable = false)
+    @OneToOne(cascade = {MERGE, REFRESH}, orphanRemoval = true)
+    @JoinColumn(name = "work_detail_id", referencedColumnName = "id")
     private WorkDetail workDetail;
 
-    @Column(name = "location_id", nullable = false)
-    private UUID locationId;
-
-    @OneToOne
-    @JoinColumn(name = "location_id", referencedColumnName = "id",
-        insertable = false, updatable = false)
+    @OneToOne(cascade = {MERGE, REFRESH}, orphanRemoval = true)
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
-    @Column(name = "branch_id", nullable = false)
-    private UUID branchId;
-
-    @OneToOne
-    @JoinColumn(name = "branch_id", referencedColumnName = "id",
-        insertable = false, updatable = false)
+    @ManyToOne(cascade = {REFRESH})
+    @JoinColumn(name = "branch_id", referencedColumnName = "id")
     private BankBranch bankBranch;
 
     @Column(name = "active")

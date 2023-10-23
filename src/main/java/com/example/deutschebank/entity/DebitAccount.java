@@ -46,9 +46,6 @@ public class DebitAccount {
     @Column(name = "start_from", updatable = false)
     private LocalDateTime startFrom;
 
-    @Column(name = "active")
-    private Boolean active;
-
     @CreationTimestamp
     @Column(name = "created", updatable = false)
     private LocalDateTime created;

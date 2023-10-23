@@ -23,11 +23,8 @@ public class CreditAccount {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "client_id", nullable = false)
-    private UUID clientId;
-
-    @ManyToOne
-    @JoinColumn(name = "clients", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
     @Enumerated(EnumType.STRING)

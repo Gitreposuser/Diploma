@@ -5,12 +5,10 @@ import com.example.deutschebank.dto.bankinfo.GetBankInfoDTO;
 import com.example.deutschebank.dto.bankinfo.UpdateBankInfoDTO;
 import com.example.deutschebank.service.interfaces.BankInfoService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/bank-info")
@@ -28,8 +26,7 @@ public class BankInfoController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<UpdateBankInfoDTO> updateBankInfo(@RequestBody UpdateBankInfoDTO updateDTO) {
+    public void updateBankInfo(@RequestBody UpdateBankInfoDTO updateDTO) {
         bankInfoService.updateBankInfo(updateDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(updateDTO);
     }
 }

@@ -19,7 +19,6 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
-
     public final TransactionRepository transactionRepository;
     private final TransactionDTOConverter transactionDTOConverter;
 
@@ -66,5 +65,13 @@ public class TransactionServiceImpl implements TransactionService {
         List<Transaction> allTransaction =
                 transactionRepository.getTransactionsByCreatedBetween(from, to);
         return transactionDTOConverter.convertTransactionsToGetDTOs(allTransaction);
+    }
+
+    @Override
+    public BigDecimal getMinAmountByEmitterIban(String iban) {
+        BigDecimal minAmount = transactionRepository
+                .getMinAmountByEmitterIban(iban);
+        log.warn(minAmount.toString());
+        return minAmount;
     }
 }

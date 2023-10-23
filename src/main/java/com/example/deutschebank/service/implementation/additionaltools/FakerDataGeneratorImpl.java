@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Component
@@ -26,17 +26,35 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
     @Value(value = "${randomDataGenerator.maxTransactionValue}")
     private long maxTransactionValue;
 
+    @Value(value = "${bankInfoService.id}")
+    private Integer bankId;
+
+    @Value(value = "${bankInfoService.name}")
+    private String bankName;
+
+    @Value(value = "${bankInfoService.iban}")
+    private String bankIban;
+
+    @Value(value = "${bankInfoService.balance}")
+    private String bankBalance;
+
+    @Value(value = "${bankInfoService.capitalization}")
+    private String bankCapitalization;
+
+    @Value(value = "${bankInfoService.owner}")
+    private String bankOwner;
+
     @Override
-    public UUID chooseFromList(List<UUID> uuidList) {
-        return faker.chooseFromList(uuidList);
+    public <T> T chooseFromList(List<T> chooseList) {
+        return faker.chooseFromList(chooseList);
     }
 
     @Override
-    public BankBranch generateBankBranch(int branchNumber, UUID locationId) {
+    public BankBranch generateBankBranch(Integer branchNumber, Location location) {
         BankBranch bankBranch = new BankBranch();
         bankBranch.setBranchNumber(branchNumber);
         bankBranch.setBranchStatus(faker.generateBranchStatus());
-        bankBranch.setLocationId(locationId);
+        bankBranch.setLocation(location);
         bankBranch.setGeneralPhone(faker.phoneNumber().phoneNumber());
         bankBranch.setHotLine(faker.phoneNumber().cellPhone());
         boolean active;
@@ -46,62 +64,72 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
             active = true;
         }
         bankBranch.setActive(active);
-        log.info(bankBranch.toString());
+        log.info("Generate bank branch: " + bankBranch);
         return bankBranch;
     }
 
     @Override
-    public BankInfo generateBankInfo() {
-        final int bankInfoId = 1;
-        final long bankInfoBalance = 0;
-        final long bankInfoCapitalization = 700000000;
+    public List<BankBranch> generateMultipleBankBranches(Integer quantity,
+                                                         List<Location> locations) {
+        List<BankBranch> bankBranches = new LinkedList<>();
+        for (int i = 0; i < quantity; i++) {
+            bankBranches.add(generateBankBranch(i + 1,
+                    locations.get(i)));
+        }
+        return bankBranches;
+    }
 
+
+    @Override
+    public BankInfo generateBankInfo() {
         BankInfo bankInfo = new BankInfo();
-        bankInfo.setId(bankInfoId);
-        bankInfo.setName("DeutscheBank");
-        bankInfo.setIban(faker.generateIban());
-        bankInfo.setBalance(new BigDecimal(bankInfoBalance));
-        bankInfo.setCapitalization(new BigDecimal(bankInfoCapitalization));
-        bankInfo.setOwner(faker.name().fullName());
+        bankInfo.setId(bankId);
+        bankInfo.setName(bankName);
+        bankInfo.setIban(bankIban);
+        bankInfo.setBalance(new BigDecimal(bankBalance));
+        bankInfo.setCapitalization(new BigDecimal(bankCapitalization));
+        bankInfo.setOwner(bankOwner);
         bankInfo.setGroup(faker.company().industry());
         bankInfo.setLogoUrl("src/main/resources/static" +
                 "/images/banklogo.png");
-        log.info(bankInfo.toString());
+        log.info("Generate bank info: " + bankInfo);
         return bankInfo;
     }
 
+    /*
     @Override
-    public Client generateClient(UUID managerId,
-                                 UUID debitAccountId,
-                                 UUID personalDetailId,
-                                 UUID locationId) {
-        Client client = new Client();
-        client.setManagerId(managerId);
-        client.setDebitAccountId(debitAccountId);
-        client.setPersonalDetailId(personalDetailId);
-        client.setLocationId(locationId);
-        client.setActive(faker.bool().bool());
-        log.info(client.toString());
-        return client;
+    public CreateClientDTO generateClient(Employee employee,
+                                          DebitAccount debitAccount,
+                                          PersonalDetail personalDetail,
+                                          Location location) {
+        CreateClientDTO clientDTO = new CreateClientDTO();
+        clientDTO.setEmployee(employee);
+        clientDTO.setDebitAccount(debitAccount);
+        clientDTO.setPersonalDetail(personalDetail);
+        clientDTO.setLocation(location);
+        clientDTO.setActive(faker.bool().bool());
+        log.info("Generate client: " + clientDTO);
+        return clientDTO;
     }
 
     @Override
-    public CreditAccount generateCreditAccount(UUID clientId) {
-        CreditAccount creditAccount = new CreditAccount();
-        creditAccount.setClientId(clientId);
-        creditAccount.setCreditStatus(faker.generateCreditStatus());
+    public CreateCreditAccountDTO generateCreditAccount(Client client) {
+        CreateCreditAccountDTO creditAccountDTO = new CreateCreditAccountDTO();
+        creditAccountDTO.setClient(client);
+        creditAccountDTO.setCreditStatus(faker.generateCreditStatus());
         final int minCreditValue = 2000;
         final int maxCreditValue = 500000;
-        creditAccount.setDebt(new BigDecimal(faker.number()
+        creditAccountDTO.setDebt(new BigDecimal(faker.number()
                 .numberBetween(minCreditValue, maxCreditValue)));
         final BigDecimal loanInterest = new BigDecimal(3.0);
-        creditAccount.setLoanInterest(loanInterest);
-        creditAccount.setStartFrom(faker
+        creditAccountDTO.setLoanInterest(loanInterest);
+        creditAccountDTO.setStartFrom(faker
                 .generateDateTimeFromYearToNow(startYear));
-        creditAccount.setActive(faker.bool().bool());
-        log.info(creditAccount.toString());
-        return creditAccount;
+        creditAccountDTO.setActive(faker.bool().bool());
+        log.info("Generate credit account: " + creditAccountDTO);
+        return creditAccountDTO;
     }
+     */
 
     @Override
     public DebitAccount generateDebitAccount() {
@@ -109,30 +137,56 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         debitAccount.setIban(faker.finance().iban());
         debitAccount.setDebitStatus(faker.generateDebitStatus());
         debitAccount.setBalance(faker.generateAmount());
-        final BigDecimal debitInterest= new BigDecimal(2.5);
+        final BigDecimal debitInterest = new BigDecimal(2.5);
         debitAccount.setDepositInterest(debitInterest);
         final BigDecimal creditAmount = new BigDecimal(5000);
         debitAccount.setCreditLine(creditAmount);
         debitAccount.setStartFrom(faker
                 .generateDateTimeFromYearToNow(startYear));
-        debitAccount.setActive(faker.bool().bool());
-        log.info(debitAccount.toString());
+        log.info("Generate debit account: " + debitAccount);
         return debitAccount;
     }
 
     @Override
-    public Employee generateEmployee(UUID personalDetailId,
-                                     UUID workDetailId,
-                                     UUID locationId,
-                                     UUID branchId) {
+    public List<DebitAccount> generateMultipleDebitAccounts(Integer quantity) {
+        List<DebitAccount> debitAccounts = new LinkedList<>();
+        for (int i = 0; i < quantity; i++) {
+            debitAccounts.add(generateDebitAccount());
+        }
+        log.info("Generate multiple debit accounts, quantity: " + quantity);
+        return debitAccounts;
+    }
+
+    @Override
+    public Employee generateEmployee(PersonalDetail personalDetail,
+                                     WorkDetail workDetail,
+                                     Location location,
+                                     BankBranch bankBranch) {
         Employee employee = new Employee();
-        employee.setPersonalDetailId(personalDetailId);
-        employee.setWorkDetailId(workDetailId);
-        employee.setLocationId(locationId);
-        employee.setBranchId(branchId);
+        employee.setPersonalDetail(personalDetail);
+        employee.setWorkDetail(workDetail);
+        employee.setLocation(location);
+        employee.setBankBranch(bankBranch);
         employee.setActive(faker.bool().bool());
-        log.info(employee.toString());
+        log.info("Generate employee: " + employee);
         return employee;
+    }
+
+    @Override
+    public List<Employee> generateMultipleEmployees(Integer quantity,
+                                                    List<PersonalDetail> personalDetails,
+                                                    List<WorkDetail> workDetails,
+                                                    List<Location> locations,
+                                                    List<BankBranch> bankBranches) {
+        List<Employee> employees = new LinkedList<>();
+        for (int i = 0; i < quantity; i++) {
+            employees.add(generateEmployee(personalDetails.get(i),
+                    workDetails.get(i),
+                    locations.get(i),
+                    chooseFromList(bankBranches)));
+        }
+        log.info("Generate multiple employees, quantity: " + quantity);
+        return employees;
     }
 
     @Override
@@ -140,18 +194,28 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         Location location = new Location();
         location.setHouseNumber(Integer.parseInt(faker.address()
                 .buildingNumber()));
-        location.setStreet(faker.address().streetAddress());
+        location.setStreet(faker.address().streetName());
         location.setCity(faker.address().city());
         location.setState(faker.address().state());
         location.setCountry(faker.address().country());
-        location.setActive(true);
-        log.info(location.toString());
+        log.info("Generate location: " + location);
         return location;
     }
 
     @Override
+    public List<Location> generateMultipleLocations(Integer quantity) {
+        List<Location> locations = new LinkedList<>();
+        for (int i = 0; i < quantity; i++) {
+            locations.add(generateLocation());
+        }
+        log.info("Generate multiple locations, quantity: " + quantity);
+        return locations;
+    }
+
+    @Override
     public PersonalDetail generatePersonalDetail() {
-        PersonalDetail personalDetail = new PersonalDetail();
+        PersonalDetail personalDetail =
+                new PersonalDetail();
         personalDetail.setFirstName(faker.name().firstName());
         personalDetail.setLastName(faker.name().lastName());
         personalDetail.setSex(faker.generateSex());
@@ -170,19 +234,18 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         final boolean isMarried = faker.bool().bool();
         personalDetail.setIsMarried(isMarried);
         personalDetail.setChildren(faker.generateChildren(isMarried));
-        personalDetail.setActive(faker.bool().bool());
-        log.info(personalDetail.toString());
+        log.info("Generate personal detail: " + personalDetail);
         return personalDetail;
     }
 
     @Override
-    public Transaction generateTransaction() {
-        Transaction transaction = new Transaction();
-        transaction.setEmitterIban(faker.finance().iban());
-        transaction.setReceiverIban(faker.finance().iban());
-        transaction.setAmount(generateAmount());
-        log.info(transaction.toString());
-        return transaction;
+    public List<PersonalDetail> generateMultiplePersonalDetails(Integer quantity) {
+        List<PersonalDetail> personalDetails = new LinkedList<>();
+        for (int i = 0; i < quantity; i++) {
+            personalDetails.add(generatePersonalDetail());
+        }
+        log.info("Generate multiple personal details, quantity: " + quantity);
+        return personalDetails;
     }
 
     @Override
@@ -199,9 +262,18 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         final int startYear = 1991;
         workDetail.setStartFrom(faker.generateDateTimeFromYearToNow(startYear));
         workDetail.setEndAt(null);
-        workDetail.setActive(true);
-        log.info(workDetail.toString());
+        log.info("Generate work detail: " + workDetail);
         return workDetail;
+    }
+
+    @Override
+    public List<WorkDetail> generateMultipleWorkDetails(Integer quantity) {
+        List<WorkDetail> workDetails = new LinkedList<>();
+        for (int i = 0; i < quantity; i++) {
+            workDetails.add(generateWorkDetail());
+        }
+        log.info("Generate multiple work details, quantity: " + quantity);
+        return workDetails;
     }
 
     private String generateIban() {

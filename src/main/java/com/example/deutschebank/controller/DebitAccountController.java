@@ -3,6 +3,7 @@ package com.example.deutschebank.controller;
 import com.example.deutschebank.dto.debitaccount.CreateDebitAccountDTO;
 import com.example.deutschebank.dto.debitaccount.GetDebitAccountDTO;
 import com.example.deutschebank.dto.debitaccount.UpdateDebitAccountDTO;
+import com.example.deutschebank.entity.enums.DebitStatus;
 import com.example.deutschebank.service.interfaces.DebitAccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +26,19 @@ public class DebitAccountController {
         debitAccountService.createDebitAccount(createDTO);
     }
 
-    @GetMapping(value = "/get/by-id/{uuid}")
+    @GetMapping(value = "/get/by/id/{uuid}")
     public ResponseEntity<GetDebitAccountDTO> getDebitAccountById(@PathVariable UUID uuid) {
         GetDebitAccountDTO getDTO =
                 debitAccountService.getDebitAccountById(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(getDTO);
+    }
+
+    @GetMapping(value = "/get/all/by/debit-status/{debit_status}")
+    public ResponseEntity<List<GetDebitAccountDTO>> getAllDebitAccountsWithStatus
+            (@PathVariable DebitStatus debit_status) {
+        List<GetDebitAccountDTO> getAllDTOs =
+                debitAccountService.getAllDebitAccountByDebitStatus(debit_status);
+        return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
     @GetMapping(value = "/get/all")
@@ -39,13 +48,8 @@ public class DebitAccountController {
         return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
-    @PutMapping(value = "/update/by-id")
+    @PutMapping(value = "/update/by/id")
     public void updateDebitAccountById(@RequestBody UpdateDebitAccountDTO updateDTO) {
         debitAccountService.updateDebitAccountById(updateDTO);
-    }
-
-    @DeleteMapping(value = "/delete/by-id/{uuid}")
-    public void deleteDebitAccountById(@PathVariable UUID uuid) {
-        debitAccountService.deleteDebitAccountById(uuid);
     }
 }

@@ -13,7 +13,6 @@ public class GetLocationDTO {
     private String city;
     private String state;
     private String country;
-    private Boolean active;
     private LocalDateTime created;
     private LocalDateTime updated;
 }

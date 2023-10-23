@@ -1,72 +1,73 @@
 package com.example.deutschebank.service.interfaces.additionaltools;
 
-import com.example.deutschebank.dto.bankbranch.GetBranchCityDTO;
+import com.example.deutschebank.dto.additional.tools.CreateDatabaseDTO;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-import java.util.UUID;
-
 public interface ToolsService {
-    //
-    // Debug
-    //
-    GetBranchCityDTO getBranchCity(UUID uuid);
+    void generateDataBase(CreateDatabaseDTO createDatabaseDTO);
 
-    UUID generateBankBranchStructureToDB(int branchNumber);
+    /*
+    void generateBankBranchStructureToDB(Integer branchNumber,
+                                         Location location);
 
-    List<UUID> generateBankBranchesStructureToDB(int quantity);
+
+    void generateBankBranchesStructureToDB(Integer quantity, Location location);
+     */
 
     void deleteAllBankBranchesFromDB();
 
-    void generateBankInfoToDB();
+    // void generateBankInfoToDB();
 
     void deleteBankInfoFromDB();
+    /*
 
     UUID generateClientStructureToDB(UUID managerId);
 
     List<UUID> generateClientsStructureToDB(int quantity,
                                             List<UUID> managersId);
-
+*/
     void deleteAllClientsFromDB();
-
+/*
     void generateCreditAccountToDB(UUID clientId);
 
     void generateCreditAccountsToDB(int quantity, List<UUID> clientsId);
+*/
 
     void deleteAllCreditAccountsFromDB();
 
-    UUID generateDebitAccountToDB();
+    //void generateDebitAccountToDB();
 
     void deleteAllDebitAccountsFromDB();
 
-    UUID generateEmployeeStructureToDB(UUID branchId);
+    //void generateEmployeeStructureToDB();
 
-    List<UUID> generateEmployeesStructureToDB(int quantity,
-                                              List<UUID> branchesId);
+    //void generateEmployeesStructureToDB(Integer quantity);
 
     void deleteAllEmployeesFromDB();
 
-    void generateLocationToDB();
+    //void generateLocationToDB();
 
-    void generateLocationsToDB(int quantity);
+    //void generateLocationsToDB(Integer quantity);
 
     void deleteAllLocationsFromDB();
 
-    void generatePersonalDetailToDB();
+    //void generatePersonalDetailToDB();
 
-    void generatePersonalDetailsToDB(int quantity);
+    //void generatePersonalDetailsToDB(Integer quantity);
 
     void deleteAllPersonalDetailsFromDB();
 
-    void generateTransactionToDB();
 
-    void generateTransactionsToDB(int quantity);
+/*
+    void generateTransactionsToDB(int quantity, List<UUID> clientsId);
 
+     */
     void deleteAllTransactionsFromDB();
 
-    void generateWorkDetailToDB();
 
-    void generateWorkDetailsToDB(int quantity);
+    //void generateWorkDetailToDB();
+
+    //void generateWorkDetailsToDB(Integer quantity);
 
     void deleteAllWorkDetailsFromDB();
 

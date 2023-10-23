@@ -25,7 +25,7 @@ public class PersonalDetailController {
         personalDetailService.createPersonalDetail(createDTO);
     }
 
-    @GetMapping(value = "/get/by-id/{uuid}")
+    @GetMapping(value = "/get/by/id/{uuid}")
     public ResponseEntity<GetPersonalDetailDTO> getPersonalDetail(@PathVariable UUID uuid) {
         GetPersonalDetailDTO getDTO =
                 personalDetailService.getPersonalDetail(uuid);
@@ -39,13 +39,8 @@ public class PersonalDetailController {
         return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
-    @PutMapping(value = "/update/by-id")
+    @PutMapping(value = "/update/by/id")
     public void updatePersonalDetail(@RequestBody UpdatePersonalDetailDTO updateDTO) {
         personalDetailService.updatePersonalDetail(updateDTO);
-    }
-
-    @DeleteMapping(value = "/delete/by-id/{uuid}")
-    public void deletePersonalDetail(@PathVariable UUID uuid) {
-        personalDetailService.deletePersonalDetail(uuid);
     }
 }

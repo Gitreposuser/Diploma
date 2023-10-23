@@ -30,21 +30,25 @@ public class PersonalDetailServiceImpl implements PersonalDetailService {
         PersonalDetail personalDetail =
                 personalDetailDTOConverter.convertCreateDTOToPersonalDetail(createDTO);
         personalDetailRepository.save(personalDetail);
-        log.info("Entity successfully created.");
+        log.info("Personal detail created.");
     }
 
     @Override
+    @Transactional
     public GetPersonalDetailDTO getPersonalDetail(UUID uuid) {
         checkIfNotExist(uuid);
         PersonalDetail personalDetail =
                 personalDetailRepository.getReferenceById(uuid);
+        log.info("Get personal detail by id: " + uuid);
         return personalDetailDTOConverter.convertPersonalDetailToGetDTO(personalDetail);
     }
 
     @Override
+    @Transactional
     public List<GetPersonalDetailDTO> getAllPersonalDetails() {
         List<PersonalDetail> personalDetails =
                 personalDetailRepository.findAll();
+        log.info("Get all personal details, quantity: " + personalDetails.size());
         return personalDetailDTOConverter.convertPersonalDetailsToGetDTOs(personalDetails);
     }
 
@@ -55,14 +59,15 @@ public class PersonalDetailServiceImpl implements PersonalDetailService {
         PersonalDetail personalDetail =
                 personalDetailDTOConverter.convertUpdateDTOToPersonalDetail(updateDTO);
         personalDetailRepository.save(personalDetail);
-        log.info("Entity with id: " + personalDetail.getId() + " is updated." );
+        log.info("Update personal detail with id: " + personalDetail.getId());
     }
 
     @Override
+    @Transactional
     public void deletePersonalDetail(UUID uuid) {
         checkIfNotExist(uuid);
         personalDetailRepository.deleteById(uuid);
-        log.info("Entity with id: " + uuid + " where successfully deleted.");
+        log.info("Delete personal detail with id: " + uuid);
     }
 
     private void checkIfNotExist(UUID uuid) {

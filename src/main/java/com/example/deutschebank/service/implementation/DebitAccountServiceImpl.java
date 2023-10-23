@@ -2,6 +2,7 @@ package com.example.deutschebank.service.implementation;
 
 import com.example.deutschebank.converter.DebitAccountDTOConverter;
 import com.example.deutschebank.entity.DebitAccount;
+import com.example.deutschebank.entity.enums.DebitStatus;
 import com.example.deutschebank.exception.BadOperationException;
 import com.example.deutschebank.dto.debitaccount.CreateDebitAccountDTO;
 import com.example.deutschebank.dto.debitaccount.GetDebitAccountDTO;
@@ -29,20 +30,34 @@ public class DebitAccountServiceImpl implements DebitAccountService {
         DebitAccount debitAccount =
                 debitAccountDTOConverter.convertCreateDTOToDebitAccount(createDTO);
         debitAccountRepository.save(debitAccount);
-        log.info("Entity successfully created.");
+        log.info("Create debit account.");
     }
 
     @Override
+    @Transactional
     public GetDebitAccountDTO getDebitAccountById(UUID uuid) {
         checkIfNotExist(uuid);
         DebitAccount debitAccount =
                 debitAccountRepository.getReferenceById(uuid);
+        log.info("Get debit account by id: " + uuid);
         return debitAccountDTOConverter.convertDebitAccountToGetDTO(debitAccount);
     }
 
     @Override
+    @Transactional
+    public List<GetDebitAccountDTO> getAllDebitAccountByDebitStatus(DebitStatus status) {
+        List<DebitAccount> debitAccounts =
+                debitAccountRepository.getAllDebitAccountsByDebitStatus(status);
+        log.info("Get all debit accounts, status: " + status +
+                " quantity: " + debitAccounts.size());
+        return debitAccountDTOConverter.convertDebitAccountsToGetDTOs(debitAccounts);
+    }
+
+    @Override
+    @Transactional
     public List<GetDebitAccountDTO> getAllDebitAccount() {
         List<DebitAccount> debitAccounts = debitAccountRepository.findAll();
+        log.info("Get all debit accounts, quantity: " + debitAccounts.size());
         return debitAccountDTOConverter.convertDebitAccountsToGetDTOs(debitAccounts);
     }
 
@@ -53,19 +68,20 @@ public class DebitAccountServiceImpl implements DebitAccountService {
         DebitAccount debitAccount =
                 debitAccountDTOConverter.convertUpdateDTOToDebitAccount(updateDTO);
         debitAccountRepository.save(debitAccount);
-        log.info("Entity with id: " + debitAccount.getId() + " is updated.");
+        log.info("Update debit account id: " + debitAccount.getId());
     }
 
     @Override
+    @Transactional
     public void deleteDebitAccountById(UUID uuid) {
         checkIfNotExist(uuid);
         debitAccountRepository.deleteById(uuid);
-        log.info("Entity with id: " + uuid + " where successfully deleted.");
+        log.info("Delete debit account id: " + uuid);
     }
 
     private void checkIfNotExist(UUID uuid) {
         if (!debitAccountRepository.existsById(uuid)) {
-            throw new BadOperationException("Entity with id: " + uuid +
+            throw new BadOperationException("Debit account with id: " + uuid +
                     "doesn't exist!");
         }
     }

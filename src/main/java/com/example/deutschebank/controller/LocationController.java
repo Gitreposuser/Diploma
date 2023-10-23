@@ -25,7 +25,7 @@ public class LocationController {
         locationService.createLocation(createDTO);
     }
 
-    @GetMapping(value = "/get/by-id/{uuid}")
+    @GetMapping(value = "/get/by/id/{uuid}")
     public ResponseEntity<GetLocationDTO> getLocation(@PathVariable UUID uuid) {
         GetLocationDTO getDTO = locationService.getLocation(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(getDTO);
@@ -38,14 +38,8 @@ public class LocationController {
         return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
-    @PutMapping(value = "/update/by-id")
-    public ResponseEntity<UpdateLocationDTO> updateLocation(@RequestBody UpdateLocationDTO updateDTO) {
+    @PutMapping(value = "/update/by/id")
+    public void updateLocation(@RequestBody UpdateLocationDTO updateDTO) {
         locationService.updateLocation(updateDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(updateDTO);
-    }
-
-    @DeleteMapping(value = "delete/by-id/{uuid}")
-    public void deleteLocation(@PathVariable UUID uuid) {
-        locationService.deleteLocation(uuid);
     }
 }

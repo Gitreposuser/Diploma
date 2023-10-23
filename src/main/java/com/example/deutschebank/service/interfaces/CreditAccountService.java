@@ -9,10 +9,12 @@ import java.util.UUID;
 
 public interface CreditAccountService {
     void createCreditAccount(CreateCreditAccountDTO createDTO);
+
     GetCreditAccountDTO getCreditAccountById(UUID uuid);
 
     List<GetCreditAccountDTO> getAllCreditAccounts();
 
     void updateCreditAccountById(UpdateCreditAccountDTO updateDTO);
+
     void deleteCreditAccountById(UUID uuid);
 }
