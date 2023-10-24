@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.REFRESH;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -23,7 +26,7 @@ public class CreditAccount {
     @Column(name = "id")
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {MERGE, REFRESH})
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
@@ -31,8 +34,7 @@ public class CreditAccount {
     @Column(name = "credit_status", length = 20, nullable = false)
     private CreditStatus creditStatus;
 
-    @Column(name = "debt", precision = 15, scale = 2,
-            nullable = false)
+    @Column(name = "debt", precision = 15, scale = 2, nullable = false)
     private BigDecimal debt;
 
     @Column(name = "loan_interest",

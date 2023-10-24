@@ -1,6 +1,7 @@
 package com.example.deutschebank.service.implementation;
 
 import com.example.deutschebank.converter.EmployeeDTOConverter;
+import com.example.deutschebank.dto.employee.GetEmployeeClientsDTO;
 import com.example.deutschebank.entity.Employee;
 import com.example.deutschebank.exception.BadOperationException;
 import com.example.deutschebank.dto.employee.CreateEmployeeDTO;
@@ -48,6 +49,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         isNull(employee);
         log.info("Get employee by full name: " + fullName);
         return employeeDTOConverter.convertEmployeeToGetDTO(employee);
+    }
+
+    @Override
+    public GetEmployeeClientsDTO getEmployeeClientsByFullName(String fullName) {
+        GetEmployeeClientsDTO getDTO = new GetEmployeeClientsDTO();
+        getDTO.setClientsFullNames(employeeRepository
+                .getEmployeeClientsByFullName(fullName));
+        log.info("Get employee clients by full name: " + fullName);
+        return getDTO;
     }
 
     @Override

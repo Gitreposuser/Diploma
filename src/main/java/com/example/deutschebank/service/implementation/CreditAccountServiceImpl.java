@@ -1,6 +1,7 @@
 package com.example.deutschebank.service.implementation;
 
 import com.example.deutschebank.converter.CreditAccountDTOConverter;
+import com.example.deutschebank.dto.creditaccount.GetCreditAccountInfoDTO;
 import com.example.deutschebank.entity.CreditAccount;
 import com.example.deutschebank.exception.BadOperationException;
 import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
@@ -29,7 +30,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         CreditAccount creditAccount =
                 creditAccountDTOConverter.convertCreateDTOToCreditAccount(createDTO);
         creditAccountRepository.save(creditAccount);
-        log.info("Entity successfully created.");
+        log.info("Create credit account.");
     }
 
     @Override
@@ -37,12 +38,30 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         checkIfNotExist(uuid);
         CreditAccount creditAccount =
                 creditAccountRepository.getReferenceById(uuid);
+        log.info("Get credit account by id: " + uuid);
         return creditAccountDTOConverter.convertCreditAccountToGetDTO(creditAccount);
+    }
+
+    @Override
+    public List<GetCreditAccountInfoDTO> getCreditAccountsInfoByClientFullName(String fullName) {
+        List<CreditAccount> creditAccounts =
+                creditAccountRepository.getCreditAccountsByFullName(fullName);
+        log.info("Get credit accounts by client full name: " + fullName);
+        return creditAccountDTOConverter.convertCreditAccountsToGetInfoDTOs(creditAccounts);
+    }
+
+    @Override
+    public List<GetCreditAccountDTO> getAllActiveCreditAccounts() {
+        List<CreditAccount> creditAccounts = creditAccountRepository
+                .getAllActiveCreditAccounts();
+        log.info("Get all active credit accounts, quantity: " + creditAccounts.size());
+        return creditAccountDTOConverter.convertCreditAccountToGetDTOs(creditAccounts);
     }
 
     @Override
     public List<GetCreditAccountDTO> getAllCreditAccounts() {
         List<CreditAccount> creditAccounts = creditAccountRepository.findAll();
+        log.info("Get all credit accounts, quantity: " + creditAccounts.size());
         return creditAccountDTOConverter.convertCreditAccountToGetDTOs(creditAccounts);
     }
 
@@ -52,14 +71,14 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         CreditAccount creditAccount =
                 creditAccountDTOConverter.convertUpdateDTOToCreditAccount(updateDTO);
         creditAccountRepository.save(creditAccount);
-        log.info("Entity with id: " + creditAccount.getId() + " is updated.");
+        log.info("Update credit account by id: " + updateDTO.getId());
     }
 
     @Override
     public void deleteCreditAccountById(UUID uuid) {
         checkIfNotExist(uuid);
         creditAccountRepository.deleteById(uuid);
-        log.info("Entity with id: " + uuid + " where successfully deleted.");
+        log.warn("Delete credit account by id: " + uuid);
     }
 
     private void checkIfNotExist(UUID uuid) {

@@ -2,6 +2,7 @@ package com.example.deutschebank.service.interfaces;
 
 import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
 import com.example.deutschebank.dto.creditaccount.GetCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.GetCreditAccountInfoDTO;
 import com.example.deutschebank.dto.creditaccount.UpdateCreditAccountDTO;
 
 import java.util.List;
@@ -11,6 +12,11 @@ public interface CreditAccountService {
     void createCreditAccount(CreateCreditAccountDTO createDTO);
 
     GetCreditAccountDTO getCreditAccountById(UUID uuid);
+
+    List<GetCreditAccountInfoDTO> getCreditAccountsInfoByClientFullName
+            (String fullName);
+
+    List<GetCreditAccountDTO> getAllActiveCreditAccounts();
 
     List<GetCreditAccountDTO> getAllCreditAccounts();
 

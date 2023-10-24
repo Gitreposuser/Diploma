@@ -15,6 +15,14 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
             "em.personalDetail.lastName) = :fullName ")
     Employee getEmployeeByFullName(String fullName);
 
+    @Query("SELECT CONCAT(cl.personalDetail.firstName, ' ', " +
+            "cl.personalDetail.lastName) FROM Employee" +
+            " em " +
+            "JOIN Client cl ON cl.employee.id = em.id " +
+            "WHERE CONCAT(em.personalDetail.firstName, ' ', " +
+            "em.personalDetail.lastName) = :fullName ")
+    List<String> getEmployeeClientsByFullName(String fullName);
+
     @Query("SELECT em FROM Employee em " +
             "WHERE em.active = true ")
     List<Employee> getAllActiveEmployee();

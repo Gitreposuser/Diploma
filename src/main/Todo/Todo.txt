@@ -1,3 +1,3 @@
-1. Credit accounts not connected with clients.
-2. No transaction generation.
-3. Create report on transactions.
+1. Fix credit account update.
+2. Create report on transactions.
+3. Tests.

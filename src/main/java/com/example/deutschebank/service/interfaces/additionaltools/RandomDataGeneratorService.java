@@ -13,15 +13,22 @@ public interface RandomDataGeneratorService {
                                                   List<Location> locations);
 
     BankInfo generateBankInfo();
-/*
 
-    CreateClientDTO generateClient(PersonalDetail personalDetailId,
-                                   WorkDetail workDetailId,
-                                   Location locationId,
-                                   BankBranch branchId);
+    Client generateClient(PersonalDetail personalDetail,
+                          DebitAccount debitAccount,
+                          Location location,
+                          Employee employee);
 
-    CreateCreditAccountDTO generateCreditAccount(Client client);
-     */
+    List<Client> generateMultipleClients(Integer quantity,
+                                         List<PersonalDetail> personalDetails,
+                                         List<DebitAccount> debitAccounts,
+                                         List<Location> locations,
+                                         List<Employee> employees);
+
+    CreditAccount generateCreditAccount(Client client);
+
+    List<CreditAccount> generateMultipleCreditAccounts(Integer quantity,
+                                                       List<Client> clients);
 
     DebitAccount generateDebitAccount();
 

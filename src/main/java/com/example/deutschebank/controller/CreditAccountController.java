@@ -2,6 +2,7 @@ package com.example.deutschebank.controller;
 
 import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
 import com.example.deutschebank.dto.creditaccount.GetCreditAccountDTO;
+import com.example.deutschebank.dto.creditaccount.GetCreditAccountInfoDTO;
 import com.example.deutschebank.dto.creditaccount.UpdateCreditAccountDTO;
 import com.example.deutschebank.service.interfaces.CreditAccountService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,21 @@ public class CreditAccountController {
     public ResponseEntity<GetCreditAccountDTO> getCreditAccountById(@PathVariable UUID uuid) {
         GetCreditAccountDTO getDTO = creditAccountService.getCreditAccountById(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(getDTO);
+    }
+
+    @GetMapping(value = "/get/infos/by/client-full-name/{full_name}")
+    public ResponseEntity<List<GetCreditAccountInfoDTO>> getCreditAccountsInfoByClientFullName(
+            @PathVariable String full_name) {
+        List<GetCreditAccountInfoDTO> getAllDTOs = creditAccountService
+                .getCreditAccountsInfoByClientFullName(full_name);
+        return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
+    }
+
+    @GetMapping(value = "/get/all/active")
+    public ResponseEntity<List<GetCreditAccountDTO>> getAllActiveCreditDetails() {
+        List<GetCreditAccountDTO> getAllDTOs =
+                creditAccountService.getAllActiveCreditAccounts();
+        return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
     @GetMapping(value = "/get/all")

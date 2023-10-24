@@ -2,6 +2,7 @@ package com.example.deutschebank.service.implementation.additionaltools;
 
 import com.example.deutschebank.entity.*;
 import com.example.deutschebank.entity.enums.BranchStatus;
+import com.example.deutschebank.entity.enums.CreditStatus;
 import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGeneratorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +80,6 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         return bankBranches;
     }
 
-
     @Override
     public BankInfo generateBankInfo() {
         BankInfo bankInfo = new BankInfo();
@@ -96,40 +96,76 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         return bankInfo;
     }
 
-    /*
     @Override
-    public CreateClientDTO generateClient(Employee employee,
-                                          DebitAccount debitAccount,
-                                          PersonalDetail personalDetail,
-                                          Location location) {
-        CreateClientDTO clientDTO = new CreateClientDTO();
-        clientDTO.setEmployee(employee);
-        clientDTO.setDebitAccount(debitAccount);
-        clientDTO.setPersonalDetail(personalDetail);
-        clientDTO.setLocation(location);
-        clientDTO.setActive(faker.bool().bool());
-        log.info("Generate client: " + clientDTO);
-        return clientDTO;
+    public Client generateClient(PersonalDetail personalDetail,
+                                 DebitAccount debitAccount,
+                                 Location location,
+                                 Employee employee) {
+        Client client = new Client();
+        client.setPersonalDetail(personalDetail);
+        client.setDebitAccount(debitAccount);
+        client.setLocation(location);
+        client.setEmployee(employee);
+        client.setActive(faker.bool().bool());
+        log.info("Generate client: " + client);
+        return client;
     }
 
     @Override
-    public CreateCreditAccountDTO generateCreditAccount(Client client) {
-        CreateCreditAccountDTO creditAccountDTO = new CreateCreditAccountDTO();
-        creditAccountDTO.setClient(client);
-        creditAccountDTO.setCreditStatus(faker.generateCreditStatus());
-        final int minCreditValue = 2000;
-        final int maxCreditValue = 500000;
-        creditAccountDTO.setDebt(new BigDecimal(faker.number()
-                .numberBetween(minCreditValue, maxCreditValue)));
-        final BigDecimal loanInterest = new BigDecimal(3.0);
-        creditAccountDTO.setLoanInterest(loanInterest);
-        creditAccountDTO.setStartFrom(faker
-                .generateDateTimeFromYearToNow(startYear));
-        creditAccountDTO.setActive(faker.bool().bool());
-        log.info("Generate credit account: " + creditAccountDTO);
-        return creditAccountDTO;
+    public List<Client> generateMultipleClients(Integer quantity,
+                                                List<PersonalDetail> personalDetails,
+                                                List<DebitAccount> debitAccounts,
+                                                List<Location> locations,
+                                                List<Employee> employees) {
+        List<Client> clients = new LinkedList<>();
+        for (int i = 0; i < quantity; i++) {
+            clients.add(generateClient(personalDetails.get(i),
+                    debitAccounts.get(i),
+                    locations.get(i),
+                    chooseFromList(employees)));
+        }
+        log.info("Generate multiple clients, quantity: " + quantity);
+        return clients;
     }
-     */
+
+    @Override
+    public CreditAccount generateCreditAccount(Client client) {
+        CreditAccount creditAccount = new CreditAccount();
+        creditAccount.setClient(client);
+        creditAccount.setCreditStatus(faker.generateCreditStatus());
+        BigDecimal creditAmount = null;
+        boolean isCreditActive;
+        if(creditAccount.getCreditStatus() == CreditStatus.CLOSED) {
+            creditAmount = new BigDecimal(0);
+            isCreditActive = false;
+        } else {
+            final int minCreditValue = 100;
+            final int maxCreditValue = 500000;
+            creditAmount =
+                    new BigDecimal(faker.number()
+                            .numberBetween(minCreditValue, maxCreditValue));
+            isCreditActive = true;
+        }
+        creditAccount.setDebt(creditAmount);
+        final BigDecimal loanInterest = new BigDecimal(3.0);
+        creditAccount.setLoanInterest(loanInterest);
+        creditAccount.setStartFrom(faker
+                .generateDateTimeFromYearToNow(startYear));
+        creditAccount.setActive(isCreditActive);
+        log.info("Generate credit account: " + creditAccount);
+        return creditAccount;
+    }
+
+    @Override
+    public List<CreditAccount> generateMultipleCreditAccounts(Integer quantity,
+                                                              List<Client> clients) {
+        List<CreditAccount> creditAccounts = new LinkedList<>();
+        for (int i = 0; i < quantity; i++) {
+            creditAccounts.add(generateCreditAccount(chooseFromList(clients)));
+        }
+        log.info("Generate multiple credit accounts, quantity: " + quantity);
+        return creditAccounts;
+    }
 
     @Override
     public DebitAccount generateDebitAccount() {

@@ -71,7 +71,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public List<GetClientDTO> getAllActiveClients() {
         List<Client> clients = clientRepository.getAllActiveClients();
-        log.info("Get all active clients");
+        log.info("Get all active clients, quantity: " + clients.size());
         return clientDTOConverter.convertClientsToGetDTOs(clients);
     }
 
@@ -79,7 +79,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public List<GetClientDTO> getAllClients() {
         List<Client> clients = clientRepository.findAll();
-        log.info("Get all clients");
+        log.info("Get all clients, quantity: " + clients.size());
         return clientDTOConverter.convertClientsToGetDTOs(clients);
     }
 

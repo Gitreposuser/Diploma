@@ -1,6 +1,7 @@
 package com.example.deutschebank.controller;
 
 import com.example.deutschebank.dto.employee.CreateEmployeeDTO;
+import com.example.deutschebank.dto.employee.GetEmployeeClientsDTO;
 import com.example.deutschebank.dto.employee.GetEmployeeDTO;
 import com.example.deutschebank.dto.employee.UpdateEmployeeDTO;
 import com.example.deutschebank.service.interfaces.EmployeeService;
@@ -36,6 +37,14 @@ public class EmployeeController {
             (@PathVariable String full_name) {
         GetEmployeeDTO getDTO =
                 employeeService.getEmployeeByFullName(full_name);
+        return ResponseEntity.status(HttpStatus.OK).body(getDTO);
+    }
+
+    @GetMapping(value = "/get/employee-clients/by/full-name/{full_name}")
+    public ResponseEntity<GetEmployeeClientsDTO> GetEmployeeClientsByFullName
+            (@PathVariable String full_name) {
+        GetEmployeeClientsDTO getDTO =
+                employeeService.getEmployeeClientsByFullName(full_name);
         return ResponseEntity.status(HttpStatus.OK).body(getDTO);
     }
 

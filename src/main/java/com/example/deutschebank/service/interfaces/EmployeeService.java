@@ -1,6 +1,7 @@
 package com.example.deutschebank.service.interfaces;
 
 import com.example.deutschebank.dto.employee.CreateEmployeeDTO;
+import com.example.deutschebank.dto.employee.GetEmployeeClientsDTO;
 import com.example.deutschebank.dto.employee.GetEmployeeDTO;
 import com.example.deutschebank.dto.employee.UpdateEmployeeDTO;
 
@@ -13,6 +14,8 @@ public interface EmployeeService {
     GetEmployeeDTO getEmployeeById(UUID uuid);
 
     GetEmployeeDTO getEmployeeByFullName(String fullName);
+
+    GetEmployeeClientsDTO getEmployeeClientsByFullName(String fullName);
 
     List<GetEmployeeDTO> getAllActiveEmployees();
 

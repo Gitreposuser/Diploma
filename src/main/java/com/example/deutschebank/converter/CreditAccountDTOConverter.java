@@ -1,6 +1,6 @@
 package com.example.deutschebank.converter;
 
-import com.example.deutschebank.dto.bankbranch.GetBankBranchInfoDTO;
+import com.example.deutschebank.dto.creditaccount.GetCreditAccountInfoDTO;
 import com.example.deutschebank.entity.CreditAccount;
 import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
 import com.example.deutschebank.dto.creditaccount.GetCreditAccountDTO;
@@ -22,26 +22,29 @@ public class CreditAccountDTOConverter {
     }
 
     public GetCreditAccountDTO convertCreditAccountToGetDTO(CreditAccount creditAccount) {
-        return modelMapper.map(creditAccount,
-                GetCreditAccountDTO.class);
-
-        /*
-        GetCreditAccountDTO getCreditAccountDTO = modelMapper
-                .typeMap(CreditAccount.class, GetCreditAccountDTO.class)
-                .addMapping(src -> src.getId(), GetCreditAccountDTO::setId)
-                .addMapping(src -> src.getClient(),
-                        GetCreditAccountDTO::setClient)
-                .map(creditAccount);
-        return getCreditAccountDTO;
-
-         */
+        return modelMapper.map(creditAccount, GetCreditAccountDTO.class);
     }
 
-    public List<GetCreditAccountDTO> convertCreditAccountToGetDTOs(List<CreditAccount> creditAccounts) {
+    public List<GetCreditAccountInfoDTO> convertCreditAccountsToGetInfoDTOs
+            (List<CreditAccount> creditAccounts) {
+        List<GetCreditAccountInfoDTO> getDTOs = new LinkedList<>();
+        for (CreditAccount account : creditAccounts) {
+            getDTOs.add(modelMapper
+                    .typeMap(CreditAccount.class, GetCreditAccountInfoDTO.class)
+                    .addMapping(src -> src.getClient().getPersonalDetail().getFirstName(),
+                            GetCreditAccountInfoDTO::setClientFirstName)
+                    .addMapping(src -> src.getClient().getPersonalDetail().getLastName(),
+                            GetCreditAccountInfoDTO::setClientLastName)
+                    .map(account));
+        }
+        return getDTOs;
+    }
+
+    public List<GetCreditAccountDTO> convertCreditAccountToGetDTOs
+            (List<CreditAccount> creditAccounts) {
         List<GetCreditAccountDTO> getDTOs = new LinkedList<>();
         for (CreditAccount account : creditAccounts) {
-            getDTOs.add(modelMapper.map(account,
-                    GetCreditAccountDTO.class));
+            getDTOs.add(modelMapper.map(account, GetCreditAccountDTO.class));
         }
         return getDTOs;
     }

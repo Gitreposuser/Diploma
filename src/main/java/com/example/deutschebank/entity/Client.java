@@ -36,7 +36,7 @@ public class Client {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
-    @OneToOne(cascade = {MERGE, REFRESH})
+    @ManyToOne(cascade = {MERGE, REFRESH})
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
