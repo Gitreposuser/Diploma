@@ -11,7 +11,6 @@ import java.util.UUID;
 @Repository
 public interface CreditAccountRepository extends JpaRepository<CreditAccount,
         UUID> {
-
     @Query("SELECT ca FROM CreditAccount ca " +
             "WHERE CONCAT(ca.client.personalDetail.firstName, ' ', " +
             "ca.client.personalDetail.lastName) = :fullName ")

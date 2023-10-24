@@ -53,6 +53,12 @@ public interface RandomDataGeneratorService {
 
     List<PersonalDetail> generateMultiplePersonalDetails(Integer quantity);
 
+    Transaction generateTransaction(Client emitter, Client receiver);
+
+    List<Transaction> generateMultipleTransactions(Integer quantity,
+                                                   List<Client> emitters,
+                                                   List<Client> receivers);
+
     WorkDetail generateWorkDetail();
 
     List<WorkDetail> generateMultipleWorkDetails(Integer quantity);

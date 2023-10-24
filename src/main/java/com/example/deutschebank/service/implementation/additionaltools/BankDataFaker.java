@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.time.*;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 public class BankDataFaker extends Faker {
     private final Random rnd;

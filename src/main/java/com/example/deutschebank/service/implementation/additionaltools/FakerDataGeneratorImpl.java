@@ -3,6 +3,7 @@ package com.example.deutschebank.service.implementation.additionaltools;
 import com.example.deutschebank.entity.*;
 import com.example.deutschebank.entity.enums.BranchStatus;
 import com.example.deutschebank.entity.enums.CreditStatus;
+import com.example.deutschebank.exception.BadOperationException;
 import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGeneratorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -282,6 +283,33 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         }
         log.info("Generate multiple personal details, quantity: " + quantity);
         return personalDetails;
+    }
+
+    @Override
+    public Transaction generateTransaction(Client emitter, Client receiver) {
+        Transaction transaction = new Transaction();
+        transaction.setEmitterIban(emitter.getDebitAccount().getIban());
+        transaction.setReceiverIban(receiver.getDebitAccount().getIban());
+        transaction.setAmount(new BigDecimal(faker.generateAmount().toString()));
+        log.info("Generate transaction, amount: " + transaction.getAmount());
+        return transaction;
+    }
+
+    @Override
+    public List<Transaction> generateMultipleTransactions(Integer quantity,
+                                                          List<Client> emitters,
+                                                          List<Client> receivers) {
+        List<Transaction> transactions = new LinkedList<>();
+        for (int i = 0; i < quantity; i++) {
+            Client emitter = chooseFromList(emitters);
+            Client receiver;
+            do {
+                receiver = chooseFromList(receivers);
+            } while(emitter == receiver);
+            transactions.add(generateTransaction(emitter, receiver));
+        }
+        log.info("Generate multiple transactions, quantity: " + transactions.size());
+        return transactions;
     }
 
     @Override

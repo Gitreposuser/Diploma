@@ -2,14 +2,7 @@ package com.example.deutschebank.service.implementation.additionaltools;
 
 import com.example.deutschebank.converter.*;
 import com.example.deutschebank.dto.additional.tools.CreateDatabaseDTO;
-import com.example.deutschebank.dto.bankbranch.CreateBankBranchDTO;
 import com.example.deutschebank.dto.bankinfo.CreateBankInfoDTO;
-import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
-import com.example.deutschebank.dto.debitaccount.CreateDebitAccountDTO;
-import com.example.deutschebank.dto.employee.CreateEmployeeDTO;
-import com.example.deutschebank.dto.location.CreateLocationDTO;
-import com.example.deutschebank.dto.personaldetail.CreatePersonalDetailDTO;
-import com.example.deutschebank.dto.workdetail.CreateWorkDetailDTO;
 import com.example.deutschebank.entity.*;
 import com.example.deutschebank.repository.*;
 import com.example.deutschebank.service.interfaces.BankBranchService;
@@ -20,7 +13,6 @@ import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGen
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.jdbc.Work;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,19 +20,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class ToolsServiceImpl implements ToolsService {
     private final BankBranchRepository bankBranchRepository;
-    private final BankBranchService bankBranchService;
     private final BankInfoDTOConverter bankInfoDTOConverter;
     private final BankInfoService bankInfoService;
     private final BankInfoRepository bankInfoRepository;
@@ -49,7 +37,6 @@ public class ToolsServiceImpl implements ToolsService {
     private final DebitAccountRepository debitAccountRepository;
     private final EmployeeRepository employeeRepository;
     private final LocationRepository locationRepository;
-    private final LocationService locationService;
     private final PersonalDetailRepository personalDetailRepository;
     private final WorkDetailRepository workDetailRepository;
     private final TransactionRepository transactionRepository;
@@ -120,6 +107,12 @@ public class ToolsServiceImpl implements ToolsService {
                 .generateMultipleCreditAccounts(creditAccountsQuantity,
                         clients);
         creditAccountRepository.saveAll(creditAccounts);
+
+        // Generate transactions
+        List<Transaction> transactions = randomDataGenerator
+                .generateMultipleTransactions(createDatabaseDTO.getTransactionsQuantity(),
+                        clients, clients);
+        transactionRepository.saveAll(transactions);
 
         log.info("Generate database.");
     }
