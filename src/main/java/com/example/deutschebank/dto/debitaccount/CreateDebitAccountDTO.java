@@ -12,5 +12,4 @@ public class CreateDebitAccountDTO {
     private BigDecimal balance;
     private BigDecimal depositInterest;
     private BigDecimal creditLine;
-    private LocalDateTime startFrom;
 }

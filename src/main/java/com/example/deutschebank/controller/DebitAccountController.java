@@ -1,9 +1,6 @@
 package com.example.deutschebank.controller;
 
-import com.example.deutschebank.dto.debitaccount.CreateDebitAccountDTO;
-import com.example.deutschebank.dto.debitaccount.GetDebitAccountDTO;
-import com.example.deutschebank.dto.debitaccount.TransferFundsDTO;
-import com.example.deutschebank.dto.debitaccount.UpdateDebitAccountDTO;
+import com.example.deutschebank.dto.debitaccount.*;
 import com.example.deutschebank.entity.enums.DebitStatus;
 import com.example.deutschebank.service.interfaces.DebitAccountService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,8 +52,13 @@ public class DebitAccountController {
         debitAccountService.updateDebitAccountById(updateDTO);
     }
 
-    @PutMapping(value = "/transferFunds/by/iban")
-    public void transferFunds(@RequestBody TransferFundsDTO transferDTO) {
+    @PutMapping(value = "/transfer-funds/by/iban")
+    public void transferFundsByIban(@RequestBody TransferFundsDTO transferDTO) {
         debitAccountService.transferFundsByIban(transferDTO);
+    }
+
+    @PutMapping(value = "/pay-debt")
+    public void payDebt(@RequestBody PayDeptDTO payDeptDTO) {
+        debitAccountService.payDebt(payDeptDTO);
     }
 }

@@ -176,8 +176,6 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         debitAccount.setDepositInterest(debitInterest);
         final BigDecimal creditAmount = new BigDecimal(5000);
         debitAccount.setCreditLine(creditAmount);
-        debitAccount.setStartFrom(faker
-                .generateDateTimeFromYearToNow(startYear));
         log.info("Generate debit account: " + debitAccount);
         return debitAccount;
     }

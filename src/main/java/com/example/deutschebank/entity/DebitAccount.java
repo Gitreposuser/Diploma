@@ -43,9 +43,6 @@ public class DebitAccount {
             columnDefinition = "NUMERIC(7, 2) DEFAULT '500.00'")
     private BigDecimal creditLine;
 
-    @Column(name = "start_from", updatable = false)
-    private LocalDateTime startFrom;
-
     @CreationTimestamp
     @Column(name = "created", updatable = false)
     private LocalDateTime created;

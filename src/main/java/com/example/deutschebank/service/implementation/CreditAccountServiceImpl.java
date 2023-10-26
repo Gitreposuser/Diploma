@@ -4,17 +4,19 @@ import com.example.deutschebank.converter.CreditAccountDTOConverter;
 import com.example.deutschebank.dto.creditaccount.GetCreditAccountInfoDTO;
 import com.example.deutschebank.dto.transaction.CreateTransactionDTO;
 import com.example.deutschebank.entity.CreditAccount;
-import com.example.deutschebank.exception.BadOperationException;
 import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
 import com.example.deutschebank.dto.creditaccount.GetCreditAccountDTO;
 import com.example.deutschebank.dto.creditaccount.UpdateCreditAccountDTO;
+import com.example.deutschebank.exception.NullOrNotExistException;
 import com.example.deutschebank.repository.CreditAccountRepository;
+import com.example.deutschebank.repository.DebitAccountRepository;
 import com.example.deutschebank.service.interfaces.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,14 +28,14 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     private final CreditAccountDTOConverter creditAccountDTOConverter;
     private final BankInfoService bankInfoService;
     private final TransactionService transactionService;
-    private final DebitAccountService debitAccountService;
+    private final DebitAccountRepository debitAccountRepository;
     private final ClientService clientService;
 
     @Override
     @Transactional
     public void createCreditAccount(CreateCreditAccountDTO createDTO) {
         UUID clientId = createDTO.getClient().getId();
-        checkIfNullOrIsNotExist(clientId);
+        validateCreditAccountIdNullOrNotExist(clientId);
         String clientIban =
                 clientService.getClientById(clientId).getDebitAccount().getIban();
         UUID debitAccountId =
@@ -41,9 +43,9 @@ public class CreditAccountServiceImpl implements CreditAccountService {
 
         bankInfoService.isNotFundsSufficient(createDTO.getDebt());
         bankInfoService.subtractFunds(createDTO.getDebt());
-        debitAccountService.addFunds(debitAccountId, createDTO.getDebt());
-        CreateTransactionDTO transactionDTO = new CreateTransactionDTO();
+        addFunds(debitAccountId, createDTO.getDebt());
 
+        CreateTransactionDTO transactionDTO = new CreateTransactionDTO();
         transactionDTO.setAmount(createDTO.getDebt());
         transactionDTO.setEmitterIban(bankInfoService.getBankInfo().getIban());
         transactionDTO.setReceiverIban(clientIban);
@@ -58,7 +60,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     @Override
     @Transactional
     public GetCreditAccountDTO getCreditAccountById(UUID uuid) {
-        checkIfNullOrIsNotExist(uuid);
+        validateCreditAccountIdNullOrNotExist(uuid);
         CreditAccount creditAccount =
                 creditAccountRepository.getReferenceById(uuid);
         log.info("Get credit account by id: " + uuid);
@@ -94,7 +96,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     @Override
     @Transactional
     public void updateCreditAccountById(UpdateCreditAccountDTO updateDTO) {
-        checkIfNullOrIsNotExist(updateDTO.getId());
+        validateCreditAccountIdNullOrNotExist(updateDTO.getId());
         CreditAccount creditAccount =
                 creditAccountDTOConverter.convertUpdateDTOToCreditAccount(updateDTO);
         creditAccountRepository.save(creditAccount);
@@ -104,14 +106,49 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     @Override
     @Transactional
     public void deleteCreditAccountById(UUID uuid) {
-        checkIfNullOrIsNotExist(uuid);
+        validateCreditAccountIdNullOrNotExist(uuid);
         creditAccountRepository.deleteById(uuid);
         log.warn("Delete credit account by id: " + uuid);
     }
 
-    private void checkIfNullOrIsNotExist(UUID uuid) {
+    @Override
+    @Transactional
+    public void addDebt(UUID uuid, BigDecimal amount) {
+        validateCreditAccountIdNullOrNotExist(uuid);
+        BigDecimal debt =
+                creditAccountRepository.getDebtById(uuid);
+        BigDecimal resultDebt = debt.add(amount);
+        creditAccountRepository.setDept(uuid, resultDebt);
+    }
+
+    @Override
+    @Transactional
+    public void subtractDebt(UUID uuid, BigDecimal amount) {
+        validateCreditAccountIdNullOrNotExist(uuid);
+        BigDecimal debt =
+                creditAccountRepository.getDebtById(uuid);
+        BigDecimal resultDebt = debt.subtract(amount);
+        creditAccountRepository.setDept(uuid, resultDebt);
+    }
+
+    private void addFunds(UUID uuid, BigDecimal amount) {
+        validateDebitAccountNullOrNotExist(uuid);
+        BigDecimal balance =
+                debitAccountRepository.findById(uuid).get().getBalance();
+        BigDecimal resultBalance = balance.add(amount);
+        debitAccountRepository.setBalance(uuid, resultBalance);
+    }
+
+    private void validateCreditAccountIdNullOrNotExist(UUID uuid) {
         if (uuid == null || !creditAccountRepository.existsById(uuid)) {
-            throw new BadOperationException("Credit account with id: " + uuid +
+            throw new NullOrNotExistException("Credit account with id: " + uuid +
+                    " is null or doesn't exist!");
+        }
+    }
+
+    private void validateDebitAccountNullOrNotExist(UUID uuid) {
+        if (uuid == null || !debitAccountRepository.existsById(uuid)) {
+            throw new NullOrNotExistException("Debit account with id: " + uuid +
                     " is null or doesn't exist!");
         }
     }

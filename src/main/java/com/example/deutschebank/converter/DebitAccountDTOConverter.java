@@ -1,11 +1,8 @@
 package com.example.deutschebank.converter;
 
-import com.example.deutschebank.dto.debitaccount.TransferFundsDTO;
+import com.example.deutschebank.dto.debitaccount.*;
 import com.example.deutschebank.dto.transaction.CreateTransactionDTO;
 import com.example.deutschebank.entity.DebitAccount;
-import com.example.deutschebank.dto.debitaccount.CreateDebitAccountDTO;
-import com.example.deutschebank.dto.debitaccount.GetDebitAccountDTO;
-import com.example.deutschebank.dto.debitaccount.UpdateDebitAccountDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

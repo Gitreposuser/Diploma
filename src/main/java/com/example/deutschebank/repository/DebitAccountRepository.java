@@ -23,7 +23,7 @@ public interface DebitAccountRepository extends JpaRepository<DebitAccount, UUID
 
     @Query("SELECT id FROM DebitAccount " +
             "WHERE iban = :iban ")
-    UUID getDebitAccountByIban(String iban);
+    UUID getDebitAccountIdByIban(String iban);
 
     @Query("SELECT balance FROM DebitAccount " +
             "WHERE iban = :iban ")
