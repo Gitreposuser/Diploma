@@ -2,7 +2,7 @@ package com.example.deutschebank.service.implementation.additionaltools;
 
 import com.example.deutschebank.entity.enums.*;
 import com.example.deutschebank.exception.BadRangeException;
-import com.example.deutschebank.exception.NegativeValueException;
+import com.example.deutschebank.exception.NullOrNegativeValueException;
 import com.github.javafaker.Faker;
 
 import java.math.BigDecimal;
@@ -176,13 +176,13 @@ public class BankDataFaker extends Faker {
 
     private void negativeValueValidator(int value) {
         if (value < 0) {
-            throw new NegativeValueException("Negative value!");
+            throw new NullOrNegativeValueException("Negative value!");
         }
     }
 
     private void negativeValueValidator(int from, int to) {
         if ((from < 0) || (to < 0)) {
-            throw new NegativeValueException("Negative value!");
+            throw new NullOrNegativeValueException("Negative value!");
         }
     }
 }

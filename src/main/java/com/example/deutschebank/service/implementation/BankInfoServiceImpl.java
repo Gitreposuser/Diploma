@@ -6,6 +6,7 @@ import com.example.deutschebank.exception.BadOperationException;
 import com.example.deutschebank.dto.bankinfo.CreateBankInfoDTO;
 import com.example.deutschebank.dto.bankinfo.GetBankInfoDTO;
 import com.example.deutschebank.dto.bankinfo.UpdateBankInfoDTO;
+import com.example.deutschebank.exception.NotEnoughFundsException;
 import com.example.deutschebank.repository.BankInfoRepository;
 import com.example.deutschebank.service.interfaces.BankInfoService;
 import jakarta.transaction.Transactional;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
+
 import java.math.BigDecimal;
 
 @Slf4j
@@ -32,7 +34,7 @@ public class BankInfoServiceImpl implements BankInfoService {
     @Override
     @Transactional
     public void createBankInfo(CreateBankInfoDTO createDTO) {
-        checkIfExists("Can't create another instance of Bank Info!");
+        isExists("Can't create another instance of Bank Info!");
         BankInfo bankInfo =
                 bankInfoDTOConverter.convertCreateDTOToBankInfo(createDTO);
         // Manually set id
@@ -40,24 +42,23 @@ public class BankInfoServiceImpl implements BankInfoService {
         // Get bank IBAN from file
         // To prevent from change
         bankInfo.setIban(bankIban);
-        // Set starting balance as zero
-        // All funds should be transferred through transactions
-        bankInfo.setBalance(new BigDecimal(0));
         bankInfoRepository.save(bankInfo);
+        log.info("Create bank info.");
     }
 
     @Override
+    @Transactional
     public GetBankInfoDTO getBankInfo() {
-        checkIfNotExists("Can't receive bank info. Doesnt exist!");
+        isNotExists("Can't receive bank info. Doesnt exist!");
+        log.info("Get bank info.");
         return bankInfoDTOConverter.convertBankInfoToGetDTO(bankInfoRepository
                 .findById(id).get());
     }
 
     @Override
     @Transactional
-    public UpdateBankInfoDTO updateBankInfo(UpdateBankInfoDTO updateDTO) {
-        checkIfNotExists("Can't update bank info. Doesnt exist!");
-
+    public void updateBankInfo(UpdateBankInfoDTO updateDTO) {
+        isNotExists("Can't update bank info. Doesnt exist!");
         BankInfo bankInfo =
                 bankInfoDTOConverter.convertUpdateDTOToBankInfo(updateDTO);
         // Manually set id, IBAN and balance to prevent from changes
@@ -65,17 +66,42 @@ public class BankInfoServiceImpl implements BankInfoService {
         bankInfo.setIban(bankInfoRepository.findById(id).get().getIban());
         bankInfo.setBalance(bankInfoRepository.findById(id).get().getBalance());
         bankInfoRepository.save(bankInfo);
-        return updateDTO;
+        log.info("Update bank info.");
     }
 
-    private void checkIfNotExists(String errorMessage) {
-        if(!bankInfoRepository.existsById(id)) {
+    @Override
+    public void isNotFundsSufficient(BigDecimal amount) {
+        BigDecimal balance = bankInfoRepository.getBalance();
+        if (balance.compareTo(amount) < 0) {
+            throw new NotEnoughFundsException("Cannot validate operation, not " +
+                    "enough funds!");
+        }
+    }
+
+    @Override
+    public void subtractFunds(BigDecimal amount) {
+        BigDecimal balance = bankInfoRepository
+                .findById(id).get().getBalance();
+        BigDecimal resultBalance = balance.subtract(amount);
+        bankInfoRepository.setBalance(resultBalance);
+    }
+
+    @Override
+    public void addFunds(BigDecimal amount) {
+        BigDecimal balance = bankInfoRepository
+                .findById(id).get().getBalance();
+        BigDecimal resultBalance = balance.add(amount);
+        bankInfoRepository.setBalance(resultBalance);
+    }
+
+    private void isNotExists(String errorMessage) {
+        if (!bankInfoRepository.existsById(id)) {
             throw new BadOperationException(errorMessage);
         }
     }
 
-    private void checkIfExists(String errorMessage) {
-        if(bankInfoRepository.existsById(id)) {
+    private void isExists(String errorMessage) {
+        if (bankInfoRepository.existsById(id)) {
             throw new BadOperationException(errorMessage);
         }
     }

@@ -3,7 +3,6 @@ package com.example.deutschebank.service.implementation.additionaltools;
 import com.example.deutschebank.entity.*;
 import com.example.deutschebank.entity.enums.BranchStatus;
 import com.example.deutschebank.entity.enums.CreditStatus;
-import com.example.deutschebank.exception.BadOperationException;
 import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGeneratorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -133,6 +132,7 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
     public CreditAccount generateCreditAccount(Client client) {
         CreditAccount creditAccount = new CreditAccount();
         creditAccount.setClient(client);
+        creditAccount.setReason(faker.commerce().productName());
         creditAccount.setCreditStatus(faker.generateCreditStatus());
         BigDecimal creditAmount = null;
         boolean isCreditActive;
@@ -150,8 +150,6 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         creditAccount.setDebt(creditAmount);
         final BigDecimal loanInterest = new BigDecimal(3.0);
         creditAccount.setLoanInterest(loanInterest);
-        creditAccount.setStartFrom(faker
-                .generateDateTimeFromYearToNow(startYear));
         creditAccount.setActive(isCreditActive);
         log.info("Generate credit account: " + creditAccount);
         return creditAccount;

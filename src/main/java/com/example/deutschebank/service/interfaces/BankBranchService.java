@@ -5,6 +5,7 @@ import com.example.deutschebank.dto.bankbranch.GetBankBranchDTO;
 import com.example.deutschebank.dto.bankbranch.GetBankBranchInfoDTO;
 import com.example.deutschebank.dto.bankbranch.UpdateBankBranchDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 

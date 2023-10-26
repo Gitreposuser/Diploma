@@ -11,9 +11,9 @@ import java.util.UUID;
 public class UpdateCreditAccountDTO {
     private UUID id;
     private Client client;
+    private String reason;
     private String creditStatus;
     private BigDecimal debt;
     private BigDecimal loanInterest;
-    private LocalDateTime startFrom;
     private Boolean active;
 }

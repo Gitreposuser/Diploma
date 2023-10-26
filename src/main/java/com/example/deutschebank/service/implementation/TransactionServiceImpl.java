@@ -28,46 +28,57 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction =
                 transactionDTOConverter.convertCreateDTOToTransaction(createDTO);
         transactionRepository.save(transaction);
-        log.info("Entity successfully created.");
+        log.info("Create transaction.");
     }
 
     @Override
+    @Transactional
     public List<GetTransactionDTO> getAllTransactions() {
         List<Transaction> getAllDTOs = transactionRepository.findAll();
+        log.info("Get all transactions, quantity: " + getAllDTOs.size());
         return transactionDTOConverter.convertTransactionsToGetDTOs(getAllDTOs);
     }
 
     @Override
+    @Transactional
     public List<GetTransactionDTO> getTransactionsByEmitterIBAN(String iban) {
         List<Transaction> allTransactions =
                 transactionRepository.getTransactionsByEmitterIban(iban);
+        log.info("Get all transactions by emitter iban, quantity: " + allTransactions.size());
         return transactionDTOConverter.convertTransactionsToGetDTOs(allTransactions);
     }
 
     @Override
+    @Transactional
     public List<GetTransactionDTO> getTransactionsByReceiverIBAN(String iban) {
         List<Transaction> allTransactions =
                 transactionRepository.getTransactionsByReceiverIban(iban);
+        log.info("Get all transactions by receiver iban, quantity: " + allTransactions.size());
         return transactionDTOConverter.convertTransactionsToGetDTOs(allTransactions);
     }
 
     @Override
+    @Transactional
     public List<GetTransactionDTO> getTransactionsByAmountBetween(BigDecimal from,
                                                             BigDecimal to) {
         List<Transaction> allTransaction =
                 transactionRepository.getTransactionsByAmountBetween(from, to);
+        log.info("Get all transactions by amount between, quantity: " + allTransaction.size());
         return transactionDTOConverter.convertTransactionsToGetDTOs(allTransaction);
     }
 
     @Override
+    @Transactional
     public List<GetTransactionDTO> getTransactionsByCreatedBetween(LocalDateTime from,
                                                              LocalDateTime to) {
         List<Transaction> allTransaction =
                 transactionRepository.getTransactionsByCreatedBetween(from, to);
+        log.info("Get all transactions by date between, quantity: " + allTransaction.size());
         return transactionDTOConverter.convertTransactionsToGetDTOs(allTransaction);
     }
 
     @Override
+    @Transactional
     public BigDecimal getMinAmountByEmitterIban(String iban) {
         BigDecimal minAmount = transactionRepository
                 .getMinAmountByEmitterIban(iban);

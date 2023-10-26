@@ -1,5 +1,7 @@
 package com.example.deutschebank.converter;
 
+import com.example.deutschebank.dto.debitaccount.TransferFundsDTO;
+import com.example.deutschebank.dto.transaction.CreateTransactionDTO;
 import com.example.deutschebank.entity.DebitAccount;
 import com.example.deutschebank.dto.debitaccount.CreateDebitAccountDTO;
 import com.example.deutschebank.dto.debitaccount.GetDebitAccountDTO;
@@ -35,5 +37,10 @@ public class DebitAccountDTOConverter {
 
     public DebitAccount convertUpdateDTOToDebitAccount(UpdateDebitAccountDTO updateDTO) {
         return modelMapper.map(updateDTO, DebitAccount.class);
+    }
+
+    public CreateTransactionDTO convertTransferDTOToCreateTransactionDTO(
+            TransferFundsDTO transferDTO) {
+        return modelMapper.map(transferDTO, CreateTransactionDTO.class);
     }
 }

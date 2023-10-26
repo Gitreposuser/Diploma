@@ -11,10 +11,11 @@ public class GetCreditAccountInfoDTO {
     private UUID id;
     private String clientFirstName;
     private String clientLastName;
+    private String reason;
     private String creditStatus;
     private BigDecimal debt;
     private BigDecimal loanInterest;
-    private LocalDateTime startFrom;
     private Boolean active;
+    private LocalDateTime created;
     private LocalDateTime updated;
 }

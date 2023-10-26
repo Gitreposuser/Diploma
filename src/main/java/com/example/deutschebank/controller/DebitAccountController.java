@@ -2,6 +2,7 @@ package com.example.deutschebank.controller;
 
 import com.example.deutschebank.dto.debitaccount.CreateDebitAccountDTO;
 import com.example.deutschebank.dto.debitaccount.GetDebitAccountDTO;
+import com.example.deutschebank.dto.debitaccount.TransferFundsDTO;
 import com.example.deutschebank.dto.debitaccount.UpdateDebitAccountDTO;
 import com.example.deutschebank.entity.enums.DebitStatus;
 import com.example.deutschebank.service.interfaces.DebitAccountService;
@@ -37,19 +38,24 @@ public class DebitAccountController {
     public ResponseEntity<List<GetDebitAccountDTO>> getAllDebitAccountsWithStatus
             (@PathVariable DebitStatus debit_status) {
         List<GetDebitAccountDTO> getAllDTOs =
-                debitAccountService.getAllDebitAccountByDebitStatus(debit_status);
+                debitAccountService.getAllDebitAccountsByDebitStatus(debit_status);
         return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
     @GetMapping(value = "/get/all")
     public ResponseEntity<List<GetDebitAccountDTO>> getAllDebitAccounts() {
         List<GetDebitAccountDTO> getAllDTOs =
-                debitAccountService.getAllDebitAccount();
+                debitAccountService.getAllDebitAccounts();
         return ResponseEntity.status(HttpStatus.OK).body(getAllDTOs);
     }
 
     @PutMapping(value = "/update/by/id")
     public void updateDebitAccountById(@RequestBody UpdateDebitAccountDTO updateDTO) {
         debitAccountService.updateDebitAccountById(updateDTO);
+    }
+
+    @PutMapping(value = "/transferFunds/by/iban")
+    public void transferFunds(@RequestBody TransferFundsDTO transferDTO) {
+        debitAccountService.transferFundsByIban(transferDTO);
     }
 }

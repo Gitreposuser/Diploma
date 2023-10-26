@@ -30,6 +30,9 @@ public class CreditAccount {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
+    @Column(name = "reason", length = 256, nullable = false)
+    private String reason;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "credit_status", length = 20, nullable = false)
     private CreditStatus creditStatus;
@@ -40,9 +43,6 @@ public class CreditAccount {
     @Column(name = "loan_interest",
             columnDefinition = "NUMERIC(4, 2) DEFAULT '3.00'")
     private BigDecimal loanInterest;
-
-    @Column(name = "start_from")
-    private LocalDateTime startFrom;
 
     @Column(name = "active")
     private Boolean active;

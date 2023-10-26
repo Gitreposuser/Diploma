@@ -23,7 +23,6 @@ public class ReportServiceImpl implements ReportService {
         String clientIban = clientService.getClientIbanByFullName(fullName).getIban();
         BigDecimal minAmount =
                 transactionService.getMinAmountByEmitterIban(clientIban);
-        log.warn(minAmount.toString());
         GetReportTransactionsByFullNameDTO getReportDTO = new GetReportTransactionsByFullNameDTO();
         getReportDTO.setMinAmount(minAmount);
         return getReportDTO;

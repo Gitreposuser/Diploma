@@ -5,9 +5,7 @@ import com.example.deutschebank.dto.additional.tools.CreateDatabaseDTO;
 import com.example.deutschebank.dto.bankinfo.CreateBankInfoDTO;
 import com.example.deutschebank.entity.*;
 import com.example.deutschebank.repository.*;
-import com.example.deutschebank.service.interfaces.BankBranchService;
 import com.example.deutschebank.service.interfaces.BankInfoService;
-import com.example.deutschebank.service.interfaces.LocationService;
 import com.example.deutschebank.service.interfaces.additionaltools.ToolsService;
 import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGeneratorService;
 import jakarta.transaction.Transactional;
@@ -43,15 +41,36 @@ public class ToolsServiceImpl implements ToolsService {
     private final RandomDataGeneratorService randomDataGenerator;
 
     @Override
-
     public void generateDataBase(CreateDatabaseDTO createDatabaseDTO) {
         // Generate bank info
+        generateBankInfo();
+
+        // Generate branches
+        List<BankBranch> bankBranches = generateBankBranches(createDatabaseDTO);
+
+        // Generate employees
+        List<Employee> employees = generateEmployees(createDatabaseDTO, bankBranches);
+
+        // Generate clients
+        List<Client> clients = generateClients(createDatabaseDTO, employees);
+
+        // Generate credits
+        generateCreditAccounts(createDatabaseDTO, clients);
+
+        // Generate transactions
+        generateTransactions(createDatabaseDTO, clients);
+
+        log.info("Generate database.");
+    }
+
+    private void generateBankInfo(){
         BankInfo bankInfo = randomDataGenerator.generateBankInfo();
         CreateBankInfoDTO createDTO =
                 bankInfoDTOConverter.convertBankInfoToCreateDTO(bankInfo);
         bankInfoService.createBankInfo(createDTO);
+    }
 
-        // Generate branches
+    private List<BankBranch> generateBankBranches(CreateDatabaseDTO createDatabaseDTO) {
         int branchesQuantity = createDatabaseDTO.getBranchesQuantity();
         List<Location> branchesLocations = randomDataGenerator
                 .generateMultipleLocations(branchesQuantity);
@@ -60,8 +79,11 @@ public class ToolsServiceImpl implements ToolsService {
         List<BankBranch> bankBranches = randomDataGenerator.
                 generateMultipleBankBranches(branchesQuantity, branchesLocations);
         bankBranchRepository.saveAll(bankBranches);
+        return bankBranches;
+    }
 
-        // Generate employees
+    private List<Employee> generateEmployees(CreateDatabaseDTO createDatabaseDTO,
+                                             List<BankBranch> bankBranches) {
         int employeesQuantity = createDatabaseDTO.getEmployeesQuantity();
         List<PersonalDetail> employeePersonalDetails =
                 randomDataGenerator.generateMultiplePersonalDetails(employeesQuantity);
@@ -80,8 +102,11 @@ public class ToolsServiceImpl implements ToolsService {
                         employeePersonalDetails, employeeWorkDetails,
                         employeeLocations, bankBranches);
         employeeRepository.saveAll(employees);
+        return employees;
+    }
 
-        // Generate clients
+    private List<Client> generateClients(CreateDatabaseDTO createDatabaseDTO,
+                                         List<Employee> employees) {
         int clientsQuantity = createDatabaseDTO.getClientsQuantity();
         List<PersonalDetail> clientPersonalDetails = randomDataGenerator
                 .generateMultiplePersonalDetails(clientsQuantity);
@@ -100,21 +125,24 @@ public class ToolsServiceImpl implements ToolsService {
                         clientPersonalDetails, clientDebitAccounts,
                         clientLocations, employees);
         clientRepository.saveAll(clients);
+        return clients;
+    }
 
-        // Generate credits
+    private void generateCreditAccounts(CreateDatabaseDTO createDatabaseDTO,
+                                                       List<Client> clients) {
         int creditAccountsQuantity = createDatabaseDTO.getCreditsQuantity();
         List<CreditAccount> creditAccounts = randomDataGenerator
                 .generateMultipleCreditAccounts(creditAccountsQuantity,
                         clients);
         creditAccountRepository.saveAll(creditAccounts);
+    }
 
-        // Generate transactions
+    private void generateTransactions(CreateDatabaseDTO createDatabaseDTO,
+                                      List<Client> clients) {
         List<Transaction> transactions = randomDataGenerator
                 .generateMultipleTransactions(createDatabaseDTO.getTransactionsQuantity(),
                         clients, clients);
         transactionRepository.saveAll(transactions);
-
-        log.info("Generate database.");
     }
 
     @Override
