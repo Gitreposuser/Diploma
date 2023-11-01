@@ -1,8 +1,7 @@
 package com.example.deutschebank.service.implementation.additionaltools;
 
-import com.example.deutschebank.entity.Transaction;
-import com.example.deutschebank.entity.WorkDetail;
-import com.example.deutschebank.repository.TransactionRepository;
+import com.example.deutschebank.entity.*;
+import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGeneratorService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -23,10 +21,7 @@ import java.util.Random;
 @Component
 @RequiredArgsConstructor
 //@Primary
-//public class RandomDataGeneratorImpl implements RandomDataGenerator {
-public class RandomDataGeneratorImpl {
-    private final TransactionRepository transactionRepository;
-
+public class RandomDataGeneratorImpl implements RandomDataGeneratorService {
     private Random rnd;
     @Value(value = "${randomDataGenerator.startYear}")
     private int startYear;
@@ -39,16 +34,96 @@ public class RandomDataGeneratorImpl {
         rnd = new Random();
     }
 
+    @Override
+    public <T> T chooseFromList(List<T> chooseList) {
+        return null;
+    }
+
+    @Override
+    public BankBranch generateBankBranch(Integer branchNumber, Location location) {
+        return null;
+    }
+
+    @Override
+    public List<BankBranch> generateMultipleBankBranches(Integer quantity, List<Location> locations) {
+        return null;
+    }
+
+    @Override
+    public BankAccount generateBankInfo() {
+        return null;
+    }
+
+    @Override
+    public Client generateClient(PersonalDetail personalDetail, DebitAccount debitAccount, Location location, Employee employee) {
+        return null;
+    }
+
+    @Override
+    public List<Client> generateMultipleClients(Integer quantity, List<PersonalDetail> personalDetails, List<DebitAccount> debitAccounts, List<Location> locations, List<Employee> employees) {
+        return null;
+    }
+
+    @Override
+    public CreditAccount generateCreditAccount(Client client) {
+        return null;
+    }
+
+    @Override
+    public List<CreditAccount> generateMultipleCreditAccounts(Integer quantity, List<Client> clients) {
+        return null;
+    }
+
+    @Override
+    public DebitAccount generateDebitAccount() {
+        return null;
+    }
+
+    @Override
+    public List<DebitAccount> generateMultipleDebitAccounts(Integer quantity) {
+        return null;
+    }
+
+    @Override
+    public Employee generateEmployee(PersonalDetail personalDetail, WorkDetail workDetail, Location location, BankBranch bankBranch) {
+        return null;
+    }
+
+    @Override
+    public List<Employee> generateMultipleEmployees(Integer quantity, List<PersonalDetail> personalDetails, List<WorkDetail> workDetails, List<Location> locations, List<BankBranch> bankBranches) {
+        return null;
+    }
+
+    @Override
+    public Location generateLocation() {
+        return null;
+    }
+
+    @Override
+    public List<Location> generateMultipleLocations(Integer quantity) {
+        return null;
+    }
+
+    @Override
+    public PersonalDetail generatePersonalDetail() {
+        return null;
+    }
+
+    @Override
+    public List<PersonalDetail> generateMultiplePersonalDetails(Integer quantity) {
+        return null;
+    }
+
     /**
      * Generate random transaction to current Database
      */
-    //@Override
-    public Transaction generateTransaction() {
+    @Override
+    public Transaction generateTransaction(Client emitter, Client receiver) {
         Transaction transaction = new Transaction();
         transaction.setEmitterIban(generateIban());
         transaction.setReceiverIban(generateIban());
         transaction.setAmount(generateAmount());
-        transaction.setCreated(generateDateTime()); // Search library!
+        transaction.setCreated(generateDateTime());
         log.info(transaction.toString());
         return transaction;
     }
@@ -58,22 +133,18 @@ public class RandomDataGeneratorImpl {
      *
      * @param quantity set how many transactions will be generated
      */
-    //@Override
-    public List<Transaction> generateTransactions(int quantity) {
-        List<Transaction> transactions = new LinkedList<>();
-        for (int i = 0; i < quantity; i++) {
-            transactions.add(generateTransaction());
-        }
-        return transactions;
+    @Override
+    public List<Transaction> generateMultipleTransactions(Integer quantity, List<Client> emitters, List<Client> receivers) {
+        return null;
     }
 
-    //@Override
+    @Override
     public WorkDetail generateWorkDetail() {
         return null;
     }
 
-    //@Override
-    public List<WorkDetail> generateWorkDetails(int quantity) {
+    @Override
+    public List<WorkDetail> generateMultipleWorkDetails(Integer quantity) {
         return null;
     }
 
@@ -96,19 +167,18 @@ public class RandomDataGeneratorImpl {
         final int randomMinute = rnd.nextInt(startingHourOrMinute, LocalDateTime.MAX.getMinute());
         final int randomSecond = rnd.nextInt(startingHourOrMinute, LocalDateTime.MAX.getSecond());
 
-        LocalDateTime randomDateTime = LocalDateTime.of(randomYear,
-                randomMonth, randomDate,
+        return LocalDateTime.of(randomYear, randomMonth, randomDate,
                 randomHour, randomMinute, randomSecond);
-        return randomDateTime;
     }
 
     /**
      * Generate random complete IBAN number
      * based on predefined conditions
-     * in form of country where AA - 2 letters,
-     * BB - check number 2 digits, CCCCCC - (International Financial Code) 5
-     * digits, DDDDD - five zeros to complete clients account number,
-     * NNNNNNNNNNNNNN - card number 14 digits
+     * in form of country where #AA - 2 letters,
+     * #BB - check number 2 digits, #CCCCCCC - (International Financial
+     * Code) 5
+     * digits, #DDDDD - five zeros to complete clients account number,
+     * #NNNNNNNNNNNNNN - card number 14 digits
      *
      * @return IBAN string
      */
@@ -174,11 +244,12 @@ public class RandomDataGeneratorImpl {
      * @return String representation of randomly generated numbers
      */
     private String generateNumbersOfLength(int length) {
-        String number = "";
+        StringBuilder number = new StringBuilder();
+        final int maxDigit = 9;
         for (int i = 0; i < length; i++) {
-            number += rnd.nextInt(9);
+            number.append(rnd.nextInt(maxDigit));
         }
-        return number;
+        return number.toString();
     }
 
     /**

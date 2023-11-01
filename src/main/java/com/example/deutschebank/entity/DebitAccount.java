@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,7 +23,7 @@ public class DebitAccount {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "iban", length = 64, nullable = false)
+    @Column(name = "iban", length = 64, nullable = false, updatable = false)
     private String iban;
 
     @Enumerated(EnumType.STRING)
@@ -42,6 +41,9 @@ public class DebitAccount {
     @Column(name = "credit_line",
             columnDefinition = "NUMERIC(7, 2) DEFAULT '500.00'")
     private BigDecimal creditLine;
+
+    @Column(name = "active")
+    private Boolean active;
 
     @CreationTimestamp
     @Column(name = "created", updatable = false)

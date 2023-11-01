@@ -25,9 +25,8 @@ public class ClientDTOConverter {
     }
 
     public GetClientInfoDTO convertClientToGetClientInfoDTO(Client client) {
-        GetClientInfoDTO getInfoDTO = modelMapper
+        return modelMapper
                 .typeMap(Client.class, GetClientInfoDTO.class)
-                //.addMapping(src -> src.getId(), GetClientInfoDTO::setId)
                 .addMapping(src -> src.getPersonalDetail().getFirstName(),
                         GetClientInfoDTO::setFirstName)
                 .addMapping(src -> src.getPersonalDetail().getLastName(),
@@ -59,16 +58,6 @@ public class ClientDTOConverter {
                 .addMapping(src -> src.getEmployee().getPersonalDetail().getLastName(),
                         GetClientInfoDTO::setManagerLastName)
                 .map(client);
-        return getInfoDTO;
-    }
-
-    public GetClientIbanDTO convertClientToGetClientIbanDTO(Client client) {
-        GetClientIbanDTO getIbanDTO = modelMapper
-                .typeMap(Client.class, GetClientIbanDTO.class)
-                .addMapping(src -> src.getDebitAccount().getIban(),
-                        GetClientIbanDTO::setIban)
-                .map(client);
-        return getIbanDTO;
     }
 
     public List<GetClientDTO> convertClientsToGetDTOs(List<Client> clients) {

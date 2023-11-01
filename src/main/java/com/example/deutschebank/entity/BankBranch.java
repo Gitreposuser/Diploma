@@ -26,7 +26,7 @@ public class BankBranch {
     private UUID id;
 
     @Column(name = "branch_number", nullable = false)
-    private Integer branchNumber;
+    private int branchNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "branch_status", length = 128, nullable = false)
@@ -43,7 +43,7 @@ public class BankBranch {
     private String hotLine;
 
     @Column(name = "active")
-    private Boolean active;
+    private boolean active;
 
     @CreationTimestamp
     @Column(name = "created", updatable = false)

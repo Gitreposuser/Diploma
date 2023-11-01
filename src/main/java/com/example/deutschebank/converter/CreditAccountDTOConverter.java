@@ -1,7 +1,6 @@
 package com.example.deutschebank.converter;
 
 import com.example.deutschebank.dto.creditaccount.GetCreditAccountInfoDTO;
-import com.example.deutschebank.dto.transaction.CreateTransactionDTO;
 import com.example.deutschebank.entity.CreditAccount;
 import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
 import com.example.deutschebank.dto.creditaccount.GetCreditAccountDTO;
@@ -53,11 +52,4 @@ public class CreditAccountDTOConverter {
     public CreditAccount convertUpdateDTOToCreditAccount(UpdateCreditAccountDTO updateDTO) {
         return modelMapper.map(updateDTO, CreditAccount.class);
     }
-/*
-    public CreateTransactionDTO convertCreateCreditAccountDTOToTransactionDTO(
-            CreateCreditAccountDTO createDTO) {
-        return modelMapper.map(createDTO, CreateTransactionDTO.class);
-    }
-
- */
 }

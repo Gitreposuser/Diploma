@@ -12,7 +12,7 @@ public interface RandomDataGeneratorService {
     List<BankBranch> generateMultipleBankBranches(Integer quantity,
                                                   List<Location> locations);
 
-    BankInfo generateBankInfo();
+    BankAccount generateBankInfo();
 
     Client generateClient(PersonalDetail personalDetail,
                           DebitAccount debitAccount,

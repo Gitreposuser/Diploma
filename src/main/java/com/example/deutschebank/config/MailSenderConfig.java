@@ -39,7 +39,7 @@ public class MailSenderConfig {
     private String smtpStartKey;
 
     @Value(value = "${spring.mail.smtp.start.value}")
-    private String getSmtpStartValue;
+    private String SmtpStartValue;
 
     @Bean
     public JavaMailSender getJavaMailSender() {
@@ -53,7 +53,7 @@ public class MailSenderConfig {
         Properties props = mailSender.getJavaMailProperties();
         props.put(smtpTypeKey, smtpTypeValue);
         props.put(smtpAuthKey, smtpAuthValue);
-        props.put(smtpStartKey, getSmtpStartValue);
+        props.put(smtpStartKey, SmtpStartValue);
 
         return mailSender;
     }

@@ -6,9 +6,6 @@ import com.example.deutschebank.entity.Location;
 import com.example.deutschebank.entity.PersonalDetail;
 import lombok.Data;
 
-import java.time.Period;
-import java.util.UUID;
-
 @Data
 public class CreateClientDTO {
     private PersonalDetail personalDetail;

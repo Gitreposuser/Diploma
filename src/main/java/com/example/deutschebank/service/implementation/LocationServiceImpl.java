@@ -42,7 +42,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     @Transactional
     public GetLocationDTO getLocation(UUID uuid) {
-        checkIfNotExist(uuid);
+        validateLocationNullOrNotExist(uuid);
         Location location = locationRepository.getReferenceById(uuid);
         log.info("Get location by id: " + uuid);
         return locationDTOConverter.convertLocationToGetDTO(location);
@@ -59,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     @Transactional
     public void updateLocation(UpdateLocationDTO updateDTO) {
-        checkIfNotExist(updateDTO.getId());
+        validateLocationNullOrNotExist(updateDTO.getId());
         Location location =
                 locationDTOConverter.convertUpdateDTOToLocation(updateDTO);
         locationRepository.save(location);
@@ -69,12 +69,12 @@ public class LocationServiceImpl implements LocationService {
     @Override
     @Transactional
     public void deleteLocation(UUID uuid) {
-        checkIfNotExist(uuid);
+        validateLocationNullOrNotExist(uuid);
         locationRepository.deleteById(uuid);
         log.info("Delete location with id: " + uuid);
     }
 
-    private void checkIfNotExist(UUID uuid) {
+    private void validateLocationNullOrNotExist(UUID uuid) {
         if(uuid == null || !locationRepository.existsById(uuid)) {
             throw new BadOperationException("Cannot update entity! Entity " +
                     "doesn't exist!");

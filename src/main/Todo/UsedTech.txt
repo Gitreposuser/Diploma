@@ -1,5 +1,5 @@
 1. Spring Boot -> main framework
-2. Lombok -> Sugar for Java
+2. Lombok -> sugar for Java
 3. Hibernate -> for database
 4. ModelMapper -> for DTO conversions
 5. DataFaker -> for random data generation

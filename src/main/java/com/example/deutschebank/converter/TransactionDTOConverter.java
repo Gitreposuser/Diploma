@@ -20,11 +20,6 @@ public class TransactionDTOConverter {
                 Transaction.class);
     }
 
-    public GetTransactionDTO convertTransactionToGetDTO(Transaction transaction) {
-        return modelMapper.map(transaction,
-                GetTransactionDTO.class);
-    }
-
     public List<GetTransactionDTO> convertTransactionsToGetDTOs(List<Transaction> transactions) {
         List<GetTransactionDTO> getDTOs = new LinkedList<>();
         for (Transaction detail : transactions) {

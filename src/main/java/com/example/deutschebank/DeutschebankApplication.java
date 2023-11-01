@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySources;
 @SpringBootApplication
 @PropertySources({
         @PropertySource("classpath:constantparameters.properties"),
-        @PropertySource("classpath:bankinfo.properties"),
+        @PropertySource("classpath:bankaccount.properties"),
         @PropertySource("classpath:email.properties"),
         @PropertySource("file:E:/Programming/MailKey/emailslog.properties")
 })

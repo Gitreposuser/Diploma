@@ -3,10 +3,10 @@ package com.example.deutschebank.service.implementation;
 import com.example.deutschebank.converter.EmployeeDTOConverter;
 import com.example.deutschebank.dto.employee.GetEmployeeClientsDTO;
 import com.example.deutschebank.entity.Employee;
-import com.example.deutschebank.exception.BadOperationException;
 import com.example.deutschebank.dto.employee.CreateEmployeeDTO;
 import com.example.deutschebank.dto.employee.GetEmployeeDTO;
 import com.example.deutschebank.dto.employee.UpdateEmployeeDTO;
+import com.example.deutschebank.exception.NullOrNotExistException;
 import com.example.deutschebank.repository.EmployeeRepository;
 import com.example.deutschebank.service.interfaces.EmployeeService;
 import jakarta.transaction.Transactional;
@@ -36,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public GetEmployeeDTO getEmployeeById(UUID uuid) {
-        isNotExist(uuid);
+        validateEmployeeIsNullOrNotExist(uuid);
         Employee employee = employeeRepository.getReferenceById(uuid);
         log.info("Get employee by id: " + uuid);
         return employeeDTOConverter.convertEmployeeToGetDTO(employee);
@@ -46,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     public GetEmployeeDTO getEmployeeByFullName(String fullName) {
         Employee employee = employeeRepository.getEmployeeByFullName(fullName);
-        isNull(employee);
+        validateEmployeeIsNullOrNotExist(employee);
         log.info("Get employee by full name: " + fullName);
         return employeeDTOConverter.convertEmployeeToGetDTO(employee);
     }
@@ -79,40 +79,38 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public void updateEmployeeById(UpdateEmployeeDTO updateDTO) {
-        isNotExist(updateDTO.getId());
+        validateEmployeeIsNullOrNotExist(updateDTO.getId());
         Employee employee = employeeDTOConverter
                 .convertUpdateDTOToEmployee(updateDTO);
         employeeRepository.save(employee);
-        log.info("Update employee by id: " + employee.getId());
+        log.info("Update employee, id: " + employee.getId());
     }
 
     @Override
     @Transactional
     public void markEmployeeAsDeletedById(UUID uuid) {
-        isNotExist(uuid);
-        Employee employee = employeeRepository.getReferenceById(uuid);
-        employee.setActive(false);
-        employeeRepository.save(employee);
-        log.info("Mark as deleted employee by id: " + uuid);
+        validateEmployeeIsNullOrNotExist(uuid);
+        employeeRepository.markEmployeeAsDeleted(uuid);
+        log.info("Mark as deleted, id: " + uuid);
     }
 
     @Override
     @Transactional
     public void deleteEmployeeById(UUID uuid) {
-        isNotExist(uuid);
+        validateEmployeeIsNullOrNotExist(uuid);
         employeeRepository.deleteById(uuid);
-        log.info("Delete employee by id: " + uuid);
+        log.warn("Delete employee, id: " + uuid);
     }
 
-    private void isNull(Employee employee) {
-        if(employee == null) {
-            throw new BadOperationException("Employee is null!");
+    private void validateEmployeeIsNullOrNotExist(Employee employee) {
+        if(employee == null || !employeeRepository.existsById(employee.getId())) {
+            throw new NullOrNotExistException("Employee is null or not exist!");
         }
     }
 
-    private void isNotExist(UUID uuid) {
-        if(!employeeRepository.existsById(uuid)) {
-            throw new BadOperationException("Employee with id: " + uuid +
+    private void validateEmployeeIsNullOrNotExist(UUID uuid) {
+        if(uuid == null || !employeeRepository.existsById(uuid)) {
+            throw new NullOrNotExistException("Employee with id: " + uuid +
                     "doesn't exist!");
         }
     }

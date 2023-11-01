@@ -1,3 +1,5 @@
-1. Fix transactions.
-2. Create report on transactions.
-3. Tests.
+1. Validation.
+1.1. Generate real transactions.
+2. Spring security.
+3. Create report on transactions.
+4. Tests.

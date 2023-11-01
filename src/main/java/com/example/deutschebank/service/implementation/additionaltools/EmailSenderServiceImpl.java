@@ -32,7 +32,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         String[] bcc = emailDTO.getBcc();
         String subject = emailDTO.getSubject();
         String text = emailDTO.getText();
-
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             if (isValid(emailTo)) {
@@ -64,7 +63,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         String subject = emailAttachmentDTO.getSubject();
         String text = emailAttachmentDTO.getText();
         String pathToAttachment = emailAttachmentDTO.getPathToAttachment();
-
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -100,7 +98,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         String subject = emailAttachmentDTO.getSubject();
         String text = emailAttachmentDTO.getText();
         String URLToAttachment = emailAttachmentDTO.getPathToAttachment();
-
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -132,17 +129,13 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
             mailSender.send(message);
         } catch (Exception e) {
-            log.error("Oooups something went wrong, while creating mime " +
+            log.error("Oops something went wrong, while creating mime " +
                     "message from URL! " + e.getMessage());
             throw new BadEmailException(e.getMessage());
         }
-
     }
 
     private boolean isValid(String[] array) {
-        if (array != null && array.length > 0) {
-            return true;
-        }
-        return false;
+        return array != null && array.length > 0;
     }
 }

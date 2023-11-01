@@ -2,10 +2,10 @@ package com.example.deutschebank.service.implementation.additionaltools;
 
 import com.example.deutschebank.converter.*;
 import com.example.deutschebank.dto.additional.tools.CreateDatabaseDTO;
-import com.example.deutschebank.dto.bankinfo.CreateBankInfoDTO;
+import com.example.deutschebank.dto.bankaccount.CreateBankAccountDTO;
 import com.example.deutschebank.entity.*;
 import com.example.deutschebank.repository.*;
-import com.example.deutschebank.service.interfaces.BankInfoService;
+import com.example.deutschebank.service.interfaces.BankAccountService;
 import com.example.deutschebank.service.interfaces.additionaltools.ToolsService;
 import com.example.deutschebank.service.interfaces.additionaltools.RandomDataGeneratorService;
 import jakarta.transaction.Transactional;
@@ -28,8 +28,8 @@ import java.util.List;
 public class ToolsServiceImpl implements ToolsService {
     private final BankBranchRepository bankBranchRepository;
     private final BankInfoDTOConverter bankInfoDTOConverter;
-    private final BankInfoService bankInfoService;
-    private final BankInfoRepository bankInfoRepository;
+    private final BankAccountService bankAccountService;
+    private final BankAccountRepository bankAccountRepository;
     private final ClientRepository clientRepository;
     private final CreditAccountRepository creditAccountRepository;
     private final DebitAccountRepository debitAccountRepository;
@@ -41,6 +41,7 @@ public class ToolsServiceImpl implements ToolsService {
     private final RandomDataGeneratorService randomDataGenerator;
 
     @Override
+    @Transactional
     public void generateDataBase(CreateDatabaseDTO createDatabaseDTO) {
         // Generate bank info
         generateBankInfo();
@@ -63,13 +64,15 @@ public class ToolsServiceImpl implements ToolsService {
         log.info("Generate database.");
     }
 
+    @Transactional
     private void generateBankInfo(){
-        BankInfo bankInfo = randomDataGenerator.generateBankInfo();
-        CreateBankInfoDTO createDTO =
-                bankInfoDTOConverter.convertBankInfoToCreateDTO(bankInfo);
-        bankInfoService.createBankInfo(createDTO);
+        BankAccount bankAccount = randomDataGenerator.generateBankInfo();
+        CreateBankAccountDTO createDTO =
+                bankInfoDTOConverter.convertBankInfoToCreateDTO(bankAccount);
+        bankAccountService.createBankInfo(createDTO);
     }
 
+    @Transactional
     private List<BankBranch> generateBankBranches(CreateDatabaseDTO createDatabaseDTO) {
         int branchesQuantity = createDatabaseDTO.getBranchesQuantity();
         List<Location> branchesLocations = randomDataGenerator
@@ -82,6 +85,7 @@ public class ToolsServiceImpl implements ToolsService {
         return bankBranches;
     }
 
+    @Transactional
     private List<Employee> generateEmployees(CreateDatabaseDTO createDatabaseDTO,
                                              List<BankBranch> bankBranches) {
         int employeesQuantity = createDatabaseDTO.getEmployeesQuantity();
@@ -105,6 +109,7 @@ public class ToolsServiceImpl implements ToolsService {
         return employees;
     }
 
+    @Transactional
     private List<Client> generateClients(CreateDatabaseDTO createDatabaseDTO,
                                          List<Employee> employees) {
         int clientsQuantity = createDatabaseDTO.getClientsQuantity();
@@ -128,6 +133,7 @@ public class ToolsServiceImpl implements ToolsService {
         return clients;
     }
 
+    @Transactional
     private void generateCreditAccounts(CreateDatabaseDTO createDatabaseDTO,
                                                        List<Client> clients) {
         int creditAccountsQuantity = createDatabaseDTO.getCreditsQuantity();
@@ -137,6 +143,7 @@ public class ToolsServiceImpl implements ToolsService {
         creditAccountRepository.saveAll(creditAccounts);
     }
 
+    @Transactional
     private void generateTransactions(CreateDatabaseDTO createDatabaseDTO,
                                       List<Client> clients) {
         List<Transaction> transactions = randomDataGenerator
@@ -149,70 +156,60 @@ public class ToolsServiceImpl implements ToolsService {
     @Transactional
     public void deleteAllBankBranchesFromDB() {
         bankBranchRepository.deleteAll();
-        log.warn("Delete all bank branches!");
     }
 
     @Override
     @Transactional
     public void deleteBankInfoFromDB() {
-        bankInfoRepository.deleteAll();
-        log.warn("Delete bank info!");
+        bankAccountRepository.deleteAll();
     }
 
     @Override
     @Transactional
     public void deleteAllClientsFromDB() {
         clientRepository.deleteAll();
-        log.warn("Delete all clients!");
     }
 
     @Override
     @Transactional
     public void deleteAllCreditAccountsFromDB() {
         creditAccountRepository.deleteAll();
-        log.warn("Delete all credit accounts!");
     }
 
     @Override
     @Transactional
     public void deleteAllDebitAccountsFromDB() {
         debitAccountRepository.deleteAll();
-        log.warn("Delete all debit accounts!");
     }
 
     @Override
     @Transactional
     public void deleteAllEmployeesFromDB() {
         employeeRepository.deleteAll();
-        log.warn("Delete all employee!");
     }
 
     @Override
     @Transactional
     public void deleteAllLocationsFromDB() {
         locationRepository.deleteAll();
-        log.warn("Delete all locations!");
     }
 
     @Override
     @Transactional
     public void deleteAllPersonalDetailsFromDB() {
         personalDetailRepository.deleteAll();
-        log.warn("Delete all personal details!");
     }
 
     @Override
     @Transactional
     public void deleteAllTransactionsFromDB() {
         transactionRepository.deleteAll();
-        log.warn("Delete all transactions!");
     }
 
     @Override
     @Transactional
     public void deleteAllWorkDetailsFromDB() {
         workDetailRepository.deleteAll();
-        log.warn("Delete all work details!");
     }
 
     @Override

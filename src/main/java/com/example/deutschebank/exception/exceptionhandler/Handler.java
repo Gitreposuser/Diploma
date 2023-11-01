@@ -1,4 +1,4 @@
-package com.example.deutschebank.controller.exceptionhandler;
+package com.example.deutschebank.exception.exceptionhandler;
 
 import com.example.deutschebank.exception.BadEmailException;
 import com.example.deutschebank.exception.BadOperationException;

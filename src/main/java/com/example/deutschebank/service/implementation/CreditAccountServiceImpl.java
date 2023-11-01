@@ -26,7 +26,7 @@ import java.util.UUID;
 public class CreditAccountServiceImpl implements CreditAccountService {
     private final CreditAccountRepository creditAccountRepository;
     private final CreditAccountDTOConverter creditAccountDTOConverter;
-    private final BankInfoService bankInfoService;
+    private final BankAccountService bankAccountService;
     private final TransactionService transactionService;
     private final DebitAccountRepository debitAccountRepository;
     private final ClientService clientService;
@@ -35,19 +35,19 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     @Transactional
     public void createCreditAccount(CreateCreditAccountDTO createDTO) {
         UUID clientId = createDTO.getClient().getId();
-        validateCreditAccountIdNullOrNotExist(clientId);
+        validateCreditAccountNullOrNotExist(clientId);
         String clientIban =
                 clientService.getClientById(clientId).getDebitAccount().getIban();
         UUID debitAccountId =
                 clientService.getClientById(clientId).getDebitAccount().getId();
 
-        bankInfoService.isNotFundsSufficient(createDTO.getDebt());
-        bankInfoService.subtractFunds(createDTO.getDebt());
+        bankAccountService.isNotFundsSufficient(createDTO.getDebt());
+        bankAccountService.subtractFunds(createDTO.getDebt());
         addFunds(debitAccountId, createDTO.getDebt());
 
         CreateTransactionDTO transactionDTO = new CreateTransactionDTO();
         transactionDTO.setAmount(createDTO.getDebt());
-        transactionDTO.setEmitterIban(bankInfoService.getBankInfo().getIban());
+        transactionDTO.setEmitterIban(bankAccountService.getBankInfo().getIban());
         transactionDTO.setReceiverIban(clientIban);
 
         transactionService.createTransaction(transactionDTO);
@@ -60,7 +60,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     @Override
     @Transactional
     public GetCreditAccountDTO getCreditAccountById(UUID uuid) {
-        validateCreditAccountIdNullOrNotExist(uuid);
+        validateCreditAccountNullOrNotExist(uuid);
         CreditAccount creditAccount =
                 creditAccountRepository.getReferenceById(uuid);
         log.info("Get credit account by id: " + uuid);
@@ -96,7 +96,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     @Override
     @Transactional
     public void updateCreditAccountById(UpdateCreditAccountDTO updateDTO) {
-        validateCreditAccountIdNullOrNotExist(updateDTO.getId());
+        validateCreditAccountNullOrNotExist(updateDTO.getId());
         CreditAccount creditAccount =
                 creditAccountDTOConverter.convertUpdateDTOToCreditAccount(updateDTO);
         creditAccountRepository.save(creditAccount);
@@ -106,7 +106,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     @Override
     @Transactional
     public void deleteCreditAccountById(UUID uuid) {
-        validateCreditAccountIdNullOrNotExist(uuid);
+        validateCreditAccountNullOrNotExist(uuid);
         creditAccountRepository.deleteById(uuid);
         log.warn("Delete credit account by id: " + uuid);
     }
@@ -114,7 +114,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     @Override
     @Transactional
     public void addDebt(UUID uuid, BigDecimal amount) {
-        validateCreditAccountIdNullOrNotExist(uuid);
+        validateCreditAccountNullOrNotExist(uuid);
         BigDecimal debt =
                 creditAccountRepository.getDebtById(uuid);
         BigDecimal resultDebt = debt.add(amount);
@@ -124,7 +124,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     @Override
     @Transactional
     public void subtractDebt(UUID uuid, BigDecimal amount) {
-        validateCreditAccountIdNullOrNotExist(uuid);
+        validateCreditAccountNullOrNotExist(uuid);
         BigDecimal debt =
                 creditAccountRepository.getDebtById(uuid);
         BigDecimal resultDebt = debt.subtract(amount);
@@ -139,7 +139,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         debitAccountRepository.setBalance(uuid, resultBalance);
     }
 
-    private void validateCreditAccountIdNullOrNotExist(UUID uuid) {
+    private void validateCreditAccountNullOrNotExist(UUID uuid) {
         if (uuid == null || !creditAccountRepository.existsById(uuid)) {
             throw new NullOrNotExistException("Credit account with id: " + uuid +
                     " is null or doesn't exist!");

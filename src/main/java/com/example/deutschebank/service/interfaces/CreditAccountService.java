@@ -4,6 +4,7 @@ import com.example.deutschebank.dto.creditaccount.CreateCreditAccountDTO;
 import com.example.deutschebank.dto.creditaccount.GetCreditAccountDTO;
 import com.example.deutschebank.dto.creditaccount.GetCreditAccountInfoDTO;
 import com.example.deutschebank.dto.creditaccount.UpdateCreditAccountDTO;
+import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,7 +26,9 @@ public interface CreditAccountService {
 
     void deleteCreditAccountById(UUID uuid);
 
+    @Transactional
     void addDebt(UUID uuid, BigDecimal amount);
 
+    @Transactional
     void subtractDebt(UUID uuid, BigDecimal amount);
 }
