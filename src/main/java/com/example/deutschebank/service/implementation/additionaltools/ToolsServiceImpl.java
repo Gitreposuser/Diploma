@@ -66,6 +66,7 @@ public class ToolsServiceImpl implements ToolsService {
         log.info("Generate database.");
     }
 
+    @Transactional
     private void generateBankInfo(){
         BankAccount bankAccount = randomDataGenerator.generateBankInfo();
         CreateBankAccountDTO createDTO =
@@ -73,6 +74,7 @@ public class ToolsServiceImpl implements ToolsService {
         bankAccountService.createBankInfo(createDTO);
     }
 
+    @Transactional
     private List<BankBranch> generateBankBranches(CreateDatabaseDTO createDatabaseDTO) {
         int branchesQuantity = createDatabaseDTO.getBranchesQuantity();
         List<Location> branchesLocations = randomDataGenerator
@@ -85,6 +87,7 @@ public class ToolsServiceImpl implements ToolsService {
         return bankBranches;
     }
 
+    @Transactional
     private List<Employee> generateEmployees(CreateDatabaseDTO createDatabaseDTO,
                                              List<BankBranch> bankBranches) {
         int employeesQuantity = createDatabaseDTO.getEmployeesQuantity();
@@ -108,6 +111,7 @@ public class ToolsServiceImpl implements ToolsService {
         return employees;
     }
 
+    @Transactional
     private List<Client> generateClients(CreateDatabaseDTO createDatabaseDTO,
                                          List<Employee> employees) {
         int clientsQuantity = createDatabaseDTO.getClientsQuantity();
@@ -131,6 +135,7 @@ public class ToolsServiceImpl implements ToolsService {
         return clients;
     }
 
+    @Transactional
     private void generateCreditAccounts(CreateDatabaseDTO createDatabaseDTO,
                                                        List<Client> clients) {
         int creditAccountsQuantity = createDatabaseDTO.getCreditsQuantity();
@@ -140,6 +145,7 @@ public class ToolsServiceImpl implements ToolsService {
         creditAccountRepository.saveAll(creditAccounts);
     }
 
+    @Transactional
     private void generateTransactions(CreateDatabaseDTO createDatabaseDTO,
                                       List<Client> clients) {
         List<Transaction> transactions = randomDataGenerator
