@@ -5,12 +5,11 @@ import com.example.deutschebank.dto.bankbranch.GetBankBranchDTO;
 import com.example.deutschebank.dto.bankbranch.GetBankBranchInfoDTO;
 import com.example.deutschebank.dto.bankbranch.UpdateBankBranchDTO;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 public interface BankBranchService {
-    void createBankBranch(CreateBankBranchDTO createDTO);
+    String createBankBranch(CreateBankBranchDTO createDTO);
 
     GetBankBranchDTO getBankBranchById(UUID uuid);
 
@@ -25,4 +24,8 @@ public interface BankBranchService {
     void updateBankBranchById(UpdateBankBranchDTO updateDTO);
 
     void markBankBranchAsDeletedById(UUID uuid);
+
+    void deleteBankBranchById(UUID uuid);
+
+    void deleteAllBankBranch();
 }

@@ -8,8 +8,7 @@ import com.example.deutschebank.entity.enums.DebitStatus;
 import com.example.deutschebank.exception.*;
 import com.example.deutschebank.repository.CreditAccountRepository;
 import com.example.deutschebank.repository.DebitAccountRepository;
-import com.example.deutschebank.service.interfaces.BankInfoService;
-import com.example.deutschebank.service.interfaces.CreditAccountService;
+import com.example.deutschebank.service.interfaces.BankAccountService;
 import com.example.deutschebank.service.interfaces.DebitAccountService;
 import com.example.deutschebank.service.interfaces.TransactionService;
 import jakarta.transaction.Transactional;
@@ -28,7 +27,7 @@ public class DebitAccountServiceImpl implements DebitAccountService {
     private final DebitAccountRepository debitAccountRepository;
     private final DebitAccountDTOConverter debitAccountDTOConverter;
     private final TransactionService transactionService;
-    private final BankInfoService bankInfoService;
+    private final BankAccountService bankAccountService;
     private final CreditAccountRepository creditAccountRepository;
 
     @Override
@@ -124,7 +123,7 @@ public class DebitAccountServiceImpl implements DebitAccountService {
         // Transfer amount is bigger than debt?
         BigDecimal transferAmount = null;
         log.warn("balance: " + balance + " amount: " + amount);
-        if (debt.compareTo(amount) == 1) {
+        if (debt.compareTo(amount) > 0) {
             transferAmount = amount;
             log.warn("Amount less than debt.");
         }
@@ -133,7 +132,7 @@ public class DebitAccountServiceImpl implements DebitAccountService {
             creditAccountRepository.closeCredit(creditAccountId);
             log.warn("Amount equal debt.");
         }
-        if (debt.compareTo(amount) == -1) {
+        if (debt.compareTo(amount) < 0) {
             transferAmount = debt;
             creditAccountRepository.closeCredit(creditAccountId);
             log.warn("Amount greater than debt.");
@@ -142,11 +141,11 @@ public class DebitAccountServiceImpl implements DebitAccountService {
         log.warn("Transfer amount: " + transferAmount);
         subtractFunds(debitAccountId, transferAmount);
         subtractDebt(creditAccountId, transferAmount);
-        bankInfoService.addFunds(transferAmount);
+        bankAccountService.addFunds(transferAmount);
 
         String emitterIban =
                 debitAccountRepository.getReferenceById(debitAccountId).getIban();
-        String receiverIban = bankInfoService.getBankInfo().getIban();
+        String receiverIban = bankAccountService.getBankInfo().getIban();
         CreateTransactionDTO transactionDTO = new CreateTransactionDTO();
         transactionDTO.setEmitterIban(emitterIban);
         transactionDTO.setReceiverIban(receiverIban);
@@ -228,8 +227,7 @@ public class DebitAccountServiceImpl implements DebitAccountService {
     }
 
     private void validateNotEnoughFunds(BigDecimal balance, BigDecimal amount) {
-        if (balance == null || amount == null || balance.compareTo(amount) ==
-                -1) {
+        if (balance == null || amount == null || balance.compareTo(amount) < 0) {
             throw new NotEnoughFundsException("Not enough funds in deposit " +
                     "account!");
         }

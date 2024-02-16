@@ -55,7 +55,7 @@ public class BankDataFaker extends Faker {
         return DebitStatus.values()[randomIndex];
     }
 
-    public WorkStatus generateAcurateWorkStatus() {
+    public WorkStatus generateWorkStatus() {
         final int maxChance = 100;
         final int choice = rnd.nextInt(maxChance);
         final int startWorkingChance = 0;
@@ -81,11 +81,6 @@ public class BankDataFaker extends Faker {
         return WorkStatus.FIRED;
     }
 
-    public WorkStatus generateWorkStatus() {
-        final int randomIndex = rnd.nextInt(WorkStatus.values().length);
-        return WorkStatus.values()[randomIndex];
-    }
-
     public LocalTime generateRandomTime() {
         final int startFrom = 0;
         final int randomHour = rnd.nextInt(startFrom,
@@ -95,18 +90,6 @@ public class BankDataFaker extends Faker {
         final int randomSecond = rnd.nextInt(startFrom,
                 LocalDateTime.MAX.getSecond());
         return LocalTime.of(randomHour, randomMinute, randomSecond);
-    }
-
-    public LocalTime generateTimeBetween(int fromHour, int toHour) {
-        rangeValidator(fromHour, toHour);
-        rangeValidator(fromHour, toHour);
-        final int startFrom = 0;
-        final int hourBetween = rnd.nextInt(fromHour, toHour);
-        final int randomMinute = rnd.nextInt(startFrom,
-                LocalDateTime.MAX.getMinute());
-        final int randomSecond = rnd.nextInt(startFrom,
-                LocalDateTime.MAX.getSecond());
-        return LocalTime.of(hourBetween, randomMinute, randomSecond);
     }
 
     public LocalDateTime generateDateTimeYearFromTo(int fromYear, int toYear) {
@@ -121,42 +104,13 @@ public class BankDataFaker extends Faker {
                 month.lengthOfMonth());
 
         LocalTime time = generateRandomTime();
-        LocalDateTime randomDateTime = LocalDateTime.of(randomYear,
-                randomMonth, randomDate, time.getHour(), time.getMinute(),
-                time.getSecond());
-        return randomDateTime;
+        return LocalDateTime.of(randomYear, randomMonth, randomDate,
+                time.getHour(), time.getMinute(), time.getSecond());
     }
 
     public LocalDateTime generateDateTimeFromYearToNow(int startYear) {
         negativeValueValidator(startYear);
         return generateDateTimeYearFromTo(startYear, LocalDate.now().getYear());
-    }
-
-    public String generateIban() {
-        String iban = generateCountry();
-        iban += generateCheckNumbers();
-        iban += generateIFC();
-        iban += generateAccountNumber();
-        return iban;
-    }
-
-    public String generateCountry() {
-        return country().countryCode2().toUpperCase();
-    }
-
-    private String generateCheckNumbers() {
-        final int checkNumber = 2;
-        return number().digits(checkNumber);
-    }
-
-    private String generateIFC() {
-        final int ifcLength = 5;
-        return number().digits(ifcLength);
-    }
-
-    private String generateAccountNumber() {
-        final int accountNumber = 14;
-        return number().digits(accountNumber);
     }
 
     public BigDecimal generateAmount() {

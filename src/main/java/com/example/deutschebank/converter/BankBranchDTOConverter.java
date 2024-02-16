@@ -29,7 +29,7 @@ public class BankBranchDTOConverter {
     }
 
     public GetBankBranchInfoDTO convertBankBranchToGetInfoDTO(BankBranch bankBranch) {
-        GetBankBranchInfoDTO getBranchInfoDTO = modelMapper
+        return modelMapper
                 .typeMap(BankBranch.class, GetBankBranchInfoDTO.class)
                 .addMapping(src -> src.getLocation().getCountry(),
                         GetBankBranchInfoDTO::setCountry)
@@ -40,7 +40,6 @@ public class BankBranchDTOConverter {
                 .addMapping(src -> src.getLocation().getHouseNumber(),
                         GetBankBranchInfoDTO::setHouseNumber)
                 .map(bankBranch);
-        return getBranchInfoDTO;
     }
 
     public List<GetBankBranchDTO> convertBankBranchesToGetDTOs(List<BankBranch> bankBranches) {

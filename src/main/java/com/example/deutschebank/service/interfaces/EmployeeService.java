@@ -4,6 +4,7 @@ import com.example.deutschebank.dto.employee.CreateEmployeeDTO;
 import com.example.deutschebank.dto.employee.GetEmployeeClientsDTO;
 import com.example.deutschebank.dto.employee.GetEmployeeDTO;
 import com.example.deutschebank.dto.employee.UpdateEmployeeDTO;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,5 +26,6 @@ public interface EmployeeService {
 
     void markEmployeeAsDeletedById(UUID uuid);
 
+    @Transactional
     void deleteEmployeeById(UUID uuid);
 }

@@ -36,6 +36,9 @@ public class Location {
     @Column(name = "country", length = 64, nullable = false)
     private String country;
 
+    @Column(name = "active")
+    private Boolean active;
+
     @CreationTimestamp
     @Column(name = "created", updatable = false)
     private LocalDateTime created;

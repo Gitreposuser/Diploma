@@ -50,6 +50,9 @@ public class PersonalDetail {
     @Column(name = "children", nullable = false)
     private Integer children;
 
+    @Column(name = "active")
+    private Boolean active;
+
     @CreationTimestamp
     @Column(name = "created", updatable = false)
     private LocalDateTime created;

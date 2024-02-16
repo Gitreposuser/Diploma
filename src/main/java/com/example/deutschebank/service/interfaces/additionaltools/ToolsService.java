@@ -34,5 +34,5 @@ public interface ToolsService {
 
     ResponseEntity<byte[]> getRawLogo();
 
-    void runTest();
+    ResponseEntity<String> runTest();
 }

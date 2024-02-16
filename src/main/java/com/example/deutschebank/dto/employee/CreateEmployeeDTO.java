@@ -6,8 +6,6 @@ import com.example.deutschebank.entity.PersonalDetail;
 import com.example.deutschebank.entity.WorkDetail;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 public class CreateEmployeeDTO {
     private PersonalDetail personalDetail;

@@ -2,6 +2,7 @@ package com.example.deutschebank.repository;
 
 import com.example.deutschebank.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +27,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
     @Query("SELECT em FROM Employee em " +
             "WHERE em.active = true ")
     List<Employee> getAllActiveEmployee();
+
+    @Modifying
+    @Query("UPDATE Employee " +
+            "SET active = false " +
+            "WHERE id = :uuid ")
+    void markEmployeeAsDeleted(UUID uuid);
 }

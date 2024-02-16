@@ -21,11 +21,6 @@ import java.util.List;
 @Primary
 public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
     private final BankDataFaker faker;
-    @Value(value = "${randomDataGenerator.startYear}")
-    private int startYear;
-
-    @Value(value = "${randomDataGenerator.maxTransactionValue}")
-    private long maxTransactionValue;
 
     @Value(value = "${bankInfoService.id}")
     private Integer bankId;
@@ -58,12 +53,7 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         bankBranch.setLocation(location);
         bankBranch.setGeneralPhone(faker.phoneNumber().phoneNumber());
         bankBranch.setHotLine(faker.phoneNumber().cellPhone());
-        boolean active;
-        if (bankBranch.getBranchStatus() == BranchStatus.CLOSED) {
-            active = false;
-        } else {
-            active = true;
-        }
+        boolean active = (bankBranch.getBranchStatus() != BranchStatus.CLOSED);
         bankBranch.setActive(active);
         log.info("Generate bank branch: " + bankBranch);
         return bankBranch;
@@ -81,19 +71,19 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
     }
 
     @Override
-    public BankInfo generateBankInfo() {
-        BankInfo bankInfo = new BankInfo();
-        bankInfo.setId(bankId);
-        bankInfo.setName(bankName);
-        bankInfo.setIban(bankIban);
-        bankInfo.setBalance(new BigDecimal(bankBalance));
-        bankInfo.setCapitalization(new BigDecimal(bankCapitalization));
-        bankInfo.setOwner(bankOwner);
-        bankInfo.setGroup(faker.company().industry());
-        bankInfo.setLogoUrl("src/main/resources/static" +
+    public BankAccount generateBankInfo() {
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setId(bankId);
+        bankAccount.setName(bankName);
+        bankAccount.setIban(bankIban);
+        bankAccount.setBalance(new BigDecimal(bankBalance));
+        bankAccount.setCapitalization(new BigDecimal(bankCapitalization));
+        bankAccount.setOwner(bankOwner);
+        bankAccount.setGroup(faker.company().industry());
+        bankAccount.setLogoUrl("src/main/resources/static" +
                 "/images/banklogo.png");
-        log.info("Generate bank info: " + bankInfo);
-        return bankInfo;
+        log.info("Generate bank info: " + bankAccount);
+        return bankAccount;
     }
 
     @Override
@@ -134,7 +124,7 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         creditAccount.setClient(client);
         creditAccount.setReason(faker.commerce().productName());
         creditAccount.setCreditStatus(faker.generateCreditStatus());
-        BigDecimal creditAmount = null;
+        BigDecimal creditAmount;
         boolean isCreditActive;
         if(creditAccount.getCreditStatus() == CreditStatus.CLOSED) {
             creditAmount = new BigDecimal(0);
@@ -148,7 +138,7 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
             isCreditActive = true;
         }
         creditAccount.setDebt(creditAmount);
-        final BigDecimal loanInterest = new BigDecimal(3.0);
+        final BigDecimal loanInterest = new BigDecimal(3);
         creditAccount.setLoanInterest(loanInterest);
         creditAccount.setActive(isCreditActive);
         log.info("Generate credit account: " + creditAccount);
@@ -172,7 +162,7 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         debitAccount.setIban(faker.finance().iban());
         debitAccount.setDebitStatus(faker.generateDebitStatus());
         debitAccount.setBalance(faker.generateAmount());
-        final BigDecimal debitInterest = new BigDecimal(2.5);
+        final BigDecimal debitInterest = new BigDecimal("2.5");
         debitAccount.setDepositInterest(debitInterest);
         final BigDecimal creditAmount = new BigDecimal(5000);
         debitAccount.setCreditLine(creditAmount);
@@ -312,7 +302,7 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
     public WorkDetail generateWorkDetail() {
         WorkDetail workDetail = new WorkDetail();
         workDetail.setPosition(faker.job().position());
-        workDetail.setWorkStatus(faker.generateAcurateWorkStatus());
+        workDetail.setWorkStatus(faker.generateWorkStatus());
         final int minSalary = 2500;
         final int maxSalary = 75000;
         workDetail.setSalary(new BigDecimal(faker.number()
@@ -334,40 +324,5 @@ public class FakerDataGeneratorImpl implements RandomDataGeneratorService {
         }
         log.info("Generate multiple work details, quantity: " + quantity);
         return workDetails;
-    }
-
-    private String generateIban() {
-        String iban = generateCountry();
-        iban += generateCheckNumbers();
-        iban += generateIFC();
-        iban += generateAccountNumber();
-        return iban;
-    }
-
-    private String generateCountry() {
-        return faker.country().countryCode2().toUpperCase();
-    }
-
-    private String generateCheckNumbers() {
-        final int checkNumber = 2;
-        return faker.number().digits(checkNumber);
-    }
-
-    private String generateIFC() {
-        final int ifcLength = 5;
-        return faker.number().digits(ifcLength);
-    }
-
-    private String generateAccountNumber() {
-        final int accountNumber = 14;
-        return faker.number().digits(accountNumber);
-    }
-
-    private BigDecimal generateAmount() {
-        final int maxNumberOfDecimals = 2;
-        final int minAmount = 1;
-        double value = faker.number().randomDouble(maxNumberOfDecimals,
-                minAmount, maxTransactionValue);
-        return new BigDecimal(value);
     }
 }

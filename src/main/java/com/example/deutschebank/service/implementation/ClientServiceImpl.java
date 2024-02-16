@@ -4,6 +4,7 @@ import com.example.deutschebank.converter.ClientDTOConverter;
 import com.example.deutschebank.dto.client.*;
 import com.example.deutschebank.entity.Client;
 import com.example.deutschebank.exception.BadOperationException;
+import com.example.deutschebank.exception.NullOrNotExistException;
 import com.example.deutschebank.repository.ClientRepository;
 import com.example.deutschebank.service.interfaces.ClientService;
 import jakarta.transaction.Transactional;
@@ -25,6 +26,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public void createClient(CreateClientDTO createDTO) {
         Client client = clientDTOConverter.convertCreateDTOToClient(createDTO);
+        validateClientNullOrNotExist(client);
         clientRepository.save(client);
         log.info("Client successfully created");
     }
@@ -32,7 +34,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public GetClientDTO getClientById(UUID uuid) {
-        checkIfNotExist(uuid);
+        validateClientNullOrNotExist(uuid);
         Client client = clientRepository.getReferenceById(uuid);
         log.info("Get client DTO by id: " + uuid);
         return clientDTOConverter.convertClientToGetDTO(client);
@@ -42,7 +44,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public GetClientDTO getClientByFullName(String fullName) {
         Client client = clientRepository.getClientByFullName(fullName);
-        checkIfNotExist(client);
+        validateDataNull(client);
         log.info("Get client DTO by full name: " + fullName);
         return clientDTOConverter.convertClientToGetDTO(client);
     }
@@ -51,7 +53,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public GetClientIbanDTO getClientIbanByFullName(String fullName) {
         String clientIban = clientRepository.getClientIbanByFullName(fullName);
-        checkIfNotExist(clientIban);
+        validateDataNull(clientIban);
         GetClientIbanDTO clientIbanDTO = new GetClientIbanDTO();
         clientIbanDTO.setIban(clientIban);
         log.info("Get client IBAN by full name: " + fullName);
@@ -62,7 +64,7 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public GetClientInfoDTO getClientInfoByFullName(String fullName) {
         Client client = clientRepository.getClientByFullName(fullName);
-        checkIfNotExist(client);
+        validateDataNull(client);
         log.info("Get client info DTO by full name: " + fullName);
         return clientDTOConverter.convertClientToGetClientInfoDTO(client);
     }
@@ -86,7 +88,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public void updateClientById(UpdateClientDTO updateDTO) {
-        checkIfNotExist(updateDTO.getId());
+        validateDataNull(updateDTO.getId());
         Client client = clientDTOConverter.convertUpdateDTOToClient(updateDTO);
         clientRepository.save(client);
         log.info("Client with id: " + client.getId() + " is updated");
@@ -95,30 +97,44 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public void markAsDeletedClientById(UUID uuid) {
-        checkIfNotExist(uuid);
+        validateDataNull(uuid);
         Client client = clientRepository.getReferenceById(uuid);
         client.setActive(false);
         clientRepository.save(client);
         log.info("Client with id: " + uuid + " mark as deleted");
     }
 
-    private void checkIfNotExist(String data) {
+    private void validateDataNull(String data) {
         if (data == null) {
             throw new BadOperationException("Data is null!");
         }
     }
 
-    private void checkIfNotExist(Client client) {
+    private void validateDataNull(Client client) {
         if (client == null) {
             throw new BadOperationException("Entity with chosen parameters " +
                     "doesn't exist!");
         }
     }
 
-    private void checkIfNotExist(UUID uuid) {
+    private void validateDataNull(UUID uuid) {
         if (!clientRepository.existsById(uuid)) {
-            throw new BadOperationException("Entity with id: " + uuid +
+            throw new BadOperationException("Client with id: " + uuid +
                     "doesn't exist!");
+        }
+    }
+
+    private void validateClientNullOrNotExist(UUID uuid) {
+        if (uuid == null || !clientRepository.existsById(uuid)) {
+            throw new NullOrNotExistException("Client with id: " + uuid +
+                    " is null or doesn't exist!");
+        }
+    }
+
+    private void validateClientNullOrNotExist(Client client) {
+        if (client == null || client.getId() == null ||
+                !clientRepository.existsById(client.getId())) {
+            throw new NullOrNotExistException("Client is null or not exist!");
         }
     }
 }

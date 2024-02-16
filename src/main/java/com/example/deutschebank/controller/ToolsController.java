@@ -104,7 +104,7 @@ public class ToolsController {
     }
 
     @GetMapping("/test")
-    public void runTest() {
-        toolsService.runTest();
+    public ResponseEntity<String> runTest() {
+        return toolsService.runTest();
     }
 }

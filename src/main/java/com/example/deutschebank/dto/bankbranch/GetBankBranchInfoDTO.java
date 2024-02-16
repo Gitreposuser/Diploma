@@ -3,7 +3,6 @@ package com.example.deutschebank.dto.bankbranch;
 import com.example.deutschebank.entity.enums.BranchStatus;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data

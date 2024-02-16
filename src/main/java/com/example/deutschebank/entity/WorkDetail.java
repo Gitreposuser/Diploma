@@ -45,6 +45,9 @@ public class WorkDetail {
     @Column(name = "end_at")
     private LocalDateTime endAt;
 
+    @Column(name = "active")
+    private Boolean active;
+
     @CreationTimestamp
     @Column(name = "created", updatable = false)
     private LocalDateTime created;

@@ -1,9 +1,9 @@
 package com.example.deutschebank.converter;
 
-import com.example.deutschebank.entity.BankInfo;
-import com.example.deutschebank.dto.bankinfo.CreateBankInfoDTO;
-import com.example.deutschebank.dto.bankinfo.GetBankInfoDTO;
-import com.example.deutschebank.dto.bankinfo.UpdateBankInfoDTO;
+import com.example.deutschebank.entity.BankAccount;
+import com.example.deutschebank.dto.bankaccount.CreateBankAccountDTO;
+import com.example.deutschebank.dto.bankaccount.GetBankAccountDTO;
+import com.example.deutschebank.dto.bankaccount.UpdateBankAccountDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -13,19 +13,19 @@ import org.springframework.stereotype.Component;
 public class BankInfoDTOConverter {
     private final ModelMapper modelMapper;
 
-    public BankInfo convertCreateDTOToBankInfo(CreateBankInfoDTO createDTO) {
-        return modelMapper.map(createDTO, BankInfo.class);
+    public BankAccount convertCreateDTOToBankInfo(CreateBankAccountDTO createDTO) {
+        return modelMapper.map(createDTO, BankAccount.class);
     }
 
-    public CreateBankInfoDTO convertBankInfoToCreateDTO(BankInfo bankInfo) {
-        return modelMapper.map(bankInfo, CreateBankInfoDTO.class);
+    public CreateBankAccountDTO convertBankInfoToCreateDTO(BankAccount bankAccount) {
+        return modelMapper.map(bankAccount, CreateBankAccountDTO.class);
     }
 
-    public GetBankInfoDTO convertBankInfoToGetDTO(BankInfo bankInfo) {
-        return modelMapper.map(bankInfo, GetBankInfoDTO.class);
+    public GetBankAccountDTO convertBankInfoToGetDTO(BankAccount bankAccount) {
+        return modelMapper.map(bankAccount, GetBankAccountDTO.class);
     }
 
-    public BankInfo convertUpdateDTOToBankInfo(UpdateBankInfoDTO updateDTO) {
-        return modelMapper.map(updateDTO, BankInfo.class);
+    public BankAccount convertUpdateDTOToBankInfo(UpdateBankAccountDTO updateDTO) {
+        return modelMapper.map(updateDTO, BankAccount.class);
     }
 }
