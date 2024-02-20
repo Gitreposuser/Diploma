@@ -1,3 +1,4 @@
+0. Merge methods with exception handlers into one class.
 1. Validation.
 1.1. Generate real transactions.
 2. Spring security.
