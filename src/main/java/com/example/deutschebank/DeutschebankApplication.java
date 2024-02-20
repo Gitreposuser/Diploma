@@ -1,13 +1,13 @@
 package com.example.deutschebank;
 
 import io.swagger.v3.oas.models.examples.Example;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 @SpringBootApplication
 @PropertySources({
         @PropertySource("classpath:constantparameters.properties"),
@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
         @PropertySource("file:/home/vlad/IdeaProjects/MailKey/emailslog.properties")
 })
 public class DeutschebankApplication {
-    private static final Logger log = LoggerFactory.getLogger(DeutschebankApplication.class);
     public static void main(String[] args) {
         log.info("Starting application");
         SpringApplication.run(DeutschebankApplication.class, args);
