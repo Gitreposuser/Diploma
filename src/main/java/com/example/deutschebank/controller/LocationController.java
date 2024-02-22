@@ -4,6 +4,7 @@ import com.example.deutschebank.dto.location.CreateLocationDTO;
 import com.example.deutschebank.dto.location.GetLocationDTO;
 import com.example.deutschebank.dto.location.UpdateLocationDTO;
 import com.example.deutschebank.service.interfaces.LocationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class LocationController {
     private final LocationService locationService;
 
     @PostMapping(value = "/create")
-    public void createLocation(@RequestBody CreateLocationDTO createDTO) {
+    public void createLocation(@RequestBody @Valid CreateLocationDTO createDTO) {
         locationService.createLocation(createDTO);
     }
 
@@ -39,7 +40,7 @@ public class LocationController {
     }
 
     @PutMapping(value = "/update/by/id")
-    public void updateLocation(@RequestBody UpdateLocationDTO updateDTO) {
+    public void updateLocation(@RequestBody @Valid UpdateLocationDTO updateDTO) {
         locationService.updateLocation(updateDTO);
     }
 }
