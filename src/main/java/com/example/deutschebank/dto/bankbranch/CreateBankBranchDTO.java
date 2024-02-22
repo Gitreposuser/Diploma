@@ -16,10 +16,7 @@ public class CreateBankBranchDTO {
     @NotNull(message = "Branch status should not be null!")
     private BranchStatus branchStatus;
 
-    //@Valid
     @NotNull(message = "Location should not be null!")
-    //@NotEmpty(message = "Location should not be empty!")
-    //@NotBlank(message = "Location should not be empty!")
     private Location location;
 
     @NotBlank(message = "General phone should not be empty!")
