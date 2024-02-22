@@ -21,6 +21,7 @@ public class CreateDatabaseDTO {
     @NotNull(message = "Credits quantity should not be null!")
     @Min(value = 0, message = "Credits quantity should be 0 or more!")
     private int creditsQuantity;
+
     @NotNull(message = "Transactions quantity should not be null!")
     @Min(value = 0, message = "Transactions quantity should be 0 or more!")
     private int transactionsQuantity;
