@@ -47,7 +47,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             message.setText(text);
 
             mailSender.send(message);
-            log.info(message.toString());
         } catch (Exception e) {
             log.error("Something went wrong while sending simple message " +
                     "email! " + e.getMessage());
