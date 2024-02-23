@@ -2,6 +2,7 @@ package com.example.deutschebank.controller;
 
 import com.example.deutschebank.dto.client.*;
 import com.example.deutschebank.service.interfaces.ClientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class ClientController {
     private final ClientService clientService;
 
     @PostMapping(value = "/create")
-    public void createClient(@RequestBody CreateClientDTO createDTO) {
+    public void createClient(@RequestBody @Valid CreateClientDTO createDTO) {
         clientService.createClient(createDTO);
     }
 
@@ -63,7 +64,7 @@ public class ClientController {
     }
 
     @PutMapping(value = "/update/by/id")
-    public void updateClientById(@RequestBody UpdateClientDTO updateDTO) {
+    public void updateClientById(@RequestBody @Valid UpdateClientDTO updateDTO) {
         clientService.updateClientById(updateDTO);
     }
 
