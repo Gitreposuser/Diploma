@@ -4,6 +4,7 @@ import com.example.deutschebank.dto.personaldetail.CreatePersonalDetailDTO;
 import com.example.deutschebank.dto.personaldetail.GetPersonalDetailDTO;
 import com.example.deutschebank.dto.personaldetail.UpdatePersonalDetailDTO;
 import com.example.deutschebank.service.interfaces.PersonalDetailService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class PersonalDetailController {
     private final PersonalDetailService personalDetailService;
 
     @PostMapping(value = "/create")
-    public void createPersonalDetail(@RequestBody CreatePersonalDetailDTO createDTO) {
+    public void createPersonalDetail(@RequestBody @Valid CreatePersonalDetailDTO createDTO) {
         personalDetailService.createPersonalDetail(createDTO);
     }
 
@@ -40,7 +41,7 @@ public class PersonalDetailController {
     }
 
     @PutMapping(value = "/update/by/id")
-    public void updatePersonalDetail(@RequestBody UpdatePersonalDetailDTO updateDTO) {
+    public void updatePersonalDetail(@RequestBody @Valid UpdatePersonalDetailDTO updateDTO) {
         personalDetailService.updatePersonalDetail(updateDTO);
     }
 }
