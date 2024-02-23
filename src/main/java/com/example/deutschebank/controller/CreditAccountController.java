@@ -5,6 +5,7 @@ import com.example.deutschebank.dto.creditaccount.GetCreditAccountDTO;
 import com.example.deutschebank.dto.creditaccount.GetCreditAccountInfoDTO;
 import com.example.deutschebank.dto.creditaccount.UpdateCreditAccountDTO;
 import com.example.deutschebank.service.interfaces.CreditAccountService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class CreditAccountController {
     private final CreditAccountService creditAccountService;
 
     @PostMapping(value = "/create")
-    public void createCreditAccount(@RequestBody CreateCreditAccountDTO createDTO) {
+    public void createCreditAccount(@RequestBody @Valid CreateCreditAccountDTO createDTO) {
         creditAccountService.createCreditAccount(createDTO);
     }
 
@@ -55,7 +56,7 @@ public class CreditAccountController {
     }
 
     @PutMapping(value = "/update/by/id")
-    public void updateCreditAccountById(@RequestBody UpdateCreditAccountDTO updateDTO) {
+    public void updateCreditAccountById(@RequestBody @Valid UpdateCreditAccountDTO updateDTO) {
         creditAccountService.updateCreditAccountById(updateDTO);
     }
 
