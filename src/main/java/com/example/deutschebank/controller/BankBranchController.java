@@ -6,15 +6,14 @@ import com.example.deutschebank.dto.bankbranch.GetBankBranchInfoDTO;
 import com.example.deutschebank.dto.bankbranch.UpdateBankBranchDTO;
 import com.example.deutschebank.service.interfaces.BankBranchService;
 //import com.example.deutschebank.validators.DtoValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class BankBranchController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<String> createBankBranch(
-            @RequestBody CreateBankBranchDTO createDTO) {
+            @RequestBody @Valid CreateBankBranchDTO createDTO) {
         /*
         Set<String> errors = validator.validate(createDTO);
         if(!errors.isEmpty()) {
@@ -80,7 +79,7 @@ public class BankBranchController {
     }
 
     @PutMapping(value = "/update/by/id")
-    public void updateBankBranchById(@RequestBody UpdateBankBranchDTO updateDTO) {
+    public void updateBankBranchById(@RequestBody @Valid UpdateBankBranchDTO updateDTO) {
         bankBranchService.updateBankBranchById(updateDTO);
     }
 
