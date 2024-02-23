@@ -3,6 +3,7 @@ package com.example.deutschebank.controller;
 import com.example.deutschebank.dto.debitaccount.*;
 import com.example.deutschebank.entity.enums.DebitStatus;
 import com.example.deutschebank.service.interfaces.DebitAccountService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class DebitAccountController {
     private final DebitAccountService debitAccountService;
 
     @PostMapping(value = "/create")
-    public void createDebitAccount(@RequestBody CreateDebitAccountDTO createDTO) {
+    public void createDebitAccount(@RequestBody @Valid CreateDebitAccountDTO createDTO) {
         debitAccountService.createDebitAccount(createDTO);
     }
 
@@ -47,17 +48,17 @@ public class DebitAccountController {
     }
 
     @PutMapping(value = "/update/by/id")
-    public void updateDebitAccountById(@RequestBody UpdateDebitAccountDTO updateDTO) {
+    public void updateDebitAccountById(@RequestBody @Valid UpdateDebitAccountDTO updateDTO) {
         debitAccountService.updateDebitAccountById(updateDTO);
     }
 
     @PutMapping(value = "/transfer-funds/by/iban")
-    public void transferFundsByIban(@RequestBody TransferFundsDTO transferDTO) {
+    public void transferFundsByIban(@RequestBody @Valid TransferFundsDTO transferDTO) {
         debitAccountService.transferFundsByIban(transferDTO);
     }
 
     @PutMapping(value = "/pay-debt")
-    public void payDebt(@RequestBody PayDeptDTO payDeptDTO) {
+    public void payDebt(@RequestBody @Valid PayDeptDTO payDeptDTO) {
         debitAccountService.payDebt(payDeptDTO);
     }
 }
