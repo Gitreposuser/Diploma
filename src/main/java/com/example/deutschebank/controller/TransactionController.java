@@ -3,6 +3,7 @@ package com.example.deutschebank.controller;
 import com.example.deutschebank.dto.transaction.CreateTransactionDTO;
 import com.example.deutschebank.dto.transaction.GetTransactionDTO;
 import com.example.deutschebank.service.interfaces.TransactionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping(value = "/create")
-    public void create(@RequestBody CreateTransactionDTO createDTO) {
+    public void create(@RequestBody @Valid CreateTransactionDTO createDTO) {
         transactionService.createTransaction(createDTO);
     }
 
