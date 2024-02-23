@@ -4,6 +4,7 @@ import com.example.deutschebank.dto.workdetail.CreateWorkDetailDTO;
 import com.example.deutschebank.dto.workdetail.GetWorkDetailDTO;
 import com.example.deutschebank.dto.workdetail.UpdateWorkDetailDTO;
 import com.example.deutschebank.service.interfaces.WorkDetailService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class WorkDetailController {
     private final WorkDetailService workDetailService;
 
     @PostMapping(value = "/create")
-    public void createWorkDetail(@RequestBody CreateWorkDetailDTO createDTO) {
+    public void createWorkDetail(@RequestBody @Valid CreateWorkDetailDTO createDTO) {
         workDetailService.createWorkDetail(createDTO);
     }
 
@@ -37,7 +38,7 @@ public class WorkDetailController {
     }
 
     @PutMapping(value = "/update/by/id")
-    public void updateWorkDetailById(@RequestBody UpdateWorkDetailDTO updateDTO) {
+    public void updateWorkDetailById(@RequestBody @Valid UpdateWorkDetailDTO updateDTO) {
         workDetailService.updateWorkDetailById(updateDTO);
     }
 }
