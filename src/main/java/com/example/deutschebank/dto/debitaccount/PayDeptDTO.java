@@ -9,10 +9,10 @@ import java.util.UUID;
 
 @Data
 public class PayDeptDTO {
-    @NotNull(message = "UUID should not null!")
+    @NotNull(message = "Debit account should not null!")
     private UUID debitAccountId;
 
-    @NotNull(message = "UUID should not null!")
+    @NotNull(message = "Credit account should not null!")
     private UUID creditAccountId;
 
     @NotNull(message = "Amount should not be null!")
