@@ -4,6 +4,7 @@ import com.example.deutschebank.dto.bankaccount.CreateBankAccountDTO;
 import com.example.deutschebank.dto.bankaccount.GetBankAccountDTO;
 import com.example.deutschebank.dto.bankaccount.UpdateBankAccountDTO;
 import com.example.deutschebank.service.interfaces.BankAccountService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class BankAccountController {
     private final BankAccountService bankAccountService;
 
     @PostMapping(value = "/create")
-    public void createBankInfo(@RequestBody CreateBankAccountDTO createDTO) {
+    public void createBankInfo(@RequestBody @Valid CreateBankAccountDTO createDTO) {
         bankAccountService.createBankInfo(createDTO);
     }
 
@@ -25,7 +26,7 @@ public class BankAccountController {
     }
 
     @PutMapping(value = "/update")
-    public void updateBankInfo(@RequestBody UpdateBankAccountDTO updateDTO) {
+    public void updateBankInfo(@RequestBody @Valid UpdateBankAccountDTO updateDTO) {
         bankAccountService.updateBankInfo(updateDTO);
     }
 }
