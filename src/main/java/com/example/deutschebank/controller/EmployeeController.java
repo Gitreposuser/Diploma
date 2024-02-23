@@ -5,6 +5,7 @@ import com.example.deutschebank.dto.employee.GetEmployeeClientsDTO;
 import com.example.deutschebank.dto.employee.GetEmployeeDTO;
 import com.example.deutschebank.dto.employee.UpdateEmployeeDTO;
 import com.example.deutschebank.service.interfaces.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,18 +23,18 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping(value = "/create")
-    public void createEmployee(@RequestBody CreateEmployeeDTO createDTO) {
+    public void createEmployee(@RequestBody @Valid CreateEmployeeDTO createDTO) {
         employeeService.createEmployee(createDTO);
     }
 
     @GetMapping(value = "/get/by/id/{uuid}")
-    public ResponseEntity<GetEmployeeDTO> GetEmployeeById(@PathVariable UUID uuid) {
+    public ResponseEntity<GetEmployeeDTO> getEmployeeById(@PathVariable UUID uuid) {
         GetEmployeeDTO getDTO = employeeService.getEmployeeById(uuid);
         return ResponseEntity.status(HttpStatus.OK).body(getDTO);
     }
 
     @GetMapping(value = "/get/by/full-name/{full_name}")
-    public ResponseEntity<GetEmployeeDTO> GetEmployeeByFullName
+    public ResponseEntity<GetEmployeeDTO> getEmployeeByFullName
             (@PathVariable String full_name) {
         GetEmployeeDTO getDTO =
                 employeeService.getEmployeeByFullName(full_name);
@@ -41,7 +42,7 @@ public class EmployeeController {
     }
 
     @GetMapping(value = "/get/employee-clients/by/full-name/{full_name}")
-    public ResponseEntity<GetEmployeeClientsDTO> GetEmployeeClientsByFullName
+    public ResponseEntity<GetEmployeeClientsDTO> getEmployeeClientsByFullName
             (@PathVariable String full_name) {
         GetEmployeeClientsDTO getDTO =
                 employeeService.getEmployeeClientsByFullName(full_name);
@@ -62,7 +63,7 @@ public class EmployeeController {
     }
 
     @PutMapping(value = "/update/by/id")
-    public void updateEmployeeById(@RequestBody UpdateEmployeeDTO updateDTO) {
+    public void updateEmployeeById(@RequestBody @Valid UpdateEmployeeDTO updateDTO) {
         employeeService.updateEmployeeById(updateDTO);
     }
 
