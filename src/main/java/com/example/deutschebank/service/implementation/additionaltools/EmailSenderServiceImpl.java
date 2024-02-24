@@ -78,9 +78,13 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             helper.setSubject(subject);
             helper.setText(text);
 
+            log.warn("path to attachment: " + pathToAttachment + "!");
             FileSystemResource file;
             file = new FileSystemResource(new File(pathToAttachment));
+            log.warn("file name: " + file.getFilename() + " file content: " +
+                    file.getFile() + "!");
             helper.addAttachment("image.png", file);
+            //helper.addAttachment(file.getFilename(), file);
 
             mailSender.send(message);
         } catch (Exception e) {
@@ -122,8 +126,8 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             // Read the image bytes into a byte array
             byte[] imageBytes = inputStream.readAllBytes();
 
-            // Attach the image to the email
-            helper.addAttachment("remote-image.png",
+            // Attach file to email
+            helper.addAttachment(url.getFile().substring(1),
                     new ByteArrayResource(imageBytes));
 
             mailSender.send(message);
