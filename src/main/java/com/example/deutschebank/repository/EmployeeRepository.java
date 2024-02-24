@@ -17,11 +17,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
     Employee getEmployeeByFullName(String fullName);
 
     @Query("SELECT CONCAT(cl.personalDetail.firstName, ' ', " +
-            "cl.personalDetail.lastName) FROM Employee" +
-            " em " +
-            "JOIN Client cl ON cl.employee.id = em.id " +
-            "WHERE CONCAT(em.personalDetail.firstName, ' ', " +
-            "em.personalDetail.lastName) = :fullName ")
+            "cl.personalDetail.lastName) FROM Client cl " +
+            "WHERE CONCAT(cl.employee.personalDetail.firstName, ' ', " +
+            "cl.employee.personalDetail.lastName) = :fullName ")
     List<String> getEmployeeClientsByFullName(String fullName);
 
     @Query("SELECT em FROM Employee em " +
