@@ -18,7 +18,7 @@
             <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    <property name="LOG_PATH" value="deutschebank/src/main/resources/log" />
+    <property name="LOG_PATH" value="src/main/resources/log" />
     <property name="LOG_FILE" value="BankLog" />
     <!-- Loggers -->
     <logger name="com.example" level="INFO"/>
