@@ -13,13 +13,11 @@ import java.util.UUID;
 @NonNullApi
 public interface ClientRepository extends JpaRepository<Client, UUID> {
     @Query("SELECT cl FROM Client cl " +
-            "JOIN PersonalDetail pd ON pd.id = cl.personalDetail.id " +
-            "WHERE CONCAT(pd.firstName, ' ', pd.lastName) = :fullName ")
+            "WHERE CONCAT(cl.personalDetail.firstName, ' ', cl.personalDetail.lastName) = :fullName ")
     Client getClientByFullName(String fullName);
 
     @Query("SELECT cl.debitAccount.iban FROM Client cl " +
-            "JOIN PersonalDetail pd ON pd.id = cl.personalDetail.id " +
-            "WHERE CONCAT(pd.firstName, ' ', pd.lastName) = :fullName ")
+            "WHERE CONCAT(cl.personalDetail.firstName, ' ', cl.personalDetail.lastName) = :fullName ")
     String getClientIbanByFullName(String fullName);
 
     @Query("SELECT cl FROM Client cl " +
